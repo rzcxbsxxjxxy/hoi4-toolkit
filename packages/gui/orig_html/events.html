@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>事件查看 · HOI4 工作台</title>
+<link rel="stylesheet" href="/theme.css">
+<style>
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0}
+  body{font:13px/1.5 "Segoe UI","Microsoft YaHei",system-ui,sans-serif;color:var(--ink);background:var(--bg);display:flex;flex-direction:column;overflow:hidden}
+  header{display:flex;align-items:center;gap:8px;padding:7px 12px;background:var(--panel);border-bottom:1px solid var(--line);flex:none}
+  header h1{font-size:14px;margin:0;font-weight:600;white-space:nowrap}
+  header h1 small{font-weight:400;color:var(--ink3);margin-left:6px}
+  .spacer{flex:1}
+  select,input[type=text],button{font:inherit;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:4px 7px}
+  input[type=text]{width:190px}
+  select{max-width:200px}
+  button{cursor:pointer;white-space:nowrap}
+  button:hover{background:#f2f4f7}
+
+  .bar{display:flex;align-items:center;gap:6px;padding:6px 12px;background:var(--panel);border-bottom:1px solid var(--line);flex:none;flex-wrap:wrap}
+  .bar .lb{font-size:12px;color:var(--ink2)}
+  .bar .sep{width:1px;height:20px;background:var(--line2);margin:0 2px}
+  .bar .fl{display:inline-flex;align-items:center;gap:5px}
+  .bar .fl .lb{font-size:11px;color:var(--ink3)}
+  .bar select{max-width:180px}
+  .bar #reset{padding:4px 10px}
+  .bar #cnt{font-size:12px;color:var(--ink2);white-space:nowrap}
+
+  main{flex:1;display:flex;min-height:0}
+  aside{width:340px;flex:none;background:var(--panel);border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0}
+  .pane-title{padding:7px 10px;font-weight:600;font-size:12px;color:var(--ink2);border-bottom:1px solid var(--line2);background:#fafbfc;flex:none;display:flex;align-items:center;gap:6px}
+  .pane-body{overflow:auto;flex:1;min-height:0}
+  .pager{flex:none;padding:5px 8px;border-bottom:1px solid var(--line2);background:#fafbfc;display:flex;align-items:center;gap:6px;font-size:12px;flex-wrap:wrap}
+  .pager input{width:56px;padding:2px 5px}
+  button:disabled{opacity:.45;cursor:default}
+  button:disabled:hover{background:#fff}
+  .item{padding:4px 10px;cursor:pointer;font-size:12px;border-bottom:1px solid var(--line2)}
+  .item:hover{background:#f2f4f7}
+  .item.on{background:var(--accent-soft);color:var(--accent);font-weight:600}
+  .item .id{font-family:ui-monospace,Consolas,monospace;font-size:11px}
+  .item .t{color:var(--ink3);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+  section.detail{flex:1;overflow:auto;min-width:0;padding:14px 16px}
+  .d-hd{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+  .d-hd h2{margin:0;font-size:16px}
+  .d-hd .id{font-family:ui-monospace,Consolas,monospace;font-size:12px;color:var(--ink3)}
+  .kv{display:flex;gap:8px;padding:2px 0;font-size:12.5px}
+  .kv b{flex:none;width:96px;color:var(--ink2);font-weight:600}
+  .kv span{word-break:break-all}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:8px;margin-bottom:12px;overflow:hidden}
+  .card > .hd{padding:7px 11px;background:#fafbfc;border-bottom:1px solid var(--line2);font-size:12.5px;font-weight:600;display:flex;align-items:center;gap:8px}
+  .card > .bd{padding:10px 12px}
+  pre{margin:0;font-family:ui-monospace,Consolas,monospace;font-size:11.5px;white-space:pre-wrap;word-break:break-word;color:var(--ink2);max-height:320px;overflow:auto}
+  .opt{border:1px solid var(--line);border-radius:6px;padding:8px 10px;margin-bottom:8px;background:#fff}
+  .opt .on{font-size:12.5px;font-weight:600;margin-bottom:4px}
+  .opt .meta{font-size:11px;color:var(--ink3);margin-bottom:5px;display:flex;gap:10px;flex-wrap:wrap}
+  .eff{font-family:ui-monospace,Consolas,monospace;font-size:11.5px;color:var(--ink2);white-space:pre-wrap;margin-top:4px}
+  .src{display:inline-block;padding:0 5px;border-radius:8px;font-size:10px;line-height:15px;background:var(--line2);color:var(--ink3)}
+  .src.ovr{background:var(--warn-soft);color:var(--warn);font-weight:600}
+  .src.new{background:var(--ok-soft);color:var(--ok);font-weight:600}
+  .flag{display:inline-block;padding:0 6px;border-radius:9px;font-size:10.5px;line-height:16px;background:var(--line2);color:var(--ink2)}
+  .flag.hot{background:var(--warn-soft);color:var(--warn)}
+  .loc{margin-top:2px;font-size:12.5px;color:var(--ink)}
+  .loc .k{font-family:ui-monospace,Consolas,monospace;font-size:11px;color:var(--ink3)}
+  .picshow{margin:4px 0 10px}
+  .empty{color:var(--ink3);text-align:center;padding:40px 10px}
+  #toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:#1d2129;color:#fff;padding:7px 15px;border-radius:6px;font-size:13px;opacity:0;transition:opacity .18s;pointer-events:none;z-index:99}
+  #toast.on{opacity:1}
+  #toast.bad{background:var(--danger)}
+  .spin{display:inline-block;width:12px;height:12px;border:2px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:sp .7s linear infinite}
+  @keyframes sp{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<header>
+  <div id="nav"></div>
+</header>
+<div class="subbar">
+  <h1>事件查看<small>events/*.txt · 触发 / 立即 / 选项</small></h1>
+  <span class="spacer"></span>
+  <div id="evtlangbar"></div>
+</div>
+
+<div class="bar" id="bar">
+  <input type="text" id="q" placeholder="搜索 id / 标题 / 选项 / 效果…">
+  <span class="sep"></span>
+  <label class="fl"><span class="lb">归属</span>
+    <select id="origin">
+      <option value="">全部</option>
+      <option value="base">基础游戏</option>
+      <option value="mod">模组（新增 / 改写）</option>
+    </select>
+  </label>
+  <label class="fl"><span class="lb">来源</span>
+    <select id="src"><option value="">全部</option></select>
+  </label>
+  <label class="fl"><span class="lb">文件</span>
+    <select id="file"><option value="">全部</option></select>
+  </label>
+  <label class="fl"><span class="lb">事件空间</span>
+    <select id="ns"><option value="">全部</option></select>
+  </label>
+  <label class="fl"><span class="lb">事件类型</span>
+    <select id="type"><option value="">全部</option></select>
+  </label>
+  <span class="spacer"></span>
+  <button id="reset" type="button">重置</button>
+  <span class="lb" id="cnt"></span>
+</div>
+
+<main>
+  <aside id="evlist" data-sizer="left" data-sizer-def="320">
+    <div class="sizer-bar" title="拖动调宽 · 双击复位 · 双击侧栏折叠"></div>
+    <div class="pane-title"><span>事件</span><span class="spacer"></span><span id="nsTip" style="font-weight:400;color:var(--ink3)"></span></div>
+    <div class="pager" id="pager" style="display:none">
+      <button id="pgPrev" type="button">‹ 上一页</button>
+      <span id="pgInfo" style="color:var(--ink2);white-space:nowrap"></span>
+      <button id="pgNext" type="button">下一页 ›</button>
+      <span style="display:inline-flex;align-items:center;gap:4px">跳转 <input id="pgInput" type="number" min="1"> 页</span>
+    </div>
+    <div class="pane-body" id="list"></div>
+  </aside>
+  <section class="detail" id="detail"></section>
+</main>
+<div id="toast"></div>
+
+<!-- ★ i18n 必须最先加载:页面脚本在解析期就调用翻译函数,
+     i18n.js 若排在它们之后,翻译函数会是 undefined → ReferenceError。 -->
+<script src="/i18n.js"></script>
+<script src="/i18n-dict.js"></script>
+<script src="/sizer.js"></script>
+<script src="/locclient.js"></script>
+<!-- ★ RIGHTCLICK_V2:全站右键菜单 + 快捷键接线。
+     ⚠ 顺序有依赖:ctx.js 先(菜单本体),keymap.js 必须在 keys.js 之前
+     (keys.js boot 时要读目录),ctxwire.js 最后(它只是接线骨架)。 -->
+<script src="/ctx.js"></script>
+<script src="/keymap.js"></script>
+<script src="/keys.js"></script>
+<script src="/ctxwire.js"></script>
+<script src="/events.js"></script>
+
+<script src="/progress.js"></script>
+<script type="module">
+  import { mountNav } from '/nav.js'
+  mountNav('#nav')
+</script>
+<!-- ★ FULLSCREEN_V1:全站全屏。必须在 nav.js 之前?否 —— nav.js 轮询等它,
+     放哪都行;统一放页面脚本区末尾,好维护。 -->
+<script src="/fullscreen.js"></script>
+</body>
+</html>

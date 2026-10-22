@@ -1,0 +1,6 @@
+{
+  "version": "0.5.0",
+  "released": "2026-10-22",
+  "notes": "接入 GitHub Releases 作为自动更新源:启动即在后台检测新版本,设置页「软件更新」可手动检查/下载/安装;新增「项目主页」一键打开 GitHub 仓库。界面设计器与 GUI 布局渲染对齐游戏(以 GER_inner_circle 为验收)。",
+  "download": ""
+}

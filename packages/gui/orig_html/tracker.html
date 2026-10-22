@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>HOI4 更新跟踪</title>
+<link rel="stylesheet" href="/theme.css">
+<style>
+  main{display:flex;flex-direction:column;gap:10px;padding:12px;overflow:auto}
+  h2{font-size:13px;color:var(--ink2);margin:8px 0 2px}
+  .hint{font-size:11px;color:var(--ink3);line-height:1.7}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-card);padding:10px 12px}
+  .busybadge{font-size:11px;color:var(--accent)}
+  .sources{display:flex;flex-direction:column;gap:8px}
+  .root-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-card);padding:9px 12px}
+  .root-card.cur{border-color:var(--accent)}
+  .root-head{display:flex;align-items:center;gap:8px}
+  .root-name{font-size:13px;font-weight:600;color:var(--ink)}
+  .root-sub{font-size:11px;color:var(--ink3);margin-top:4px;display:flex;gap:10px;flex-wrap:wrap;align-items:center;line-height:1.6}
+  .stat-k{color:var(--ink3)}
+  .acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+  .acts .sp{flex:1}
+  button{font:inherit;font-size:12px;padding:6px 14px;border:1px solid var(--line);border-radius:8px;background:var(--panel);color:var(--ink2);cursor:pointer}
+  button:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+  button.acc{background:var(--accent);border-color:var(--accent);color:#fff}
+  button.danger{border-color:#e07070;color:#e07070}
+  button.danger:hover:not(:disabled){border-color:#e07070;color:#fff;background:#e07070}
+  button:disabled{opacity:.5;cursor:not-allowed}
+  .pill{display:inline-block;font-size:10px;padding:1px 7px;border-radius:9px;border:1px solid var(--line);color:var(--ink3)}
+  .tl{display:flex;flex-direction:column;gap:6px}
+  .tl-item{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-card);padding:8px 11px;cursor:pointer}
+  .tl-item:hover{border-color:var(--line2)}
+  .tl-item.cur{border-color:var(--accent)}
+  .tl-item .tm{font-size:12px;font-weight:600;color:var(--ink)}
+  .tl-item .sub{font-size:11px;color:var(--ink3);margin-top:3px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  .pill.new{border-color:#5aa870;color:#5aa870}
+  .pill.modified{border-color:#4a90d9;color:#4a90d9}
+  .pill.deleted{border-color:#e07070;color:#e07070}
+  .pill.moved{border-color:#d8a94a;color:#d8a94a}
+  .filterbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .filterbar label{font-size:11px;color:var(--ink3)}
+  .filterbar select,.filterbar input{font:inherit;font-size:12px;padding:4px 8px;background:var(--panel);border:1px solid var(--line);border-radius:7px;color:var(--ink)}
+  .changes{display:flex;flex-direction:column;gap:6px}
+  .chg{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-card);padding:7px 10px}
+  .chg .head{display:flex;gap:8px;align-items:center;flex-wrap:wrap;cursor:pointer}
+  .chg .rel{font-family:ui-monospace,Consolas,monospace;font-size:12px;color:var(--ink);word-break:break-all}
+  .chg .prel{font-family:ui-monospace,Consolas,monospace;font-size:11px;color:var(--ink3);text-decoration:line-through;word-break:break-all}
+  .chg .meta{font-size:11px;color:var(--ink3)}
+  .chg .ovr{font-size:10px;color:#d8a94a;border:1px solid #d8a94a;border-radius:9px;padding:0 6px}
+  .chg .jump{margin-left:auto;font-size:11px;padding:2px 9px}
+  .diff{margin-top:6px;border:1px solid var(--line);border-radius:6px;overflow:hidden;font-family:ui-monospace,Consolas,monospace;font-size:11px;max-height:340px;overflow:auto}
+  .dline{display:flex;gap:6px;white-space:pre-wrap;word-break:break-all}
+  .dline .lnl,.dline .lnr{flex:none;width:32px;text-align:right;color:var(--ink3);user-select:none}
+  .dline .dt{flex:1}
+  .dline.add{background:rgba(90,168,112,.14)}
+  .dline.add .dt{color:#5aa870}
+  .dline.del{background:rgba(224,112,112,.14)}
+  .dline.del .dt{color:#e07070}
+  .dline.ctx{color:var(--ink3)}
+  .empty{font-size:12px;color:var(--ink3);padding:16px;text-align:center}
+  .fk{display:inline-block;font-size:10px;padding:1px 7px;border-radius:9px;border:1px solid var(--line);color:var(--accent);margin-left:4px}
+  .dfhead{font-family:ui-monospace,Consolas,monospace;font-size:11px;padding:2px 8px;background:rgba(128,128,128,.05);border-bottom:1px solid var(--line);cursor:default}
+  .dfgit{color:var(--ink3)}
+  .dfminus{color:#e07070}
+  .dfplus{color:#5aa870}
+  .dhgap{font-size:11px;color:var(--ink3);padding:3px 8px;background:rgba(128,128,128,.08);font-style:italic;text-align:center}
+  .dline{cursor:pointer}
+  .gitsym{display:inline-block;width:18px;text-align:center;font-weight:700;font-family:ui-monospace,Consolas,monospace;font-size:12px}
+  .chg .gitsym.new{color:#5aa870}.chg .gitsym.modified{color:#d8a94a}.chg .gitsym.deleted{color:#e07070}.chg .gitsym.moved{color:#7ab0e8}
+  .dihunk{border-top:1px solid var(--line);padding:2px 0}
+  .dihstat{font-size:11px;padding:2px 8px;color:#5aa870;font-family:ui-monospace,Consolas,monospace;background:rgba(128,128,128,.06);display:flex;justify-content:space-between;align-items:center}.dihstat .dihunkhead{color:var(--ink3)}.dihstat .dihstatn{color:#5aa870;font-weight:600}
+  .ctxmenu{position:fixed;z-index:300;min-width:150px;background:var(--panel);border:1px solid var(--line);border-radius:8px;box-shadow:0 6px 24px rgba(0,0,0,.25);padding:4px;display:none;font-size:12px}
+  .ctxmenu .ctx-item{padding:6px 12px;color:var(--ink2);cursor:pointer;border-radius:6px}
+  .ctxmenu .ctx-item:hover{background:var(--accent);color:#fff}
+  /* 进度条覆盖层 */
+  .prog{position:fixed;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;z-index:50}
+  .prog-card{width:min(460px,92vw);background:var(--panel);border:1px solid var(--line);border-radius:var(--r-card);padding:18px 20px;box-shadow:0 8px 30px rgba(0,0,0,.25)}
+  .prog-title{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:12px}
+  .prog-bar{height:12px;background:var(--line);border-radius:7px;overflow:hidden}
+  .prog-fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),#5aa870);transition:width .15s ease}
+  .prog-fill.indet{width:38%;background:linear-gradient(90deg,var(--accent),#5aa870);animation:progIndet 1.1s ease-in-out infinite}
+  @keyframes progIndet{0%{margin-left:-38%}100%{margin-left:100%}}
+  .prog-meta{display:flex;justify-content:space-between;gap:10px;font-size:11px;color:var(--ink3);margin-top:8px;line-height:1.5}
+  .prog-meta #progStage{font-family:ui-monospace,Consolas,monospace;flex:1;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .prog .acts{display:flex;justify-content:flex-end;margin-top:12px}
+  button.ghost{background:transparent;color:var(--ink3)}
+</style>
+</head>
+<body>
+<header>
+  <div id="nav"></div>
+</header>
+<div class="subbar">
+  <h1>更新跟踪 <small id="chip">—</small></h1>
+  <span class="spacer"></span>
+  <span id="busyBadge" class="busybadge" style="display:none" data-i18n="tr.busy">扫描中…</span>
+  <button id="clearAllBtn" class="danger" data-i18n="tr.clearAll">清空全部缓存</button>
+  <button id="gcBtn" data-i18n="tr.gcBlobs">清理无用 blob</button>
+</div>
+<main>
+  <div class="hint" data-i18n="tr.trackerHint">基础游戏与每个模组各自独立跟踪。每个来源：①「建立基线」把当前内容存为参照；②「立即检查」对比当前与基线的差异并生成一条「检查更新」记录；③ 记录保留在时间线中，基线自动滚动，下次只报新变化。点击变更条目右侧箭头可展开/收起具体明细。</div>
+
+  <h2 data-i18n="tr.sources">跟踪来源</h2>
+  <div class="sources" id="roots"><div class="empty">读取中…</div></div>
+
+  <div id="detail" style="display:none">
+    <h2 id="histTitle">打开更新列表</h2>
+    <div class="tl" id="timeline"><div class="empty">—</div></div>
+
+    <h2 data-i18n="tr.filter">筛选</h2>
+    <div class="filterbar panel">
+      <label data-i18n="tr.filter.kind">类型</label><select id="fKind"></select>
+      <label data-i18n="tr.filter.keyword">关键词</label><input id="fKw" type="text" data-i18n-ph="tr.filter.keyword">
+    </div>
+
+    <h2 data-i18n="tr.changes">变更列表</h2>
+    <div class="changes" id="changes"><div class="empty">—</div></div>
+  </div>
+</main>
+<div id="prog" class="prog" style="display:none">
+  <div class="prog-card">
+    <div class="prog-title" id="progTitle">…</div>
+    <div class="prog-bar"><div class="prog-fill" id="progFill"></div></div>
+    <div class="prog-meta"><span id="progPct">0%</span><span id="progStage"></span></div>
+    <div class="acts"><button id="progCancel" class="ghost" data-i18n="tr.cancel">取消</button></div>
+  </div>
+</div>
+<div id="toast"></div>
+<script src="/i18n.js?v=tr8"></script>
+<script type="module">
+  import { mountNav } from '/nav.js'
+  mountNav('#nav')
+</script>
+<script src="/tracker.js?v=tr8"></script>
+<script src="/ctx.js"></script>
+</body>
+</html>

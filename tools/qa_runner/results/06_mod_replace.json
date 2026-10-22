@@ -1,0 +1,279 @@
+{
+  "layer": "06_mod_replace",
+  "base": "http://127.0.0.1:5175",
+  "ts": "2026-10-19T06:06:32.185Z",
+  "summary": {
+    "total": 38,
+    "pass": 38,
+    "fail": 0,
+    "exempt": 0
+  },
+  "cases": [
+    {
+      "name": "tech: KR 覆盖 common/technologies → root=0 节点为 0",
+      "pass": true,
+      "detail": "root0=0 total=488",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "tech: 回归(无 replacePaths)root=0 存在",
+      "pass": true,
+      "detail": "root0=103",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "focus: KR 覆盖 common/national_focus → 无 root=0 节点/树",
+      "pass": true,
+      "detail": "nodes.root0=0 trees.root0=0",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "focus: 回归(无 replacePaths)root=0 存在",
+      "pass": true,
+      "detail": "root0=10920",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "events: KR 覆盖 events → 无 root=0 事件",
+      "pass": true,
+      "detail": "root0=0 total=19966",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "events: 回归(无 replacePaths)root=0 存在",
+      "pass": true,
+      "detail": "root0=6928",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "decisions: KR 覆盖 common/decisions(+categories) → 无 root=0",
+      "pass": true,
+      "detail": "root0=0 total=5016",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "decisions: 回归(无 replacePaths)root=0 存在",
+      "pass": true,
+      "detail": "root0=4129",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "characters: KR 覆盖 common/characters → 无 root=0 文件",
+      "pass": true,
+      "detail": "root0=0 files=234",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "characters: 回归(无 replacePaths)root=0 存在",
+      "pass": true,
+      "detail": "root0=232",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "units: 被 replace_path 覆盖的 5 个子目录 root=0 文件为 0",
+      "pass": true,
+      "detail": "coveredR0=0 files=427",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "units: 未覆盖子目录的 base 文件保留 root=0",
+      "pass": true,
+      "detail": "otherR0=61",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "units: 回归(无 replacePaths)被覆盖子目录 root=0 存在",
+      "pass": true,
+      "detail": "",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "ai: 被 KR 覆盖的 ai_* 目录 root=0 条目为 0",
+      "pass": true,
+      "detail": "coveredR0=0 entries=1158",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "ai: 未覆盖方面(ai_faction_theaters/attitudes/personalities)保留 root=0",
+      "pass": true,
+      "detail": "keepR0=32",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "ai: 回归(无 replacePaths)files 数量更大",
+      "pass": true,
+      "detail": "base+KR files=193 回归=457",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "doctrines: 合成模组 replace_path=common/doctrines → 无 root=0 条目",
+      "pass": true,
+      "detail": "root0=0 total=0",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "doctrines: 回归(base 单源)root=0 存在",
+      "pass": true,
+      "detail": "root0=125",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "doctrines: layout 不抛错",
+      "pass": true,
+      "detail": "",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "mio: KR 覆盖 organizations → org root=0 为 0",
+      "pass": true,
+      "detail": "orgs=799 root0=0",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "mio: 回归(base 单源)org root=0 存在",
+      "pass": true,
+      "detail": "orgs=266 root0=266",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "music: 根 music/ 下 vanilla 歌曲为 0(replace_path=music 卸载)",
+      "pass": true,
+      "detail": "rootMusicVanilla=0 songs=74",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "music: 回归(base 单源)vanilla 歌曲存在",
+      "pass": true,
+      "detail": "vanilla=135",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "loc: replace_path=localisation → 无 root=0 批次",
+      "pass": true,
+      "detail": "jobs=0",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "loc: 回归(base 单源)全 root=0",
+      "pass": true,
+      "detail": "jobs=2082",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "B1[repro] 同名文件 effective 清单仅 1 条(无重复加载)",
+      "pass": true,
+      "detail": "effective命中=1",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "B1[repro] 后加载 modB(下标2)为生效来源",
+      "pass": true,
+      "detail": "effective=2 chain=[0,1,2]",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "B1[repro] 三方都提供但仅 modB 生效,vanilla/modA 入 shadowed",
+      "pass": true,
+      "detail": "chain=[0,1,2] shadowed=[0,1]",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "B1[repro] moda_only.txt(仅 modA)不被同名影响,正常生效",
+      "pass": true,
+      "detail": "effective=1",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "B2[repro] replace_path 声明者 modC 自己提供 weapons.txt → 生效且非 gap",
+      "pass": true,
+      "detail": "effective=2 gap=false",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "B2[repro] moda_only.txt 被 modC 的 replace_path 卸载(dropped,游戏里不存在)",
+      "pass": true,
+      "detail": "dropped=common/equipment/moda_only.txt",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "B2[repro] isUnloadedByLaterReplacePath(root1 moda_only)=true",
+      "pass": true,
+      "detail": "",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "B3[real] equipment(common/units/equipment) effective 清单 rel 唯一(无重复生效)",
+      "pass": true,
+      "detail": "effective=52 uniq=52",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "B3[real] equipment 同名多源 rel 均收敛到最高优先级来源",
+      "pass": true,
+      "detail": "multiSourceRels=24 bad=0",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "B3[real] units(common/units) effective 清单 rel 唯一(无重复生效)",
+      "pass": true,
+      "detail": "effective=439 uniq=439",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "B3[real] units 同名多源 rel 均收敛到最高优先级来源",
+      "pass": true,
+      "detail": "multiSourceRels=48 bad=0",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "B3[real] mio_policy(common/military_industrial_organization/policies) effective 清单 rel 唯一(无重复生效)",
+      "pass": true,
+      "detail": "effective=6 uniq=6",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "B3[real] mio_policy 同名多源 rel 均收敛到最高优先级来源",
+      "pass": true,
+      "detail": "multiSourceRels=3 bad=0",
+      "exempt": false,
+      "exemptReason": null
+    }
+  ]
+}

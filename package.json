@@ -1,0 +1,109 @@
+{
+  "name": "hoi4-toolkit",
+  "version": "0.5.0",
+  "private": true,
+  "type": "module",
+  "description": "HOI4 模组工程化工具链 + Electron 桌面壳(v3:NSIS 安装包 + 自动更新 + 自定义图标)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rzcxbsxxjxxy/hoi4-toolkit.git"
+  },
+  "main": "main.cjs",
+  "scripts": {
+    "verify:layout": "node --experimental-strip-types tools/verify_layout.mts",
+    "start": "node tools/build-server.cjs && electron .",
+    "build:server": "esbuild packages/gui/src/server.ts --bundle --format=esm --platform=node --target=node20 --outfile=server.mjs --log-level=warning && esbuild packages/gui/src/worker-entry.ts --bundle --format=esm --platform=node --target=node20 --outfile=worker-entry.mjs --log-level=warning",
+    "watch": "node tools/build-server.cjs --watch",
+    "stage": "node stage.mjs",
+    "clean": "node clean.mjs",
+    "pack": "npm run build:server && npm run stage && electron-builder --dir --config.directories.output=app && npm run clean",
+    "build:app": "npm run pack",
+    "installer": "node ../build-installer/build-installer.mjs",
+    "installer:dir": "node ../build-installer/build-installer.mjs --dir",
+    "dist": "npm run installer",
+    "release": "npm run installer",
+    "stats": "node packages/cli/src/hoi4kit.ts stats",
+    "roundtrip": "node packages/cli/src/hoi4kit.ts roundtrip",
+    "find": "node packages/cli/src/hoi4kit.ts find",
+    "diag": "node packages/diag.ts",
+    "test:roundtrip": "node packages/parser/test/roundtrip.ts",
+    "links": "node packages/cli/src/links.ts",
+    "test:links": "node packages/cli/test/links-stress.ts rename",
+    "test:links:xy": "node packages/cli/test/links-stress.ts xy",
+    "gui": "node packages/gui/src/server.ts",
+    "focus": "node packages/cli/src/focus.ts",
+    "verify:parallel": "node --experimental-strip-types tools/verify_parallel_data.mts",
+    "verify:fallback": "node --experimental-strip-types tools/verify_fallback.mts",
+    "verify:locstream": "node --experimental-strip-types tools/test_loc_stream.mts",
+    "verify:edge": "node --experimental-strip-types tools/verify_edge_ui.mts",
+    "measure:boot": "node --experimental-strip-types tools/boot_measure.mts",
+    "probe:heavy": "node --experimental-strip-types tools/probe_heavy.ts"
+  },
+  "build": {
+    "appId": "com.hoi4toolkit.desktop",
+    "productName": "HOI4 Toolkit",
+    "copyright": "Copyright © 2026 HOI4 Toolkit",
+    "asar": false,
+    "directories": {
+      "output": "../toolkit-installer",
+      "buildResources": "build"
+    },
+    "files": [
+      "main.cjs",
+      "preload.cjs",
+      "splash.html",
+      "server.mjs",
+      "package.json",
+      "public",
+      "VERSION",
+      "version.json",
+      "gui-settings.example.json",
+      "README.md",
+      "新手指南.md",
+      "worker-entry.mjs",
+      "!public/**/*.bak-pre-fix"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": "x64"
+        }
+      ],
+      "icon": "build/icon.ico",
+      "sign": false,
+      "signAndEditExecutable": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "HOI4 Toolkit",
+      "include": "build/installer.nsh",
+      "uninstallDisplayName": "HOI4 Toolkit Uninstaller",
+      "artifactName": "HOI4-Toolkit-Setup-${version}.${ext}"
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "rzcxbsxxjxxy",
+        "repo": "hoi4-toolkit",
+        "releaseType": "release",
+        "private": false
+      }
+    ]
+  },
+  "dependencies": {
+    "electron-updater": "^6.8.9"
+  },
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-builder": "^25.1.0",
+    "esbuild": "^0.24.0"
+  },
+  "engines": {
+    "node": ">=22.6"
+  }
+}

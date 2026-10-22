@@ -1,0 +1,10 @@
+{
+  "name": "@hoi4/engine",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "索引与定义提取:按目录规则识别各类符号,诊断结构问题",
+  "main": "./src/indexer.ts",
+  "exports": {
+    ".": "./src/indexer.ts"
+  }
+}

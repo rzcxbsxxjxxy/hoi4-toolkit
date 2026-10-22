@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HOI4 工作台</title>
+<link rel="stylesheet" href="/theme.css">
+<style>
+  /* 统一外壳页(shell.html)
+     顶部导航栏 + 音乐框在这里**全局唯一、永不重建**;
+     下方 iframe 承载所有子页面,作为「附属子内容」切换。
+     切换时只换 iframe 内容,导航栏与音乐框保持不动,音乐跨页不间断。 */
+  html, body { height: 100%; margin: 0 }
+  body { display: flex; flex-direction: column; overflow: hidden }
+  header { flex: none }
+  #content {
+    flex: 1 1 auto; width: 100%; min-height: 0; border: 0;
+    display: block; background: var(--bg); position: relative;
+  }
+  /* 壳内 iframe 池:访问过的页面保留 iframe,切回秒开(免整页重建)。
+     隐藏用 visibility:hidden + 移出屏幕(保留布局尺寸),
+     避免 display:none 下后台加载时 canvas/布局渲染不完整(切到时待重触发) */
+  #content .shellframe {
+    width: 100%; height: 100%; border: 0;
+    position: absolute; left: -9999px; top: 0;
+    visibility: hidden; background: var(--bg);
+  }
+  #content .shellframe.on {
+    position: static; left: auto; top: auto;
+    visibility: visible;
+  }
+  /* ══ 每帧加载遮罩(2026-10-11):子页(iframe)未 ready 时挡住白屏,
+     显示"加载中",loaded 后收起。挂在 #content 内,z-index 高于 iframe。
+     文字硬编码,不依赖 i18n(遮罩本身要在 i18n 就绪前就能显示)。 */
+  #framebusy{
+    position:absolute; inset:0; z-index:50;
+    display:flex; align-items:center; justify-content:center; flex-direction:column; gap:14px;
+    background:var(--bg); color:var(--ink3); letter-spacing:.04em;
+  }
+  #framebusy[hidden]{ display:none }
+  #framebusy .fb-ring{
+    width:46px; height:46px; border-radius:50%;
+    border:4px solid var(--line2); border-top-color:var(--accent);
+    animation:fbspin .9s linear infinite;
+  }
+  #framebusy .fb-msg{ font-size:13px }
+  @keyframes fbspin{ to{ transform:rotate(360deg) } }
+  /* ══ BOOT_GATE:全屏加载进度圈遮罩 ══
+     工作台未就绪(后端全量构建中)时挡住整个平台,
+     /api/status 轮询 ready 后淡出放行。使用固定深色底(不随主题,加载时主题未定)。 */
+  .bootgate{
+    position:fixed; inset:0; z-index:99999;
+    display:flex; align-items:center; justify-content:center;
+    background:rgba(8,11,16,.4);
+    opacity:1; transition:opacity .25s ease; pointer-events:none;
+  }
+  .bootgate.hide{ opacity:0; pointer-events:none }
+  .bootgate .bg-panel{
+    pointer-events:auto; display:flex; flex-direction:column; align-items:center; gap:14px;
+    background:rgba(15,20,28,.94); border:1px solid rgba(120,160,200,.22);
+    border-radius:12px; padding:24px 34px; min-width:280px;
+    box-shadow:0 14px 44px rgba(0,0,0,.5);
+  }
+  .bootgate .bg-ring{
+    width:54px; height:54px; border-radius:50%;
+    border:4px solid rgba(255,255,255,.16);
+    border-top-color:#4f8ef7;
+    animation:bgspin .9s linear infinite;
+  }
+  @keyframes bgspin{ to{ transform:rotate(360deg) } }
+  .bootgate .bg-bar{ width:230px; height:6px; background:rgba(255,255,255,.16); border-radius:3px; overflow:hidden }
+  .bootgate .bg-bar i{ display:block; height:100%; width:0; background:#4f8ef7; border-radius:3px; transition:width .25s ease }
+  .bootgate .bg-msg{ color:#aab6c4; font-size:13px; letter-spacing:.03em; max-width:70vw; text-align:center }
+
+  /* ══ 自建标题栏(frame:false 下的窗口控制条)══
+     仅在 Electron 壳里显示(html.electron-host);浏览器里隐藏。
+     用主题变量着色,跟随浅色/深色/暖砂主题。 */
+  .titlebar{
+    display:none;                 /* 浏览器里不显示(没有系统窗口可控制) */
+    align-items:center; height:34px; flex:none;
+    background:var(--panel); border-bottom:1px solid var(--line);
+    color:var(--ink2); user-select:none; padding-right:6px;
+    font-size:12px;
+  }
+  html.electron-host .titlebar{ display:flex }
+  /* 可拖拽区:整条栏除按钮外都可拖动(-webkit-app-region 仅 WebKit/Electron 生效) */
+  .tb-drag{
+    -webkit-app-region:drag; flex:1 1 auto; display:flex; align-items:center; gap:8px;
+    height:100%; padding-left:12px; min-width:0;
+  }
+  .tb-logo{
+    font-weight:700; letter-spacing:.06em; color:var(--accent);
+    background:var(--accent-soft); border-radius:5px; padding:2px 7px; font-size:11px;
+  }
+  .tb-name{ color:var(--ink2); letter-spacing:.02em }
+  .tb-ctrls{ display:flex; align-items:center; -webkit-app-region:no-drag; height:100% }
+  .tb-btn{
+    width:42px; height:100%; border:0; background:transparent; cursor:pointer;
+    color:var(--ink2); display:flex; align-items:center; justify-content:center;
+  }
+  .tb-btn:hover{ background:var(--line2) }
+  .tb-btn:active{ background:var(--line) }
+  .tb-close:hover{ background:#e81123; color:#fff }
+  .tb-close:active{ background:#c20f1b }
+  .ic-restore{ display:none }
+  .is-max .ic-restore{ display:block }
+  .is-max .ic-max{ display:none }
+</style>
+</head>
+<body>
+<!-- 自建标题栏(frame:false 下替代系统标题栏):作为 header 的兄弟节点置于其上方,
+     左为可拖拽区+应用名,右为窗口控制按钮。不能放进 header(那是 flex 行布局的导航条)。 -->
+<div class="titlebar" id="titlebar">
+  <div class="tb-drag">
+    <span class="tb-logo">HOI4</span>
+    <span class="tb-name">工具链</span>
+  </div>
+  <div class="tb-ctrls">
+    <button class="tb-btn" id="tb-min" type="button" title="最小化" aria-label="最小化">
+      <svg viewBox="0 0 12 12" width="12" height="12"><rect x="2" y="5.5" width="8" height="1.4" rx="0.7" fill="currentColor"/></svg>
+    </button>
+    <button class="tb-btn" id="tb-max" type="button" title="最大化 / 还原" aria-label="最大化">
+      <svg class="ic-max" viewBox="0 0 12 12" width="12" height="12"><rect x="2.4" y="2.4" width="7.2" height="7.2" rx="1" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>
+      <svg class="ic-restore" viewBox="0 0 12 12" width="12" height="12"><rect x="3.4" y="2.2" width="6" height="6" rx="0.9" fill="none" stroke="currentColor" stroke-width="1.3"/><rect x="2.4" y="3.6" width="6" height="6" rx="0.9" fill="var(--panel)" stroke="currentColor" stroke-width="1.3"/></svg>
+    </button>
+    <button class="tb-btn tb-close" id="tb-close" type="button" title="关闭" aria-label="关闭">
+      <svg viewBox="0 0 12 12" width="12" height="12"><path d="M3 3 L9 9 M9 3 L3 9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</div>
+<header>
+  <div id="nav"></div>
+</header>
+<div id="content" class="shellhost">
+  <!-- 每帧加载遮罩:子页 iframe 未 ready 时覆盖,避免白屏 -->
+  <div id="framebusy" class="framebusy" hidden>
+    <div class="fb-ring"></div>
+    <div class="fb-msg">正在加载功能，请稍候…</div>
+  </div>
+</div>
+
+<script src="/bundles/shell.bundle.js?v=mvjll3h6"></script>
+<script src="/i18n-dict.js?v=20261010"></script>
+
+<script type="module">
+  import { mountNav } from '/nav.js?v=20261010'
+  // 壳宿主: nav.js 自建 iframe 池并管理当前活动 iframe,
+  //   curKey/导航拦截从池读当前页
+  mountNav('#nav', { frame: true })
+</script>
+
+<!-- BOOT_GATE:全屏加载进度圈遮罩 -->
+<div id="bootgate" class="bootgate hide">
+  <div class="bg-panel">
+    <div class="bg-ring"></div>
+    <div class="bg-bar"><i id="bgBar"></i></div>
+    <div class="bg-msg" id="bgMsg">正在初始化，请稍后</div>
+  </div>
+</div>
+
+<!-- 自建标题栏:仅在 Electron 壳里接管窗口控制;浏览器里自动隐藏 -->
+<script>
+  ;(() => {
+    const api = window.electronAPI
+    if (!api) return // 非 Electron 环境(普通浏览器)不显示标题栏
+    document.documentElement.classList.add('electron-host')
+    const bar = document.getElementById('titlebar')
+    const min = document.getElementById('tb-min')
+    const max = document.getElementById('tb-max')
+    const close = document.getElementById('tb-close')
+    if (!bar || !min || !max || !close) return
+    min.addEventListener('click', () => api.windowMinimize())
+    max.addEventListener('click', () => api.windowMaximize())
+    close.addEventListener('click', () => api.windowClose())
+    // 双击标题栏(非按钮区)切换最大化
+    bar.addEventListener('dblclick', (e) => {
+      if (e.target.closest('.tb-ctrls')) return
+      api.windowMaximize()
+    })
+    const sync = (m) => max.classList.toggle('is-max', !!m)
+    api.windowIsMaximized().then(sync).catch(() => {})
+    if (api.onMaximizedChange) api.onMaximizedChange(sync)
+  })()
+</script>
+<!-- frameless 窗口自定义边角缩放(electron-host 专用) -->
+
+
+</body>
+</html>

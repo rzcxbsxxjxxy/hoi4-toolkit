@@ -1,0 +1,617 @@
+/* ══════════════════════════════════════════════════════════════════
+ * theme-vars.css —— 纯变量层（不含任何布局/骨架样式）
+ *
+ * 为什么单独拆一个文件?
+ *   theme.css 里除了变量还写了 body/header/main 的**布局骨架**
+ *   (flex 列、min-height:100vh、border-bottom …)。check.html 与
+ *   open.html 都有自己的布局(体检是 header+main 滚动流,打开工程是
+ *   居中卡片),引整份 theme.css 会被那份骨架顶掉 —— 这就是当初它们
+ *   「不引 theme.css」的原因,于是把深色 #11151c 硬编码在页内。
+ *   结果:设置里换浅色/暖砂主题时,全站都变了,只有这两页还是黑的。
+ *
+ * 拆法:变量与 color-scheme 放这里(两页与 15 个浅色页共用),
+ *   骨架留在 theme.css。两页引本文件 → 跟随设置中的背景主题,
+ *   布局仍归自己管,互不干扰。
+ *
+ * 换主题只需看本文件;加页面只需 <link href="/theme-vars.css">。
+ * appearance.js 写 html[data-theme] 与 --bg-image,本文件负责响应。
+ * ══════════════════════════════════════════════════════════════════ */
+
+:root {
+  color-scheme: light;
+  --bg: #f6f7f9;
+  --panel: #ffffff;
+  --line: #dcdfe4;
+  --line2: #eceff3;
+  --ink: #1d2129;
+  --ink2: #5c6470;
+  --ink3: #8a929e;
+  --accent: #2b6cb0;
+  --accent-soft: #e8f0fa;
+  --warn: #b7791f;
+  --warn-soft: #fdf6e3;
+  --danger: #c53030;
+  --danger-soft: #fdeaea;
+  --ok: #2f855a;
+  --ok-soft: #e7f5ed;
+  --canvas: #e9ebef;
+
+  /* 面板底色(check/open 的卡片、picker 等用)。
+   * 独立成一个变量,是为了让「深色页自己刷一遍底色」不必再猜色值。 */
+  --card: #ffffff;
+  /* 浮层(遮罩下的对话框)底色 */
+  --raise: #ffffff;
+  /* 凹陷区(输入框、代码、列表容器)底色 */
+  --inset: #f2f4f7;
+
+  /* 间距与形状:统一后才不会各页差 1~2px */
+  --r: 5px;          /* 控件圆角 */
+  --r-card: 8px;     /* 卡片圆角 */
+  --gap: 8px;        /* header 控件间距 */
+  --pad-h: 12px;     /* header 左右留白 */
+  --shadow: 0 2px 8px rgba(20, 30, 50, 0.08);
+  --shadow-lg: 0 10px 40px rgba(20, 30, 50, 0.12);
+
+  /* ── 界面密度(UI_SLIM_V1,2026-10-05)──
+   * 用户反馈"所有页面看起来比较繁琐":根因不是控件多,而是每个控件都
+   * 各自写 padding/字号,17 个页面累积出"到处都在呼吸"的松垮感。
+   * 这里把控件尺寸收敛成 4 个变量,默认取紧凑值;想要留白的用户可在
+   * 设置里切到宽松(html[data-density="loose"]),两套值只此一处。 */
+  --ctl-pad: 3px 7px;    /* select / input / button 内边距 */
+  --ctl-font: 12px;      /* 控件字号 */
+  --hdr-min: 36px;       /* 顶栏最小高度 */
+  --row-pad: 4px 10px;   /* 列表行内边距 */
+}
+
+:root[data-density="loose"] {
+  --ctl-pad: 5px 9px;
+  --ctl-font: 13px;
+  --hdr-min: 46px;
+  --row-pad: 7px 12px;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+ * 视觉特效(FX_V2,2026-10-21 · Electron 现代化外观)
+ *
+ * 背景:项目已 Electron 化,但外观仍是"浏览器网页"质感 —— 直角硬阴影、
+ *   无过渡、无毛玻璃、无悬停反馈。这里收拢一套现代桌面端效果:
+ *     --fx-blur   浮层毛玻璃模糊半径(下拉/抽屉/浮层)
+ *     --fx-anim   动效开关(1=开 / 0=关)
+ *     --fx-lift   悬停抬升开关(1=开 / 0=关)
+ *     --tr-*      统一过渡时长与曲线(原来各页 .12s/.18s/.25s 混用)
+ *     --shadow*   多层柔和阴影(大而淡,不是小而重)
+ *
+ * 三个开关由「设置 → 外观 → 视觉效果」写 html[data-fx-*] 控制,
+ * 关掉后低性能机器也能流畅跑(毛玻璃是 GPU 大户)。
+ * ══════════════════════════════════════════════════════════════════ */
+:root {
+  --fx-blur: 16px;
+  --fx-anim: 1;
+  --fx-lift: 1;
+  --tr-fast: .14s;
+  --tr: .22s;
+  --ease: cubic-bezier(.22, .61, .36, 1);
+  --ease-out: cubic-bezier(.16, 1, .3, 1);
+  /* 圆角整体放大一档:5→6 / 8→12。现代桌面端( Win11 / macOS )的视觉基线 */
+  --r: 6px;
+  --r-card: 12px;
+  /* 多层柔和阴影:贴近光源的细边 + 大而淡的环境影 */
+  --shadow: 0 1px 2px rgba(16, 24, 40, .05), 0 2px 6px rgba(16, 24, 40, .06);
+  --shadow-lg: 0 10px 32px rgba(16, 24, 40, .14), 0 2px 8px rgba(16, 24, 40, .07);
+  /* 焦点环:强调色 38% 混透明,比 outline:black 柔和,深浅主题都可见 */
+  --accent-ring: color-mix(in srgb, var(--accent) 42%, transparent);
+}
+/* 深色阴影要更沉(浅色那套在深底上会发灰) */
+:root[data-theme="dark"] {
+  --shadow: 0 1px 2px rgba(0, 0, 0, .32), 0 4px 12px rgba(0, 0, 0, .34);
+  --shadow-lg: 0 10px 32px rgba(0, 0, 0, .48), 0 2px 8px rgba(0, 0, 0, .3);
+}
+:root[data-theme="midnight"] {
+  --shadow: 0 1px 2px rgba(0, 0, 0, .36), 0 4px 12px rgba(0, 0, 0, .38);
+  --shadow-lg: 0 10px 32px rgba(0, 0, 0, .52), 0 2px 8px rgba(0, 0, 0, .32);
+}
+:root[data-theme="sand"] {
+  --shadow: 0 1px 2px rgba(60, 50, 30, .07), 0 2px 8px rgba(60, 50, 30, .08);
+  --shadow-lg: 0 10px 32px rgba(60, 50, 30, .16), 0 2px 8px rgba(60, 50, 30, .09);
+}
+
+/* ── FX 开关的 CSS 侧(FX_V2)─────────────────────────────────────
+ * data-fx-blur="off" → --fx-blur 归零,且全局禁 backdrop-filter。
+ *   为什么用通用选择器:backdrop-filter 散落在 theme.css 的壁纸玻璃规则、
+ *   各页自己的浮层样式里,逐个列选择器必漏。这是用户显式打开的"性能模式",
+ *   一刀切是正确取舍。
+ * data-fx-anim="off" → 全局把动画/过渡压到 .001s(而不是 display:none 之类
+ *   的粗暴手段 —— 保留属性存在,依赖 transitionend 的逻辑才不会失效)。
+ * data-fx-lift="off" → 悬停抬升量归零(transform 仍在,只是不动)。 */
+:root[data-fx-blur="off"] { --fx-blur: 0px }
+:root[data-fx-anim="off"] { --fx-anim: 0 }
+:root[data-fx-lift="off"] { --fx-lift: 0 }
+:root[data-fx-blur="off"] * {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+:root[data-fx-anim="off"] *,
+:root[data-fx-anim="off"] *::before,
+:root[data-fx-anim="off"] *::after {
+  /* iteration-count 必须一起改:只压时长会把无限动画(加载条扫动/旋转菊花)
+     变成 1ms 频闪。改成单次 + 1ms = 立即跳到终态,视觉上等于"没有动画"。 */
+  animation-duration: .001s !important;
+  animation-delay: 0s !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: .001s !important;
+  transition-delay: 0s !important;
+}
+
+/* ── 深色:夜间深灰 ── */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #14181f;
+  --panel: #1b212a;
+  --line: #2c3543;
+  --line2: #232b36;
+  --ink: #e6edf3;
+  --ink2: #aab6c4;
+  --ink3: #7c8b9d;
+  --accent-soft: #1d2c42;
+  --warn: #e0b341;
+  --warn-soft: #33290f;
+  --danger: #f2777a;
+  --danger-soft: #3a2023;
+  --ok: #5fd08a;
+  --ok-soft: #17301f;
+  --canvas: #10141a;
+  --card: #1b212a;
+  --raise: #161c25;
+  --inset: #10141a;
+  --shadow: 0 2px 8px rgba(0, 0, 0, .4);
+  --shadow-lg: 0 10px 40px rgba(0, 0, 0, .5);
+}
+
+/* ── 午夜蓝:比 dark 更冷,长时间看图不容易累 ── */
+:root[data-theme="midnight"] {
+  color-scheme: dark;
+  --bg: #0f1420;
+  --panel: #151c2b;
+  --line: #26314a;
+  --line2: #1c2436;
+  --ink: #dfe7f2;
+  --ink2: #a3b1c7;
+  --ink3: #7386a1;
+  --accent: #4f8ef7;
+  --accent-soft: #17253d;
+  --warn: #e5b84b;
+  --warn-soft: #332a12;
+  --danger: #f07f83;
+  --danger-soft: #3a1f22;
+  --ok: #58cc8a;
+  --ok-soft: #14301f;
+  --canvas: #0b1018;
+  --card: #151c2b;
+  --raise: #111827;
+  --inset: #0b1018;
+  --shadow: 0 2px 10px rgba(0, 0, 0, .5);
+  --shadow-lg: 0 10px 40px rgba(0, 0, 0, .6);
+}
+
+/* ── 暖砂:浅色的另一种底色,纯白看久了刺眼时用 ── */
+:root[data-theme="sand"] {
+  --bg: #f4f1ea;
+  --panel: #fffdf8;
+  --line: #ddd6c8;
+  --line2: #eae4d8;
+  --ink: #2b2620;
+  --ink2: #6b6255;
+  --ink3: #948a7a;
+  --accent: #a8642a;
+  --accent-soft: #fbeee1;
+  --canvas: #eae5da;
+  --card: #fffdf8;
+  --raise: #fffdf8;
+  --inset: #f0ece3;
+  --shadow: 0 2px 8px rgba(60, 50, 30, .1);
+  --shadow-lg: 0 10px 40px rgba(60, 50, 30, .14);
+  /* ⚠ sand 的 --glass/--glass-raise 统一定义在本文件末尾的毛玻璃区,
+   *   不在这里重复 —— 曾因只写 light 那两条导致暖砂壁纸下面板不透明。 */
+}
+
+/* ══════════════════════════════════════════════════════════════════
+ * 本地背景图(设置页选定图片后生效)
+ * appearance.js 给 <html> 打 data-bg="image" 并注入 --bg-image。
+ * 这里只负责「铺图」;面板切毛玻璃由各页面自己的样式表处理
+ * (theme.css 管 .card/.panel,check.html 管 section,open.html 管 .card/.grp)。
+ * ══════════════════════════════════════════════════════════════════ */
+:root[data-bg="image"] body {
+  background-image: var(--bg-image);
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+
+/* 毛玻璃面板的统一底色。浅色系白玻璃,深色系深玻璃。
+ * 原来每个页面各写一份 rgba(18,22,28,.72) / rgba(255,255,255,.80),
+ * 改主题时漏一处就有一处不跟随 —— 收成变量后只有这一处。
+ *
+ * ★ GLASS_RANGE(2026-10-04):用户定的口径 —— 壁纸模式下所有控件/面板
+ *   一律半透明,不透明度在 30%~75% 之间,不允许全透明或全不透明。
+ *   --glass        面板/卡片主体       62%~70%
+ *   --glass-raise  浮层(遮罩下对话框)  72%~75%(浓一档但不超上限)
+ *   --glass-ctrl   控件(输入框/按钮)   55%(比面板更透一点,靠 blur 保读性)
+ *   --glass-canvas 画布/舞台(最透)     30%~35%(贴 30% 下限,保壁纸可见) */
+:root { --glass: rgba(255, 255, 255, .68) }
+:root[data-theme="dark"] { --glass: rgba(18, 22, 28, .62) }
+:root[data-theme="midnight"] { --glass: rgba(16, 21, 33, .64) }
+:root[data-theme="sand"] { --glass: rgba(255, 253, 248, .70) }
+/* 遮罩下的浮层再浓一点,否则后面的图透上来干扰文字(仍 ≤75%) */
+:root { --glass-raise: rgba(255, 255, 255, .75) }
+:root[data-theme="dark"] { --glass-raise: rgba(22, 28, 37, .72) }
+:root[data-theme="midnight"] { --glass-raise: rgba(17, 24, 39, .74) }
+:root[data-theme="sand"] { --glass-raise: rgba(255, 253, 248, .75) }
+/* 控件(输入框/下拉/按钮):壁纸下不再允许纯白/纯黑实底 */
+:root { --glass-ctrl: rgba(255, 255, 255, .55) }
+:root[data-theme="dark"] { --glass-ctrl: rgba(26, 31, 40, .55) }
+:root[data-theme="midnight"] { --glass-ctrl: rgba(22, 28, 45, .55) }
+:root[data-theme="sand"] { --glass-ctrl: rgba(255, 253, 248, .55) }
+/* 画布/舞台:最透的一层,壁纸透出来但不干扰节点(≥30%) */
+:root { --glass-canvas: rgba(255, 255, 255, .30) }
+:root[data-theme="dark"] { --glass-canvas: rgba(10, 12, 18, .35) }
+:root[data-theme="midnight"] { --glass-canvas: rgba(8, 11, 20, .35) }
+:root[data-theme="sand"] { --glass-canvas: rgba(255, 253, 248, .30) }
+
+/* ══════════════════════════════════════════════════════════════════
+ * 壁纸半透明调节(GLASS_TUNE,2026-10-07 加)
+ *
+ * 问题:上面的 --glass 系列是**写死**的。壁纸深浅、用户想要的"能看穿多少"
+ * 每个人都不同 —— 有人要能看清壁纸全貌,有人要文字绝对清晰。
+ * 固定值只能满足其中一种。
+ *
+ * 方案:拆成「底色 rgb 三元组」+「alpha 通道」两部分。
+ *   --glass-rgb   底色(不随滑条变,沿用各主题的既有值)
+ *   --glass-a     alpha(滑条控制,0~1)
+ * 最终 --glass 由 calc 合成。这样滑条只改一个数,
+ * 主题切换也不会把用户调好的透明度弄丢。
+ *
+ * ★ 滑条范围与既有口径一致(GLASS_RANGE:30%~75%),不放开:
+ *   <30% 文字读不了,>75% 等于没开壁纸。
+ * ★ 背景虚化 --bg-blur 是独立一档:有人要"虚化壁纸但面板仍很实"。
+ */
+:root {
+  --glass-a: .68;
+  --glass-raise-a: .75;
+  --glass-ctrl-a: .55;
+  --glass-canvas-a: .30;
+  /* ★ 压暗默认不再是 0(2026-10-07)。原来的 0 意味着"壁纸多亮就多亮"——
+     *   深色壁纸 + 浅色主题时,文字直接糊在图上,而滑条默认又停在最小,
+     *   用户第一眼看到的是"字看不清"而不是"我的壁纸"。*
+   *   .18 是「还能看清壁纸、但文字已经安全」的档位。*/
+  --bg-dim: .18;
+  --bg-blur: 0px;   /* 壁纸模糊半径 */
+}
+/* 深色主题的字本就更亮,压暗可以少一些(壁纸压太黑反而看不出层次) */
+:root[data-theme="dark"] { --glass-a: .62; --glass-raise-a: .72; --glass-ctrl-a: .55; --glass-canvas-a: .35; --bg-dim: .10 }
+:root[data-theme="midnight"] { --glass-a: .64; --glass-raise-a: .74; --glass-ctrl-a: .55; --glass-canvas-a: .35; --bg-dim: .10 }
+:root[data-theme="sand"] { --glass-a: .70; --glass-raise-a: .75; --glass-ctrl-a: .55; --glass-canvas-a: .30; --bg-dim: .22 }
+
+/* 有壁纸时,用「底色 + 可调 alpha」重合成 --glass。
+ * ⚠ 只在 data-bg="image" 下覆盖:没壁纸时面板本来就不该半透明,
+ *   保持上面那套不透明 --panel,否则文字会糊在 body 底色上。 */
+:root[data-bg="image"] {
+  --glass: rgba(255, 255, 255, var(--glass-a));
+  --glass-raise: rgba(255, 255, 255, var(--glass-raise-a));
+  --glass-ctrl: rgba(255, 255, 255, var(--glass-ctrl-a));
+  --glass-canvas: rgba(255, 255, 255, var(--glass-canvas-a));
+}
+:root[data-bg="image"][data-theme="dark"] {
+  --glass: rgba(18, 22, 28, var(--glass-a));
+  --glass-raise: rgba(22, 28, 37, var(--glass-raise-a));
+  --glass-ctrl: rgba(26, 31, 40, var(--glass-ctrl-a));
+  --glass-canvas: rgba(10, 12, 18, var(--glass-canvas-a));
+}
+:root[data-bg="image"][data-theme="midnight"] {
+  --glass: rgba(16, 21, 33, var(--glass-a));
+  --glass-raise: rgba(17, 24, 39, var(--glass-raise-a));
+  --glass-ctrl: rgba(22, 28, 45, var(--glass-ctrl-a));
+  --glass-canvas: rgba(8, 11, 20, var(--glass-canvas-a));
+}
+:root[data-bg="image"][data-theme="sand"] {
+  --glass: rgba(255, 253, 248, var(--glass-a));
+  --glass-raise: rgba(255, 253, 248, var(--glass-raise-a));
+  --glass-ctrl: rgba(255, 253, 248, var(--glass-ctrl-a));
+  --glass-canvas: rgba(255, 253, 248, var(--glass-canvas-a));
+}
+
+/* 壁纸压暗 + 模糊:只作用在 body::before 这一层背景上。
+ *
+ * ★★ 2026-10-07 修掉的 bug:整个界面跟着壁纸一起模糊。
+ *   原来的写法是
+ *     :root[data-bg="image"] body { filter: brightness(...) blur(...) }
+ *   然后又加了 body::before 承载滤镜的版本,并在注释里写明
+ *   「filter 会生成层叠上下文,所以不给 body 挂 filter」——
+ *   **但那条 body{filter} 规则一直没删**。于是滤镜作用在 body 上,
+ *   body 的所有后代(顶栏、文字、面板、画布)一起被模糊。
+ *   ::before 那层只是又多糊了一次,纯属叠加。
+ *
+ * 正确做法:滤镜只能挂在**只承载壁纸的那一层**上,
+ * UI 元素一个都不许过这道滤镜。 */
+:root[data-bg="image"] body {
+  background-image: none;
+  /* 兜底:万一还有别处给 body 挂 filter,这里显式清掉。
+   * filter 不是继承属性,但同元素多条规则会叠加,必须显式 none。 */
+  filter: none;
+}
+:root[data-bg="image"] body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: var(--bg-image);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  /* ★ blur 半径大到一定程度时,伪元素边缘会露白/露透 —— 用 overflow 兜不住
+   *   (fixed 元素没有可滚动父级),inset 负向扩张一点保证 blur 不溢出视口。*/
+  inset: -2px;
+  filter: brightness(calc(1 - var(--bg-dim))) blur(var(--bg-blur));
+  will-change: filter;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+ * 彩色徽章的"半透明化"(GLASS_BADGE,2026-10-06 加)
+ *
+ * 问题:标签类控件(.src 原版/模组、.mini 花费、.chip 分类、.flag 诊断…)
+ *   都写死了**不透明**的浅色底 + 深色字,例如
+ *     .src.base{background:#eceff3;color:#8a929e}   ← alpha=1
+ *     .mini.c  {background:#e7f5ed;color:var(--ok)}  ← alpha=1
+ *   落在玻璃卡片上没问题,但切到**自定义壁纸**后,这些实底色块就成了
+ *   一块块不透明的补丁:壁纸被割裂,且徽章在深色壁纸上对比度骤降 ——
+ *   正是用户反馈的"包含文字的透明控件,文字容易看不清楚"。
+ *
+ * 做法:不逐个改配色(会丢掉语义色:绿=花费、灰=原版、蓝=模组),
+ *   而是把每种徽章的底色**原样取出来与透明混合**。
+ *   alpha 从 1 降到 .58,既满足 GLASS_RANGE 的 30%~75%,又保住色彩语义。
+ *
+ * 为什么集中写在变量层:这些类名散布在 20+ 个 html 的 <style> 里
+ *   (实测 ide.html 49 处、designer.html 15 处、settings.html 13 处实底),
+ *   逐页补选择器必然漏。变量层一段通用规则兜住,新页面再写实底也会被压住。
+ * ══════════════════════════════════════════════════════════════════ */
+
+/* ★ --panel 本身在壁纸模式下必须变玻璃(2026-10-06)。
+ *   实测漏网的原因:大量容器写的是 `background:var(--panel)`,而 --panel
+ *   原值 #ffffff / #1b212a 都是**不透明**的 —— 变量名听着"像面板"就以为
+ *   已被玻璃规则覆盖,theme.css 里也确实只列了 .card/.panel 这两个类名,
+ *   忘了"用 --panel 变量但没有 .panel 类名"的那些(.stat / .bar / .pane-h /
+ *   .sub / .fsec / .fcard …),实测在 /loc /doctrines /aibehave 上是最大的漏洞。
+ *   变量层改一次,所有引用者一起变玻璃 —— 比逐个补类名更不容易漏。 */
+:root[data-bg="image"] { --panel: var(--glass) }
+
+/* 徽章:保留各自语义色相,只把 alpha 降到 .58 */
+:root[data-bg="image"] .src.base,
+:root[data-bg="image"] .echip,
+:root[data-bg="image"] .tagx { background-color: rgba(236, 239, 243, .58) !important }
+:root[data-bg="image"] .src.ovr,
+:root[data-bg="image"] .src.mod { background-color: var(--warn-soft, rgba(255, 248, 225, .58)) !important }
+:root[data-bg="image"] .src.new,
+:root[data-bg="image"] .src.ovr2 { background-color: rgba(234, 241, 251, .58) !important }
+:root[data-bg="image"] .mini.c      { background-color: rgba(231, 245, 237, .58) !important }
+:root[data-bg="image"] .mini.d,
+:root[data-bg="image"] .mini.new    { background-color: rgba(234, 241, 251, .58) !important }
+:root[data-bg="image"] .mini.f,
+:root[data-bg="image"] .mini.k      { background-color: rgba(243, 236, 251, .58) !important }
+:root[data-bg="image"] .mini.m      { background-color: rgba(238, 242, 246, .58) !important }
+:root[data-bg="image"] .mini.ovr    { background-color: var(--warn-soft, rgba(255, 248, 225, .58)) !important }
+
+/* 硬写 #fff 的容器(实测漏网):.fsec / .fcard / .opt / th 等 */
+:root[data-bg="image"] :is(.fsec, .fcard, .sub, .thm, .grp) {
+  background-color: var(--glass) !important;
+}
+
+/* ★ 语义色 token 在壁纸模式下整体降 alpha(2026-10-06)。
+ *   --accent-soft / --warn-soft / --danger-soft / --ok-soft / --inset
+ *   都被大量**带文字的徽章**当底色用(defines 的 .tg 4000+ 个、check 的 .tag、
+ *   events 的 .src、各页 .mini/.chip),原值都是不透明的浅色 → 壁纸上一块块死板。
+ *   在这里改一次,比逐个类名补选择器可靠得多(新增页面自动跟随)。
+ *   用 color-mix 把原色与 55% 的透明玻璃混合 —— 色相不变,alpha 落到 .55。 */
+:root[data-bg="image"] {
+  --accent-soft: color-mix(in srgb, var(--accent-soft-base, #e8f0fa) 55%, var(--glass-ctrl));
+  --warn-soft:   color-mix(in srgb, #fdf6e3 55%, var(--glass-ctrl));
+  --danger-soft: color-mix(in srgb, #fdeaea 55%, var(--glass-ctrl));
+  --ok-soft:     color-mix(in srgb, #e7f5ed 55%, var(--glass-ctrl));
+  --inset:       color-mix(in srgb, var(--inset-base, #f2f4f7) 55%, var(--glass-ctrl));
+}
+/* 深色主题的语义底色另有一套,壁纸下也要压 —— 保留各自色相 */
+:root[data-bg="image"][data-theme="dark"] {
+  --warn-soft:   color-mix(in srgb, #33290f 55%, var(--glass-ctrl));
+  --danger-soft: color-mix(in srgb, #3a2023 55%, var(--glass-ctrl));
+  --ok-soft:     color-mix(in srgb, #17301f 55%, var(--glass-ctrl));
+  --inset:       color-mix(in srgb, #10141a 55%, var(--glass-ctrl));
+}
+/* defines 的 .tg / check 的 .tag:直接写死的实底,不在 token 体系内 */
+:root[data-bg="image"] :is(.tg, .tag) {
+  background-color: var(--glass-badge) !important;
+  border-color: color-mix(in srgb, currentColor 28%, transparent) !important;
+}
+:root { --glass-badge: rgba(255, 255, 255, .58) }
+:root[data-theme="dark"] { --glass-badge: rgba(26, 31, 40, .58) }
+:root[data-theme="midnight"] { --glass-badge: rgba(22, 28, 45, .58) }
+:root[data-theme="sand"] { --glass-badge: rgba(255, 253, 248, .58) }
+
+/* code / kbd 等行内代码底(实测 /open 有 10 处 #f2f4f7 实底) */
+:root[data-bg="image"] :is(code, kbd, samp, pre) {
+  background-color: var(--glass-ctrl) !important;
+}
+/* 顶栏下拉 .navpop:check.html / open.html 是自带布局页,有自己的副本,
+ * 但根层这条能覆盖到(它们引 theme-vars.css),此处兜住浮层实底。 */
+:root[data-bg="image"] .navpop {
+  background: var(--glass-raise) !important;
+}
+/* 行/标签类:默认透明,悬停给玻璃 —— 避免整片列表被逐行涂色 */
+:root[data-bg="image"] :is(.tree-row, .item, .doc, .cat, .ent, .fhead, .tcard, .status, .ty) {
+  background-color: transparent !important;
+}
+:root[data-bg="image"] :is(.tree-row:hover, .item:hover, .doc:hover, .cat:hover, .ent:hover, .fhead:hover) {
+  background-color: var(--glass-ctrl) !important;
+}
+/* ★ --line2 也被当徽章底用(.mini/.src/.chip 的 background:var(--line2),
+ *   theme.css:121 也是),原值 #eceff3 不透明 → 同样要压。 */
+:root[data-bg="image"] { --line2: color-mix(in srgb, #eceff3 55%, var(--glass-ctrl)) }
+:root[data-bg="image"][data-theme="dark"] { --line2: color-mix(in srgb, #232b36 55%, var(--glass-ctrl)) }
+:root[data-bg="image"][data-theme="midnight"] { --line2: color-mix(in srgb, #1c2436 55%, var(--glass-ctrl)) }
+/* ★★ 不要用 `color-mix(in srgb, var(--accent) 70%, transparent)` 来做半透明:
+ *   theme.css 已有 `color-mix(in srgb, var(--accent) 70%, transparent)`,
+ *   **color-mix 套 color-mix 在 Edge 里算成不透明**(实测 .cpill.on 拿到
+ *   oklab(0.52 -0.038 -0.119)、无 alpha 分量 → alpha=1,玻璃失效)。
+ * 也不要 `color-mix(..., #2b6cb0 72%, var(--glass-ctrl))` ——
+ *   --glass-ctrl 是 rgba(255,255,255,.55),参与混色后算出 0.865,
+ *   **超出 GLASS_RANGE 的 75% 上限**(实测 tech 页 122 个按钮全中)。
+ * 正确做法:直接把 alpha 写在末尾,`transparent` 之外不给别的半透明底。
+ *   72% 蓝 + 28% 全透明 → alpha 0.72,落在区间内。
+ */
+:root[data-bg="image"] { --accent-glass: rgba(43, 108, 176, .72) }
+:root[data-bg="image"][data-theme="dark"] { --accent-glass: rgba(79, 142, 247, .72) }
+/* ★ 一律用 `background` 简写,不用 background-color ——
+ *   各页常写 `background:var(--accent)`(简写)。同属性的两条声明按**顺序**决胜,
+ *   而变量层通过 @import 先加载、页内 <style> 在后,只写 background-color 会被
+ *   页内那条反超(实测 .cpill.on 算出 alpha=1,玻璃完全失效)。 */
+:root[data-bg="image"] .cpill.on {
+  background: var(--accent-glass) !important;
+  color: #fff;
+}
+:root[data-bg="image"] .tab.on,
+:root[data-bg="image"] .langbtn.on,
+:root[data-bg="image"] button.primary {
+  background: var(--accent-glass) !important;
+}
+
+/* 自身承载文字、原本纯白/浅灰实底的:必须给底,否则文字直接压壁纸 */
+:root[data-bg="image"] :is(.opt, .langbtn, .q, .iss, .kv, .cnt, .loc, .d-hd, .grandrow, .slot-cap, .stat, .bar, .pane-h) {
+  background-color: var(--glass) !important;
+}
+/* 表单控件补齐:theme.css 只列了 input[type=text|number] / select,
+ *   textarea 与 checkbox / radio 漏了 —— 脚本框在 create 页是主要输入方式。 */
+:root[data-bg="image"] :is(textarea, input[type=checkbox], input[type=radio], input[type=search]) {
+  background: var(--glass-ctrl) !important;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+/* 各页自有的选中态标签(写死 accent/accent-soft 底):玻璃化 */
+:root[data-bg="image"] :is(.tab.on, .tab:hover, .cpill, .bar.fl, .langbtn.on) {
+  background-color: var(--glass-raise) !important;
+}
+/* ★ 上面那条压不住 `#catbar .cpill` / `#catbar .cpill.on` ——
+ *   **ID 选择器优先级 (1,0,0) 高于类选择器 (0,1,0)**,加 !important 也救不了
+ *   (同优先级下 !important 才比大小,而这里是 ID 赢了)。
+ *   tech 页有 124 个这样的 pill,必须同权重重写。 */
+:root[data-bg="image"] #catbar .cpill {
+  background-color: var(--glass-ctrl) !important;
+}
+:root[data-bg="image"] #catbar .cpill:hover {
+  background-color: var(--glass-raise) !important;
+}
+:root[data-bg="image"] #catbar .cpill.on {
+  background-color: color-mix(in srgb, var(--accent) 70%, var(--glass-ctrl)) !important;
+}
+/* .chip 写死了 #eef2f7 / .hot #fff1e6 / .bad #fdecea —— 同样压一层 */
+:root[data-bg="image"] .chip {
+  background-color: var(--glass-badge) !important;
+}
+:root[data-bg="image"] .chip.hot {
+  background-color: color-mix(in srgb, #fff1e6 58%, var(--glass-ctrl)) !important;
+}
+:root[data-bg="image"] .chip.bad {
+  background-color: color-mix(in srgb, #fdecea 58%, var(--glass-ctrl)) !important;
+}
+/* a.cur / summary / b:nav 里的当前项与折叠标题,压在玻璃 header 上,自身透明即可 */
+:root[data-bg="image"] :is(.navhome, summary, .navlinks a.cur, .tab) {
+  background-color: transparent !important;
+}
+:root[data-bg="image"] .navlinks a.cur:hover {
+  background-color: var(--glass-ctrl) !important;
+}
+/* ★ 直接压在 body 上的文字区块(没有自己的容器底)。
+ *   body 在壁纸模式下已变透明(theme.css),这些区块就裸压壁纸了 ——
+ *   实测首页 12 个 h2 / .sect-h .c / .more / .foot 属于此类。
+ *   给一层玻璃底,文字才有可读背景。 */
+:root[data-bg="image"] :is(.sect-h, .foot, .sect-h2) {
+  background-color: var(--glass) !important;
+  border-radius: 6px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+/* 分区标题已有下边框,加内边距会撑开布局,这里只补背景不额外撑 */
+:root[data-bg="image"] .sect-h {
+  padding-top: 3px;
+  padding-bottom: 4px;
+}
+/* 表格:body 透明后,表格自身要成为玻璃容器,否则 td 里的字裸压壁纸
+ * (实测 /loc 598 个 td.k / td.v 是 naked) */
+:root[data-bg="image"] :is(table, .tablewrap, tbody, thead) {
+  background-color: var(--glass) !important;
+}
+:root[data-bg="image"] th {
+  background-color: var(--glass-raise) !important;
+}
+:root[data-bg="image"] td {
+  background-color: transparent !important;
+}
+:root[data-bg="image"] tr:hover td {
+  background-color: var(--glass-ctrl) !important;
+}
+
+
+
+
+
+/* ══════════════════════════════════════════════════════════════════
+ * z 层级预算(2026-10-05 修"顶栏下拉被内容盖住")
+ *
+ * 放变量层而不是 theme.css:check.html / open.html 是"自带布局"页,
+ * 只引 theme-vars.css,它们各自有一份 navpop 样式副本 ——
+ * 层级定义在骨架层的话,这两页的副本拿不到,会继续被页面内容压住。
+ *
+ * ⚠ 加新浮层前先对预算,别随手写 z-index:999:
+ *    0-9  页面小装饰   10-49 面板/侧栏/分隔条   50-99 页面内浮层(·#toast 99)
+ *    200  header      210  navpop 下拉          300+ 全屏模态(遮罩/对话框)
+ *   超过 300 的必须确认是全屏级模态,否则会盖住顶栏导航。
+ *
+ * ★ --z-tip 为什么必须在**变量层**(2026-10-06 加,修「首页任务卡的悬浮窗被盖住」):
+ *   `.tip::after` 原来写死 `z-index:60`。60 这个值本身不算小,但**它不生效**——
+ *   首页的 `.card:hover` / `.fstep:hover` 都有 `transform:translateY(-2px)`,
+ *   而 **transform 会生成层叠上下文**:浮层的 z-index 从"与页面其他元素比较"
+ *   变成"只在卡片内部比较"。卡片自己的 z-index 是 auto(=0),于是后出现的
+ *   兄弟卡片(同样 position:relative)按文档顺序盖住它 —— 悬浮窗只露出半截,
+ *   表现为"标签任务的悬浮窗不是始终前置"。
+ *
+ *   修法是给 `.tip` 本身在 hover 时一个高于卡片层的 z-index(卡片无 z-index,
+ *   60 就够),并把值收进变量层,让自带布局的页面(check/open/ide)也能覆盖它。
+ * ══════════════════════════════════════════════════════════════════ */
+:root {
+  --z-header: 200;   /* 顶栏(必须 position:relative,否则 z-index 不生效) */
+  --z-pop: 210;      /* 顶栏下拉 .navpop */
+  --z-tip: 60;       /* 悬停浮层 .tip::after(须 ≥ 60,见上方说明) */
+  --z-modal: 300;    /* 全屏模态层下界 */
+}
+
+/* 全屏按钮:明确浮在内容上的控件,压到 GLASS_RANGE 上限 75% 内,
+ * 保留 blur 才看得出是浮层(不能做成全透明,否则失去"可点"的提示)。 */
+:root[data-bg="image"] .fsbtn {
+  background: var(--glass-raise) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* ══════════════════════════════════════════════════════════════════
+ * 图像预览棋盘格底(IMAGE_ASSET_V1)
+ *
+ * HOI4 贴图大量是带 alpha 的图标 —— 纯白底 + 浅色描边 = 看不见。
+ * 棋盘格是图片查看器的行业惯例,让透明区域一眼可辨。
+ * 亮色一套,四套暗色/柔和主题各一套(底色必须比内容略暗,
+ * 反过来在暗色主题里会变成"发光的图",看着别扭)。
+ * ══════════════════════════════════════════════════════════════════ */
+:root {
+  --imgview-chk: #dfe3e9;
+  --imgview-chk2: #f2f4f7;
+}
+:root[data-theme="dark"]  { --imgview-chk: #262e39; --imgview-chk2: #1b222c; }
+:root[data-theme="midnight"] { --imgview-chk: #141c2e; --imgview-chk2: #0d1424; }
+:root[data-theme="sand"]   { --imgview-chk: #e6dcc6; --imgview-chk2: #f4ecda; }

@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>使用教程 · HOI4 工作台</title>
+<link rel="stylesheet" href="/theme.css">
+<style>
+  /* ── 文档页专用排版 ──
+   * theme.css 管颜色和控件,这里只管"读文档"的节奏:
+   * 左侧目录吸顶、右侧正文限宽、标题层级用色阶而不是字号乱跳。 */
+  :root{ --doc-w: 860px }
+  main{ overflow:hidden }
+  #toc{
+    width:212px; flex:none; border-right:1px solid var(--line);
+    background:var(--panel); overflow:auto; padding:10px 0 40px;
+  }
+  #toc .tg{ padding:9px 14px 3px; font-size:11px; font-weight:600; color:var(--ink3); letter-spacing:.4px }
+  #toc a{
+    display:block; padding:4px 14px; font-size:12.5px; color:var(--ink2);
+    text-decoration:none; border-left:2px solid transparent; white-space:nowrap;
+    overflow:hidden; text-overflow:ellipsis;
+  }
+  #toc a:hover{ background:#f2f4f7; color:var(--ink) }
+  #toc a.on{ border-left-color:var(--accent); color:var(--accent); font-weight:600; background:var(--accent-soft) }
+
+  #doc{ flex:1; overflow:auto; padding:0 0 80px; min-width:0 }
+  .wrap{ max-width:var(--doc-w); margin:0 auto; padding:20px 26px }
+  /* 本地背景图:内容区(显示具体内容的部分)也做毛玻璃,与左侧目录一致,
+   * 壁纸模式下不再裸露出底图 —— 透明度收在 GLASS_RANGE 的 62%~70% 区间。 */
+  :root[data-bg="image"] #doc{
+    background: var(--glass) !important;
+    backdrop-filter: blur(10px) saturate(1.1);
+    -webkit-backdrop-filter: blur(10px) saturate(1.1);
+  }
+
+  h2{
+    font-size:17px; margin:30px 0 10px; padding-bottom:6px;
+    border-bottom:1px solid var(--line); scroll-margin-top:12px;
+  }
+  h2:first-child{ margin-top:4px }
+  h3{ font-size:14px; margin:20px 0 7px; scroll-margin-top:12px }
+  h4{ font-size:12.5px; margin:14px 0 5px; color:var(--ink2) }
+  p{ margin:7px 0; line-height:1.72 }
+  ul,ol{ margin:7px 0; padding-left:22px; line-height:1.72 }
+  li{ margin:3px 0 }
+  code{
+    font-family:"Cascadia Mono",Consolas,monospace; font-size:11.5px;
+    background:var(--line2); padding:1px 5px; border-radius:3px; color:#3b4a5c;
+  }
+  pre{
+    background:#f7f8fa; border:1px solid var(--line2); border-radius:var(--r);
+    padding:10px 13px; overflow:auto; font-size:11.5px; line-height:1.65;
+    font-family:"Cascadia Mono",Consolas,monospace; margin:9px 0;
+  }
+  pre code{ background:none; padding:0; color:var(--ink) }
+  table{ border-collapse:collapse; width:100%; margin:9px 0; font-size:12.5px }
+  th,td{ border:1px solid var(--line); padding:5px 9px; text-align:left; vertical-align:top }
+  th{ background:#fafbfc; font-weight:600; color:var(--ink2) }
+  td code{ font-size:11px }
+
+  .lead{ font-size:13.5px; color:var(--ink2) }
+  .card{
+    background:var(--panel); border:1px solid var(--line); border-radius:var(--r-card);
+    padding:12px 15px; margin:11px 0;
+  }
+  .card.tip{ border-left:3px solid var(--accent); background:var(--accent-soft) }
+  .card.warn{ border-left:3px solid var(--warn); background:var(--warn-soft) }
+  .card h4{ margin-top:0 }
+  .steps{ counter-reset:s; list-style:none; padding-left:0 }
+  .steps > li{
+    counter-increment:s; position:relative; padding-left:30px; margin:9px 0;
+  }
+  .steps > li::before{
+    content:counter(s); position:absolute; left:0; top:1px;
+    width:20px; height:20px; border-radius:50%; background:var(--accent); color:#fff;
+    font-size:11px; font-weight:600; display:flex; align-items:center; justify-content:center;
+  }
+  kbd{
+    display:inline-block; padding:1px 6px; border:1px solid var(--line);
+    border-bottom-width:2px; border-radius:4px; background:#fff;
+    font-family:inherit; font-size:11.5px; color:var(--ink2);
+  }
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:10px }
+  @media (max-width:900px){ .grid2{ grid-template-columns:1fr } }
+  .pagetag{
+    display:inline-block; font-size:11px; padding:1px 7px; border-radius:9px;
+    background:var(--accent-soft); color:var(--accent); margin-right:6px;
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>📖 使用教程 <small>HOI4 模组工作台</small></h1>
+  <span class="spacer"></span>
+  <div id="nav"></div>
+</header>
+<main>
+  <aside id="toc"></aside>
+  <div id="doc"><div class="wrap">
+
+<h2 id="s0">这是什么</h2>
+<p class="lead">
+  一套本地运行的 HOI4 模组辅助工作台：把游戏目录与创意工坊模组挂进来，
+  就能<b>可视化浏览</b>国策树 / 科技树 / 决议树、<b>拖拽编辑</b>界面 <code>.gui</code>、
+  做<b>无损改写</b>、跑<b>体检</b>与<b>跨文件重命名</b>。
+  所有解析走自研的 Clausewitz 无损解析器 —— 改写后文件里你手写的注释、空行、缩进都会原样保留。
+</p>
+<div class="card tip">
+  <h4>和同类工具的区别</h4>
+  <p style="margin:4px 0">
+    常见工具（HOI4 Mod Utilities 等）定位在<b>编辑器内写代码</b>：语法高亮、补全、跳转、校验。
+    本工作台定位在<b>跨文件的整体视图</b>：把散落在几十个文件里的国策/决议/科技/界面元素
+    汇总成一张图，看清结构、来源归属和坐标关系，再一次性回写。
+    两边互补，不冲突。
+  </p>
+</div>
+
+<h2 id="s1">快速开始</h2>
+<ol class="steps">
+  <li>打开 <b>打开工程</b>（或直接进 <b>⚙ 设置</b>），填游戏安装目录。
+      点「自动检测」，工具会扫描 Steam 库、列出所有候选路径，选一个即可。</li>
+  <li>在<b>模组</b>区勾选要挂进来的模组。可以「扫描创意工坊」批量列出
+      <code>workshop/content/394360/*</code>，也可以在输入框粘贴本地模组目录手动添加。
+      模组顺序 = 游戏加载顺序，可用上下箭头调整；<b>越靠后优先级越高</b>。</li>
+  <li>点「保存并应用」→「重新载入」。重载后所有页面（国策/科技/决议/GUI）都会按新的来源组合重建索引。</li>
+</ol>
+<div class="card warn">
+  <h4>看不到模组内容？先查这三件事</h4>
+  <ul style="margin:4px 0">
+    <li>目录里有没有 <code>.mod</code> 文件 —— 这是模组识别的特征文件，没有就识别不出来。</li>
+    <li>模组是否声明了 <code>supported_version</code>，设置页会显示版本兼容提示。</li>
+    <li>如果只勾了模组没勾基础游戏，原版内容会缺失；<b>基础游戏应当始终排在最前面</b>。</li>
+  </ul>
+</div>
+
+<h2 id="s2">核心概念：来源的三层语义</h2>
+<p>
+  挂了多个来源后，同一个国策/决议/文件可能同时存在于原版和模组里。
+  工具用三个字段描述「它到底是谁的」，理解这组语义是使用筛选功能的前提：
+</p>
+<table>
+  <tr><th style="width:110px">字段</th><th>含义</th></tr>
+  <tr>
+    <td><code>base</code></td>
+    <td><b>内容归属</b>：最终生效的那一份，来自<b>只读的基础游戏</b>。
+        注意 —— 若模组把内容全量覆盖了，这一档会是<b>空</b>的，
+        所以「仅基础游戏」筛选结果为空是正常的，不代表解析失败。</td>
+  </tr>
+  <tr>
+    <td><code>origin</code></td>
+    <td><b>出身</b>：<span class="src base">原版</span>（覆盖链里包含只读基础游戏）
+        或 <span class="src mod">模组</span>（原版根本没有这个东西，模组独创）。</td>
+  </tr>
+  <tr>
+    <td><code>overridden</code></td>
+    <td><b>是否被改写</b>：<code>origin=原版</code> 但最终生效的那份来自模组。
+        标记成 <span class="src ovr">改写</span>，是排查「为什么我的改动不生效」的第一入口。</td>
+  </tr>
+</table>
+<h4>徽标图例</h4>
+<p>
+  <span class="src base">原版</span> 原版内容，未被模组改动　
+  <span class="src ovr">改写</span> 原版有，但被模组覆盖　
+  <span class="src new">新增</span> 原版没有，模组独有　
+  <span class="src mod">模组</span> 生效来源为模组
+</p>
+<div class="card tip">
+  <h4>典型用法</h4>
+  <p style="margin:4px 0">
+    想知道「KR 到底改了原版哪些国策」→ 国策页来源筛选选 <b>改写</b>；
+    想知道「KR 新增了什么」→ 选 <b>模组新增</b>。
+    这两个数字在树列表下方的统计条里会直接给出。
+  </p>
+</div>
+
+<h2 id="s3">页面导览</h2>
+
+<h3 id="s3-1"><span class="pagetag">工作台</span>GUI 预览与拖拽</h3>
+<p>
+  左侧文件树列出所有 <code>.gui</code>，中间画布按真实坐标渲染，右上是缩放/适应/贴图/名称开关。
+  在画布上<b>拖动元素</b>会进入待改区（右上「待保存 N」），
+  确认后点「保存」—— 回写是<b>行级最小差异</b>，只改动你碰过的那几行，其余字节原样不动。
+</p>
+<ul>
+  <li><b>适应</b>：自动缩放铺满视口，找元素时先按一下。</li>
+  <li><b>贴图</b>：开关 sprite 背景。模组常用 <code>png</code>（原版多用 <code>dds</code>），工具两者都认。</li>
+  <li><b>名</b>：显示元素名，调试坐标时非常有用。</li>
+</ul>
+
+<h3 id="s3-2"><span class="pagetag">界面设计器</span>四栏可视化编辑</h3>
+<p>
+  文件树 / 画布 / 元素树 / 属性网格。相比工作台多出：
+</p>
+<ul>
+  <li><b>属性网格</b>：按语法枚举给出候选值，不用手敲字符串。</li>
+  <li><b>增删元素</b>：选中后按 <kbd>Delete</kbd> 删除，属性网格里可加子块。</li>
+  <li><b>吸附</b>：设置页可开「拖拽吸附网格」并指定格宽，对齐时省事。</li>
+</ul>
+
+<h3 id="s3-3"><span class="pagetag">国策树</span>结构、体检与坐标回写</h3>
+<ul>
+  <li><b>来源筛选</b>：按上一节的三层语义过滤，树列表会显示每棵树的来源徽标。</li>
+  <li><b>拖拽改坐标</b>：拖动国策节点后保存。若该节点写了
+      <code>relative_position_id</code>，写回的是<b>相对父节点的偏移</b>，而不是绝对坐标 ——
+      这是官方的相对布局语法，写绝对值会破坏相对关系。</li>
+  <li><b>体检</b>：检查悬空依赖、重复 id、坐标重叠、缺失本地化等，
+      结果分 error / warning 两级列在右侧。</li>
+</ul>
+<div class="card warn">
+  <h4>坐标重叠不一定是 bug</h4>
+  <p style="margin:4px 0">
+    互斥分支（如两个互斥的国策路线）用<b>同一坐标</b>是官方惯用写法 —— 
+    因为同一时刻只会有一条生效。体检对这种情况做了消歧，不会误报。
+    另外 id 前缀不同的树属于「多国共享树」，也不算冲突。
+  </p>
+</div>
+
+<h3 id="s3-4"><span class="pagetag">科技树</span>两级分类与隐藏科技</h3>
+<p>科技有<b>两层分类</b>，容易混淆：</p>
+<table>
+  <tr><th style="width:170px">来源</th><th>作用</th></tr>
+  <tr><td><code>technology_categories</code></td><td>横向顺序表，决定左右排列次序，<b>不是</b>显示分组</td></tr>
+  <tr><td><code>technology_folders</code></td><td>真正的显示分组，带 <code>ledger</code>：army / air / navy / civilian / <b>hidden</b></td></tr>
+</table>
+<p>「隐藏科技」有两类，勾选「隐藏科技」后都会显示：</p>
+<ul>
+  <li>没有 <code>categories</code> 的科技 —— 游戏里没有标题栏，画布上画成<b>米色虚线框</b>。</li>
+  <li><code>ledger = hidden</code> 的文件夹里的科技 —— 游戏里整个分组都不显示。</li>
+</ul>
+<p>
+  另有一部分 doctrine 分类声明了但当前没有科技（由脚本运行时填充），
+  画布上标为「空 · 由脚本填充」而不是隐藏，避免误判成解析失败。
+  科技普遍是多分类的，筛选用的是包含判断而非等值。
+</p>
+
+<h3 id="s3-5"><span class="pagetag">决议树</span>分类卡片墙</h3>
+<p>
+  按 <code>decision_category</code> 组织成卡片墙，绿左边条表示该分类来自模组。
+  顶部统计条给出原版 / 模组新增的条数，点分类钻取到具体决议，
+  右侧检查器显示生效来源与覆盖链。
+</p>
+
+<h3 id="s3-6"><span class="pagetag">内容生成</span>脚手架</h3>
+<p>
+  选择产物类型（国策 / 决议 / 事件 / 本地化等），填字段后生成可直接落盘的
+  <code>.txt</code> / <code>.yml</code>。可以「填示例」看格式，生成结果支持一键复制。
+</p>
+
+<h3 id="s3-7"><span class="pagetag">IDE / 体检</span>编辑与全量校验</h3>
+<p>
+  <b>IDE</b>：基于符号表的补全与跳转，适合精修单个文件。
+  <b>体检</b>：对当前挂载的全部来源跑校验，按严重度分卡片汇总，点条目可跳到对应文件。
+</p>
+
+<h2 id="s4">进阶：GUI 坐标是怎么算的</h2>
+<p>
+  如果你想改 <code>.gui</code> 却总觉得位置对不上，这一节是必读的。
+  我们的渲染链路逐字对齐了 VSCode 扩展 <b>HOI4 Mod Utilities</b> 的实现
+  （扩展 <code>common.js</code> 里的 <code>r()</code> / <code>o()</code> / <code>u()</code>），
+  并在原版 23558 个样本上比对通过。下面是几个最容易踩的坑：
+</p>
+
+<h3>1. 锚点来自 <code>orientation</code>，对齐点来自 <code>origo</code> —— 不是同一个东西</h3>
+<p>
+  <code>orientation</code> 决定<b>父级的哪个点</b>作为坐标原点（锚点，9 种取值）；
+  <code>origo</code> 决定<b>元素自身的哪个点</b>对齐到那个锚点（对齐点）。
+  把两者当成同一个东西，元素会整体平移半个自身宽度。
+  <b>缺省对齐点是 <code>upper_left</code></b>，只看 <code>origo</code>，与 <code>orientation</code> 无关。
+</p>
+<div class="card warn">
+  <h4>判例不能随便挑</h4>
+  <p style="margin:4px 0">
+    用某个元素「看起来对」来反推缺省行为是危险的 —— 
+    比如 <code>mainmenu_panel_upperright</code> 贴齐 1920，常被当作「对齐点 = 锚点」的证据，
+    但它<b>显式写了</b> <code>origo</code>，对缺省行为零信息量。
+    验证缺省行为必须挑「没有写该字段」的样本。
+  </p>
+</div>
+
+<h3>2. <code>%</code> 和 <code>%%</code> 是两种不同的单位</h3>
+<pre><code>'100'   → 100 px（绝对值）
+'100%'  → 父尺寸 × 100 / 100
+'100%%' → 父尺寸 × 100 / 100 − 自身坐标偏移
+</code></pre>
+<p>
+  <code>%%</code> 的语义是「<b>延伸到父级边界</b>」：先按百分比算，再扣掉自己的坐标偏移。
+  原版里有 800 多处 <code>%%</code> 尺寸和几十处<b>负尺寸</b>，
+  负尺寸表示向反方向延伸，不能提前取绝对值。
+</p>
+
+<h3>3. 图标 / 按钮没有 <code>size</code> 块</h3>
+<p>
+  <code>iconType</code> / <code>buttonType</code> 通常不写 <code>size</code>，
+  它们的绘制尺寸<b>只能取自 sprite</b>。
+  如果按「没写 size 就是 0」处理，画布上所有图标都会变成 0×0 的空框 —— 
+  这是早期版本最明显的一个位置错误。现在尺寸会取 sprite 宽高再乘 <code>scale</code>。
+  <code>instantTextBox</code> / <code>textBox</code> 同理，取 <code>maxWidth</code> / <code>maxHeight</code>。
+</p>
+
+<h3>4. 传给子元素的父尺寸是「声明值」</h3>
+<p>
+  子元素的坐标系用的是父级 <code>size</code> 的<b>声明值</b>，不是父级最终绘制宽度
+  （绘制宽度可能被 <code>min</code> 或 <code>%%</code> 重算过）。
+  用绘制宽度会让整棵子树偏移。
+</p>
+
+<h3>5. 其他几个会影响位置的机制</h3>
+<table>
+  <tr><th style="width:150px">机制</th><th>效果</th></tr>
+  <tr><td><code>margin</code></td><td>容器级：子坐标系扣除 margin，整体右下平移</td></tr>
+  <tr><td><code>show_position</code></td><td>嵌套 <code>containerWindowType</code> 写了它，就忽略 <code>position</code></td></tr>
+  <tr><td><code>parent="name"</code></td><td>递归累加被引用元素的偏移（带环检测）</td></tr>
+  <tr><td><code>orientation = left</code></td><td>原版有 9 处用到，语义是「左边中点」。扩展的锚点表漏了这个键，会 fallback 算错；我们保留了特例</td></tr>
+</table>
+
+<h2 id="s5">快捷键</h2>
+<table>
+  <tr><th style="width:190px">按键</th><th>作用</th></tr>
+  <tr><td><kbd>↑</kbd> <kbd>↓</kbd> <kbd>←</kbd> <kbd>→</kbd></td><td>工作台 / 设计器 / 国策页：微调选中元素坐标 1px</td></tr>
+  <tr><td><kbd>Shift</kbd> + 方向键</td><td>工作台 / 设计器：按 10px 步进微调</td></tr>
+  <tr><td><kbd>Delete</kbd></td><td>设计器：删除选中元素（在输入框内不触发）</td></tr>
+  <tr><td>滚轮</td><td>画布缩放；拖动空白处平移</td></tr>
+</table>
+
+<h2 id="s6">常见问题</h2>
+
+<h4>改完保存，游戏里没变化？</h4>
+<p>
+  先确认你改的是<b>生效的那一层</b>。如果原版同名文件还在更靠后的位置被模组覆盖，
+  你的改动会被覆盖掉。用来源徽标（<span class="src ovr">改写</span>）确认哪份最终生效。
+</p>
+
+<h4>为什么筛选「仅基础游戏」是空的？</h4>
+<p>
+  因为 <code>base</code> 指的是「最终生效的那份来自只读基础游戏」。
+  当你挂的模组把内容全量覆盖了，这一档自然为空 —— 这是预期行为，不是 bug。
+  要对比原版请去掉模组来源，或改用 <code>origin</code> 维度筛选。
+</p>
+
+<h4>模组贴图显示不出来？</h4>
+<p>
+  模组喜欢把原版的 <code>foo.dds</code> 换成 <code>foo.png</code>，但声明里照抄不改扩展名。
+  工具会按同 stem 依次尝试 <code>dds → tga → png</code>；
+  若模组目录里确实没有，会回退到原版同名文件（很多模组只是重新声明 sprite 复用原版贴图）。
+</p>
+
+<h4>无损回写会不会破坏我的格式？</h4>
+<p>
+  不会。解析器保留 token 流与原始下标，序列化时按原文拼接，
+  只替换被改动的那几个 token 的字面量。未改动的文件逐字节相同。
+  保存时会在同目录留 <code>.bak</code>。
+</p>
+
+<h4>能撤销吗？</h4>
+<p>
+  保存前所有改动都在「待保存」区，可直接丢弃重来；
+  保存后靠同目录的 <code>.bak</code> 备份文件恢复。
+</p>
+
+<h2 id="s7">附录：后端接口</h2>
+<p>想二次开发或写脚本批量处理，可以直接调这些接口：</p>
+<table>
+  <tr><th style="width:230px">接口</th><th>说明</th></tr>
+  <tr><td><code>/api/files</code> · <code>/api/file</code></td><td>文件列表与内容</td></tr>
+  <tr><td><code>/api/layout</code></td><td>单个 <code>.gui</code> 的布局（含坐标）</td></tr>
+  <tr><td><code>/api/save</code> · <code>/api/preview</code></td><td>无损回写 / 预览差异</td></tr>
+  <tr><td><code>/api/gui/edit</code></td><td>元素级增删字段</td></tr>
+  <tr><td><code>/api/focus/graph</code> · <code>tree</code> · <code>lint</code> · <code>save</code></td><td>国策图 / 单树 / 体检 / 回写</td></tr>
+  <tr><td><code>/api/tech/graph</code> · <code>/api/decisions/graph</code></td><td>科技图 / 决议图</td></tr>
+  <tr><td><code>/api/links/refs</code> · <code>overrides</code> · <code>/api/rename</code></td><td>跨文件引用图与无损重命名</td></tr>
+  <tr><td><code>/api/check</code> · <code>/api/nav</code></td><td>全量体检 / 符号导航</td></tr>
+  <tr><td><code>/api/settings</code> · <code>/api/load</code></td><td>读写设置 / 运行时重载来源</td></tr>
+  <tr><td><code>/api/workshop</code> · <code>/api/detect</code></td><td>扫描创意工坊 / 自动检测游戏目录</td></tr>
+</table>
+
+  </div></div>
+</main>
+<div id="toast"></div>
+<!-- ★ RIGHTCLICK_V2:全站右键菜单 + 快捷键接线。
+     ⚠ 顺序有依赖:ctx.js 先(菜单本体),keymap.js 必须在 keys.js 之前
+     (keys.js boot 时要读目录),ctxwire.js 最后(它只是接线骨架)。
+     ⚠ 这一段必须放在下面的 module 脚本**之前** ——
+     module 是 defer 语义(等 DOM 解析完才跑),若把公共件放在它后面,
+     表面顺序能跑通,但一旦有人给公共件加 async 就会静默失效。
+     ⚠ 注释里不要写 module 标签的字面量:smoke_e2e.ts 用正则按标签配对抽取
+     内联脚本("module" 那行到最近的结束标签),注释里出现同名字串会被当成
+     真的标签,吞掉后面一大段并报出莫名其妙的语法错。 -->
+<script src="/ctx.js"></script>
+<script src="/keymap.js"></script>
+<script src="/keys.js"></script>
+<script src="/ctxwire.js"></script>
+<!-- ★ FULLSCREEN_V1:全站全屏。nav.js 会轮询等 window.Fullscreen 出现再挂按钮。 -->
+<script src="/fullscreen.js"></script>
+<script src="/i18n.js"></script>
+<script src="/i18n-dict.js"></script>
+<script src="/progress.js"></script>
+<script type="module">
+  import { mountNav } from '/nav.js'
+  mountNav('#nav')
+
+  /* ── 目录自动生成 + 滚动高亮 ──
+   * 目录从正文的 h2/h3 现场抽取,加章节不用维护两份清单。 */
+  const doc = document.getElementById('doc')
+  const toc = document.getElementById('toc')
+  const heads = [...doc.querySelectorAll('h2[id], h3[id]')]
+  let html = ''
+  for (const h of heads) {
+    if (h.tagName === 'H2') { html += `<div class="tg">${h.textContent}</div>`; continue }
+    /* h3 标题前带 <span class="pagetag">页面名</span>,目录里不重复显示它 */
+    const c = h.cloneNode(true)
+    for (const t of c.querySelectorAll('.pagetag')) t.remove()
+    html += `<a href="#${h.id}" data-for="${h.id}">${c.textContent}</a>`
+  }
+  toc.innerHTML = html
+  const links = [...toc.querySelectorAll('a[data-for]')]
+
+  const mark = () => {
+    const top = doc.scrollTop + 60
+    let cur = heads[0]
+    for (const h of heads) if (h.offsetTop <= top) cur = h
+    const key = cur && cur.tagName === 'H3' ? cur.id : null
+    for (const a of links) a.classList.toggle('on', a.dataset.for === key)
+  }
+  doc.addEventListener('scroll', mark, { passive: true })
+  mark()
+
+  /* 目录点击走平滑滚动(靠 scroll-margin-top 让标题不被顶栏吃掉) */
+  toc.addEventListener('click', (e) => {
+    const a = e.target.closest('a[data-for]')
+    if (!a) return
+    e.preventDefault()
+    const t = doc.querySelector(`#${a.dataset.for}`)
+    if (t) doc.scrollTo({ top: t.offsetTop - 8, behavior: 'smooth' })
+  })
+
+  /* ── RIGHTCLICK_V2:右键 + 快捷键 ──
+   * docs 页没有"数据条目",但有三类值得右键的东西:
+   *   h2/h3 标题   → 复制锚点链接(可以直接贴给别人跳到这一节)
+   *   code / kbd   → 复制原文(参数名、接口路径最常被手抄)
+   *   目录条目      → 复制锚点链接
+   * 全部用事件委托,文档是静态 HTML,不需要挂 __obj。 */
+  if (window.CtxWire && window.Ctx) {
+    CtxWire.attach({
+      page: 'docs',
+      on: [
+        {
+          host: '#doc', sel: 'h2[id], h3[id], h4[id]',
+          obj: (el) => ({ id: el.id, _h: el }),
+          items: (o) => [
+            { label: '复制本节锚点链接', k: '⧉', act: () => Ctx.copy(location.origin + location.pathname + '#' + o.id, '') },
+            { label: '复制锚点(#' + o.id + ')', k: '⧉', act: () => Ctx.copy('#' + o.id, '') },
+            { label: '复制标题文字', k: '⧉', act: () => Ctx.copy(o._h.textContent.trim(), '') },
+            { sep: true },
+            { label: '复制本页链接', k: '⧉', act: () => Ctx.copy(location.origin + location.pathname, '') },
+          ],
+        },
+        {
+          host: '#doc', sel: 'code, kbd',
+          obj: (el) => ({ id: '', _c: el }),
+          items: (o) => [
+            { label: '复制「' + o._c.textContent.trim().slice(0, 20) + '」', k: '⧉', act: () => Ctx.copy(o._c.textContent.trim(), '') },
+            { label: '复制所在整段', k: '⧉', act: () => {
+              const p = o._c.closest('p, li, td, div')
+              if (p) Ctx.copy(p.textContent.trim().replace(/\s+/g, ' '), '')
+            } },
+          ],
+        },
+        {
+          host: '#toc', sel: 'a[data-for]',
+          obj: (el) => ({ id: el.dataset.for, _a: el }),
+          items: (o) => [
+            { label: '复制本节链接', k: '⧉', act: () => Ctx.copy(location.origin + location.pathname + '#' + o.id, '') },
+            { label: '在目录里定位', k: '→', act: () => {
+              const t = doc.querySelector('#' + o.id)
+              if (t) doc.scrollTo({ top: t.offsetTop - 8, behavior: 'smooth' })
+            } },
+          ],
+        },
+      ],
+      keys: [
+        { id: 'find.search', desc: '用浏览器查找(Ctrl+F)搜本页', group: '查找', run: () => {
+          // ⚠ 不要试图用 window.find 代替 —— Chrome 才有,且行为随版本变;
+          //   文档页本来就没有自制搜索框,直接告诉用户用 Ctrl+F 更可靠。
+          Ctx.toast('教程页没有自制搜索框,请用浏览器的 Ctrl+F / Cmd+F')
+        } },
+        { id: 'docs.top', desc: '回到顶部', group: '浏览', run: () => doc.scrollTo({ top: 0, behavior: 'smooth' }) },
+        { id: 'docs.nextSec', desc: '下一节', group: '浏览', run: () => jumpSec(1) },
+        { id: 'docs.prevSec', desc: '上一节', group: '浏览', run: () => jumpSec(-1) },
+        { id: 'docs.shortcuts', desc: '打开快捷键速查表', group: '全局', run: () => { if (window.Keys) Keys.sheet && Keys.sheet() } },
+      ],
+    })
+
+    /** 按 h2/h3 顺序上下跳节(目录只列了 h3,跳节要含 h2 才连贯) */
+    function jumpSec(d) {
+      const all = [...doc.querySelectorAll('h2[id], h3[id]')]
+      if (!all.length) return
+      const top = doc.scrollTop + 60
+      let cur = 0
+      for (let i = 0; i < all.length; i++) if (all[i].offsetTop <= top) cur = i
+      const j = cur + d
+      if (j < 0 || j >= all.length) return
+      doc.scrollTo({ top: all[j].offsetTop - 8, behavior: 'smooth' })
+    }
+  }
+</script>
+</body>
+</html>
+</content>
+</invoke>

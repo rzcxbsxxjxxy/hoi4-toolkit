@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>文档查阅 · HOI4 工作台</title>
+<link rel="stylesheet" href="/theme.css">
+<style>
+  /* 文档页专用排版。theme.css 管颜色与控件,这里只管"读文档"的节奏。 */
+  :root{ --doc-w: 900px }
+  main{ overflow:hidden }
+
+  #left{
+    width:300px; flex:none; border-right:1px solid var(--line);
+    background:var(--panel); display:flex; flex-direction:column; min-height:0;
+  }
+  #search{ flex:none; padding:8px; border-bottom:1px solid var(--line2) }
+  #search input{ width:100% }
+  #tree{ overflow:auto; flex:1; min-height:0; padding:6px 0 40px }
+
+  .grp{ padding:9px 12px 3px; font-size:11px; font-weight:600; color:var(--ink3); letter-spacing:.3px }
+  .doc{
+    padding:4px 12px 4px 18px; cursor:pointer; font-size:12.5px;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .doc:hover{ background:#f2f4f7 }
+  .doc.on{ background:var(--accent-soft); color:var(--accent); font-weight:600 }
+  .cat{
+    padding:4px 12px; cursor:pointer; font-size:12px; color:var(--ink2);
+    display:flex; align-items:center; gap:6px;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .cat:hover{ background:#f2f4f7 }
+  .cat .n{ flex:1; overflow:hidden; text-overflow:ellipsis }
+  .cat .c{ flex:none; font-size:11px; color:var(--ink3) }
+  .cat.open{ background:#f7f9fc }
+  /* 条目只在搜索态出现(手册动辄上千条,默认不展开) */
+  .ent{
+    padding:3px 12px 3px 30px; cursor:pointer; font-size:12px; color:var(--ink2);
+    font-family:"Cascadia Mono",Consolas,monospace;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .ent:hover{ background:#f2f4f7 }
+  .ent.on{ background:var(--accent-soft); color:var(--accent) }
+
+  #doc{ flex:1; overflow:auto; min-width:0; padding:0 0 80px }
+  .wrap{ max-width:var(--doc-w); margin:0 auto; padding:18px 26px }
+  /* 本地背景图:内容区(显示具体文档的部分)也做毛玻璃,与左侧目录一致,
+   * 壁纸模式下不再裸露出底图 —— 透明度收在 GLASS_RANGE 的 62%~70% 区间。 */
+  :root[data-bg="image"] #doc{
+    background: var(--glass) !important;
+    backdrop-filter: blur(10px) saturate(1.1);
+    -webkit-backdrop-filter: blur(10px) saturate(1.1);
+  }
+
+  h1.t{ font-size:19px; margin:0 0 4px }
+  .meta{ font-size:12px; color:var(--ink3); margin-bottom:14px }
+  h2.sec{
+    font-size:15px; margin:26px 0 8px; padding-bottom:5px;
+    border-bottom:1px solid var(--line); scroll-margin-top:10px;
+  }
+  h3.ent-t{
+    font-size:13.5px; margin:16px 0 5px; scroll-margin-top:10px;
+    font-family:"Cascadia Mono",Consolas,monospace; color:var(--ink);
+  }
+  pre{
+    background:#f7f8fa; border:1px solid var(--line2); border-radius:var(--r);
+    padding:9px 12px; overflow:auto; margin:6px 0;
+    font:11.5px/1.6 "Cascadia Mono",Consolas,monospace; white-space:pre-wrap;
+  }
+  code{ font-family:"Cascadia Mono",Consolas,monospace; font-size:11.5px;
+        background:var(--line2); padding:1px 4px; border-radius:3px }
+  pre code{ background:none; padding:0 }
+  p{ margin:6px 0; line-height:1.7 }
+  ul{ margin:6px 0; padding-left:22px; line-height:1.7 }
+  .scopes{ font-size:11px; color:var(--ink3); margin:2px 0 4px }
+  .scopes b{ font-weight:600; color:var(--ink2) }
+  .empty{ color:var(--ink3); text-align:center; padding:60px 10px }
+  .hit{ background:#fff3bf }
+</style>
+</head>
+<body data-kind="official">
+<header>
+  <h1 id="hTitle">📚 文档查阅 <small id="statChip">—</small></h1>
+  <div class="tgroup">
+    <button id="btnOfficial">官方手册</button>
+    <button id="btnCommon">common 文档</button>
+  </div>
+  <span class="spacer"></span>
+  <div id="langbar"></div>
+  <div id="nav"></div>
+</header>
+<main>
+  <aside id="left" data-sizer="left" data-sizer-def="320">
+    <div class="sizer-bar" title="拖动调宽 · 双击复位 · 双击侧栏折叠"></div>
+    <div id="search"><input type="text" id="q" placeholder="搜索条目 / 文档…"></div>
+    <div class="pane-title" id="treeTitle">文档</div>
+    <div id="tree"></div>
+  </aside>
+  <div id="doc"><div class="wrap"><div class="empty">左侧选择一篇文档</div></div></div>
+</main>
+<div id="toast"></div>
+<script src="/i18n.js"></script>
+<script src="/i18n-dict.js"></script>
+<script src="/progress.js"></script>
+<script type="module">
+  import { mountNav } from '/nav.js'
+  mountNav('#nav')
+</script>
+<script src="/sizer.js"></script>
+<script src="/locclient.js"></script>
+<!-- ★ RIGHTCLICK_V2:全站右键菜单 + 快捷键接线。
+     ⚠ 顺序有依赖:ctx.js 先(菜单本体),keymap.js 必须在 keys.js 之前
+     (keys.js boot 时要读目录),ctxwire.js 最后(它只是接线骨架)。 -->
+<script src="/ctx.js"></script>
+<script src="/keymap.js"></script>
+<script src="/keys.js"></script>
+<script src="/ctxwire.js"></script>
+<script src="/ref.js"></script>
+<!-- ★ FULLSCREEN_V1:全站全屏。必须在 nav.js 之前?否 —— nav.js 轮询等它,
+     放哪都行;统一放页面脚本区末尾,好维护。 -->
+<script src="/fullscreen.js"></script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+{
+  "docs": [
+    {
+      "file": "effects_documentation.md",
+      "kind": "effect",
+      "entries": 552,
+      "sections": 10,
+      "suspicious": 1
+    },
+    {
+      "file": "triggers_documentation.md",
+      "kind": "trigger",
+      "entries": 588,
+      "sections": 13,
+      "suspicious": 1
+    },
+    {
+      "file": "modifiers_documentation.md",
+      "kind": "modifier",
+      "entries": 756,
+      "sections": 19,
+      "suspicious": 1
+    }
+  ],
+  "total": 1896,
+  "byKind": {
+    "effect": 552,
+    "trigger": 588,
+    "modifier": 756
+  },
+  "scopes": [
+    "ACE",
+    "CHARACTER",
+    "COMBATANT",
+    "COUNTRY",
+    "FACTION",
+    "INDUSTRIAL_ORG",
+    "OPERATION",
+    "PURCHASE_CONTRACT",
+    "RAID_INSTANCE",
+    "SPECIAL_PROJECT",
+    "STATE",
+    "STRATEGIC_REGION",
+    "any"
+  ],
+  "topScopes": [
+    [
+      "COUNTRY",
+      651
+    ],
+    [
+      "any",
+      178
+    ],
+    [
+      "CHARACTER",
+      127
+    ],
+    [
+      "STATE",
+      121
+    ],
+    [
+      "COMBATANT",
+      44
+    ],
+    [
+      "INDUSTRIAL_ORG",
+      40
+    ],
+    [
+      "SPECIAL_PROJECT",
+      11
+    ],
+    [
+      "OPERATION",
+      8
+    ],
+    [
+      "PURCHASE_CONTRACT",
+      7
+    ],
+    [
+      "RAID_INSTANCE",
+      5
+    ],
+    [
+      "STRATEGIC_REGION",
+      3
+    ],
+    [
+      "ACE",
+      3
+    ],
+    [
+      "FACTION",
+      2
+    ]
+  ]
+}

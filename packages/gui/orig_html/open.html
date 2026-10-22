@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>打开工程 · 素材来源设置</title>
+<!-- ★ 2026-10-05 改引 theme-vars.css(纯变量层),不再引 theme.css。
+     本页是「居中单卡片 + 遮罩对话框」布局,theme.css 的应用骨架
+     (body flex 列 / overflow:hidden)会把它压变形。但配色必须跟随设置里
+     的主题,否则换浅色/暖砂时只有本页还是黑的(用户报的"格格不入")。
+     变量在 theme-vars.css,布局与控件外观归本页。 -->
+<link rel="stylesheet" href="/theme-vars.css">
+<style>
+  *{box-sizing:border-box}
+  body{
+    margin:0;font-family:system-ui,'Segoe UI',Roboto,'Microsoft Yahei',sans-serif;
+    background:var(--bg);color:var(--ink);
+    display:flex;align-items:flex-start;justify-content:center;
+    min-height:100vh;padding:28px 0;
+  }
+  .card{
+    width:680px;max-width:94vw;background:var(--card);
+    border:1px solid var(--line);border-radius:14px;
+    padding:24px 28px;box-shadow:var(--shadow-lg);
+  }
+  h1{font-size:19px;margin:0 0 4px}
+  .sub{color:var(--ink2);font-size:13px;margin-bottom:16px;line-height:1.6}
+  .grp{
+    margin:14px 0;padding:13px 15px;
+    background:var(--inset);border:1px solid var(--line);border-radius:10px;
+  }
+  .grp.req{border-color:var(--accent)}
+  .grp h2{font-size:14px;margin:0 0 8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .dot{width:10px;height:10px;border-radius:50%;flex:none}
+  .dot.game{background:var(--accent)}
+  .dot.mod{background:var(--ok)}
+  .tag{font-size:11px;padding:1px 6px;border-radius:5px;font-weight:600}
+  .tag.req{color:var(--accent);background:var(--accent-soft);border:1px solid var(--line)}
+  .tag.opt{color:var(--ink3);background:var(--inset);border:1px solid var(--line)}
+  input[type=text]{
+    width:100%;background:var(--panel);border:1px solid var(--line);
+    color:var(--ink);padding:9px 10px;border-radius:8px;font-size:13px;
+  }
+  input.req-in{border-color:var(--accent)}
+  input:focus{outline:none;border-color:var(--accent)}
+  .row{display:flex;gap:8px;margin-top:8px;align-items:center}
+  .row input{flex:1;min-width:0}
+  button{
+    min-width:0;padding:8px 12px;border:1px solid var(--line);
+    background:var(--panel);color:var(--ink);border-radius:8px;
+    font-size:12px;cursor:pointer;font-family:inherit;
+  }
+  button:hover{background:var(--line2)}
+  button.primary{
+    padding:11px;border:0;background:var(--accent);color:#fff;
+    font-size:14px;border-radius:9px;width:100%;margin-top:16px;
+  }
+  /* hover 用 filter 而不是写死深色 —— accent 由设置页可选(军绿/铜金/紫…),
+   * 写死一个亮度加深色只对默认蓝成立,换强调色就看不出 hover 了。 */
+  button.primary:hover{filter:brightness(1.12)}
+  button.primary:disabled{background:var(--line2);cursor:not-allowed}
+  button.mini{padding:6px 9px;font-size:11px;flex:none}
+  button.x{color:var(--danger);border-color:var(--line);background:var(--danger-soft)}
+  button.x:hover{filter:brightness(1.06)}
+  .hint{color:var(--ink3);font-size:12px;margin-top:7px;line-height:1.6}
+  code{background:var(--inset);padding:1px 5px;border-radius:4px;font-size:11px;color:var(--ink2)}
+  #cands{margin-top:9px;display:none;flex-direction:column;gap:5px}
+  #cands.show{display:flex}
+  .cand{
+    display:flex;align-items:center;gap:8px;padding:6px 9px;
+    background:var(--inset);border:1px solid var(--line);
+    border-radius:7px;cursor:pointer;font-size:12px;
+  }
+  .cand:hover{border-color:var(--accent);background:var(--accent-soft)}
+  .cand .p{
+    flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+    color:var(--ink2);font-family:ui-monospace,Consolas,monospace;font-size:11px;
+  }
+  .cand .badge{font-size:10px;padding:1px 5px;border-radius:4px;flex:none}
+  .badge.ok{background:var(--ok-soft);color:var(--ok)}
+  .badge.no{background:var(--danger-soft);color:var(--danger)}
+  .badge.src{background:var(--line2);color:var(--ink3)}
+  .modrow{display:flex;gap:8px;margin-top:8px;align-items:center}
+  .modrow input{flex:1;min-width:0}
+  .opt-row{display:flex;align-items:center;gap:7px;margin-top:14px;font-size:12px;color:var(--ink2);cursor:pointer}
+  .opt-row input{width:auto;accent-color:var(--accent)}
+  #status{margin-top:12px;font-size:13px;min-height:18px}
+  #status.ok{color:var(--ok)}#status.warn{color:var(--warn)}#status.err{color:var(--danger)}
+  .cur{font-size:12px;color:var(--ink2);margin-top:9px;line-height:1.5}
+  .foot{margin-top:14px;font-size:12px;color:var(--ink3)}
+  a{color:var(--accent)}
+
+  /* 路径状态徽标:✔ hoi4.exe / ✔ .mod —— 判据写清楚,别让用户猜 */
+  .verdict{font-size:11px;margin-top:6px;min-height:16px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+  .v{font-size:10px;padding:1px 6px;border-radius:4px;border:1px solid transparent}
+  .v.exe{background:var(--ok-soft);color:var(--ok);border-color:var(--ok)}
+  .v.modf{background:var(--ok-soft);color:var(--ok);border-color:var(--ok)}
+  .v.bad{background:var(--danger-soft);color:var(--danger);border-color:var(--danger)}
+  .v.info{background:var(--line2);color:var(--ink3);border-color:var(--line)}
+
+  /* 目录选择器 */
+  .mask{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:50}
+  .mask.show{display:flex}
+  .picker{
+    width:620px;max-width:94vw;height:60vh;background:var(--raise);
+    border:1px solid var(--line);border-radius:12px;
+    display:flex;flex-direction:column;overflow:hidden;
+  }
+  .picker header{
+    display:flex;align-items:center;gap:8px;padding:10px 12px;
+    border-bottom:1px solid var(--line);background:var(--inset);
+  }
+  .picker header .ttl{font-size:13px;font-weight:600;flex:1}
+  .picker .crumb{
+    font-family:ui-monospace,Consolas,monospace;font-size:11px;color:var(--ink2);
+    background:var(--panel);border:1px solid var(--line);border-radius:7px;
+    padding:6px 9px;margin:10px 12px 0;word-break:break-all;
+  }
+  .picker .list{
+    flex:1;overflow:auto;margin:10px 12px;
+    border:1px solid var(--line);border-radius:8px;background:var(--panel);
+  }
+  .d{
+    display:flex;align-items:center;gap:8px;padding:7px 10px;
+    border-bottom:1px solid var(--line2);cursor:pointer;font-size:12px;
+  }
+  .d:last-child{border-bottom:0}
+  .d:hover{background:var(--line2)}
+  .d .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .d .up{color:var(--ink2)}
+  .picker footer{
+    display:flex;gap:8px;justify-content:flex-end;padding:10px 12px;
+    border-top:1px solid var(--line);background:var(--inset);
+  }
+  .picker footer .sel{
+    font-size:11px;color:var(--ink2);margin-right:auto;align-self:center;
+    font-family:ui-monospace,Consolas,monospace;
+  }
+  /* 对话框里的确认按钮:用 accent 而不是写死蓝,否则换强调色(军绿/铜金/紫)
+   * 后它仍是块蓝,和下面两个小按钮不搭。 */
+  .primary-inline{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .primary-inline:hover{filter:brightness(1.12)}
+
+  /* 创意工坊列表 */
+  #wsList{margin-top:9px;display:none;flex-direction:column;gap:5px;max-height:220px;overflow:auto}
+  #wsList.show{display:flex}
+  #localList{margin-top:9px;display:none;flex-direction:column;gap:5px;max-height:220px;overflow:auto}
+  #localList.show{display:flex}
+  .ws{
+    display:flex;align-items:center;gap:8px;padding:6px 9px;
+    background:var(--inset);border:1px solid var(--line);
+    border-radius:7px;font-size:12px;
+  }
+  .ws .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .ws .id{font-family:ui-monospace,Consolas,monospace;font-size:10px;color:var(--ink3);flex:none}
+  .ws button{padding:4px 8px;font-size:11px}
+
+  /* ── 新建模组(MAKE_MOD_V1)──
+   * 折叠块:第一次来的人不需要看见四个输入框,老手点开两秒填完。 */
+  details.nm{padding:0}
+  details.nm .nmsum{
+    list-style:none;cursor:pointer;user-select:none;
+    padding:13px 15px;display:flex;align-items:center;gap:8px;
+    font-size:14px;font-weight:600;
+  }
+  details.nm .nmsum::-webkit-details-marker{display:none}
+  details.nm .nmsum:hover{background:var(--line2);border-radius:10px}
+  details.nm .nmsum .chev{
+    margin-left:auto;width:0;height:0;
+    border-left:4px solid transparent;border-right:4px solid transparent;
+    border-top:5px solid var(--ink3);
+  }
+  details.nm[open] .nmsum .chev{border-top:0;border-bottom:5px solid var(--accent)}
+  .nmbody{padding:0 15px 14px}
+  .field{margin-bottom:9px}
+  .field label{display:block;font-size:12px;color:var(--ink2);margin-bottom:4px}
+  .field label .opt{color:var(--ink3);font-weight:400}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+
+  /* 顶部导航(nav.js 注入):配色走 theme-vars.css 变量,跟随设置中的主题 */
+  .navlinks{display:flex;align-items:center;gap:2px}
+  .navlinks a{
+    font-size:12px;color:var(--ink2);text-decoration:none;
+    padding:3px 7px;border-radius:var(--r);white-space:nowrap;
+  }
+  .navlinks a:hover{background:var(--line2);color:var(--ink)}
+  .navlinks a.cur{background:var(--accent-soft);color:var(--accent);font-weight:600}
+  .navhome{
+    display:inline-flex;align-items:center;gap:5px;font-weight:600;
+    color:var(--ink) !important;padding-right:9px !important;margin-right:3px;
+    border-right:1px solid var(--line2);border-radius:0 !important;
+  }
+  .navhome:hover{background:var(--line2)}
+  .navgrp{position:relative}
+  .navgrp>summary{
+    list-style:none;cursor:pointer;user-select:none;
+    font-size:12px;color:var(--ink2);
+    padding:3px 8px;border-radius:var(--r);white-space:nowrap;
+    display:inline-flex;align-items:center;gap:4px;
+  }
+  .navgrp>summary::-webkit-details-marker{display:none}
+  .navgrp>summary::after{
+    content:"";width:0;height:0;margin-left:1px;
+    border-left:3.5px solid transparent;border-right:3.5px solid transparent;
+    border-top:4px solid currentColor;opacity:.55;
+  }
+  .navgrp>summary:hover{background:var(--line2);color:var(--ink)}
+  .navgrp.on>summary{color:var(--accent);font-weight:600}
+  .navgrp[open]>summary{background:var(--accent-soft);color:var(--accent)}
+  .navgrp .curdot{
+    width:5px;height:5px;border-radius:50%;background:var(--accent);display:inline-block;
+  }
+  /* ★ FULLSCREEN_V1:本页不引 theme.css(自带布局),所以 fsbtn 样式要本地补一份。
+     变量全部来自 theme-vars.css,跟随设置中的主题。 */
+  .fsbtn{
+    font:inherit;font-size:12px;cursor:pointer;color:var(--ink2);
+    background:var(--raise);border:1px solid var(--line2);border-radius:var(--r);
+    padding:3px 8px;margin-right:3px;white-space:nowrap;
+  }
+  .fsbtn:hover{background:var(--line2);color:var(--ink);border-color:var(--accent)}
+  body.in-fullscreen .fsbtn{color:var(--accent);border-color:var(--accent);background:var(--accent-soft)}
+  :root[data-bg="image"] .fsbtn{background:var(--glass-raise);backdrop-filter:blur(10px)}
+  .navpop{
+    position:absolute;right:0;top:calc(100% + 5px);z-index:var(--z-pop);
+    background:var(--raise);border:1px solid var(--line);
+    border-radius:var(--r-card);box-shadow:var(--shadow);
+    padding:4px;min-width:208px;overflow:visible;
+  }
+  .navpop a{display:flex;flex-direction:column;gap:1px;padding:5px 9px;border-radius:var(--r);line-height:1.3}
+  .navpop a b{font-size:12.5px;font-weight:600;color:var(--ink)}
+  .navpop a span{font-size:10.5px;color:var(--ink3)}
+  .navpop a:hover{background:var(--accent-soft)}
+  .navpop a:hover span{color:var(--ink2)}
+  .navpop a.cur{background:var(--accent-soft);box-shadow:inset 2px 0 0 var(--accent)}
+  .navpop a.cur b{color:var(--accent)}
+
+  /* ── 跟随主背景(设置页选了本地图片后生效)──
+   * 铺图由 theme-vars.css 的 `[data-bg="image"] body` 统一负责,
+   * 这里只把本页的面板切毛玻璃;深浅色由 --glass / --glass-raise 区分。 */
+  :root[data-bg="image"] .card,
+  :root[data-bg="image"] .grp{
+    background:var(--glass)!important;
+    backdrop-filter:blur(10px) saturate(1.1);-webkit-backdrop-filter:blur(10px) saturate(1.1);
+  }
+  :root[data-bg="image"] .picker{background:var(--glass-raise)!important}
+  /* BOOTGATE_INLINE:独立页(非 iframe)保存/重建时的全屏加载画面 */
+  #bootmask{position:fixed;inset:0;background:rgba(10,14,20,.55);display:flex;align-items:center;justify-content:center;z-index:300}
+  #bootmask[hidden]{display:none}
+  .bm-card{display:flex;flex-direction:column;align-items:center;gap:14px;background:var(--raise);padding:28px 38px;border-radius:14px;box-shadow:var(--shadow-lg)}
+  .bm-ring{width:66px;height:66px;border-radius:50%;border:4px solid var(--line2);border-top-color:var(--accent);display:flex;align-items:center;justify-content:center;animation:bmspin 1s linear infinite}
+  .bm-ring span{font-size:13px;color:var(--ink2);animation:bmspinRev 1s linear infinite}
+  .bm-msg{font-size:13px;color:var(--ink2)}
+  @keyframes bmspin{to{transform:rotate(360deg)}}
+  @keyframes bmspinRev{to{transform:rotate(-360deg)}}
+</style>
+</head>
+<body>
+  <!-- ★ 2026-10-05:z-index 由 55 提到 --z-header。原值 55 低于 navpop 的预算,
+       下拉会溢出到 #topnav 这层的外面去,被页面卡片压住。层级预算见 theme-vars.css。 -->
+  <div id="topnav" style="position:fixed;top:0;right:0;z-index:var(--z-header);padding:8px 12px"></div>
+  <div class="card">
+    <h1>打开工程 · 素材来源设置</h1>
+    <div class="sub">
+      <b style="color:var(--accent)">蓝＝基础游戏</b>（必填，只读，判据：<code>hoi4.exe</code>）；
+      <b style="color:var(--ok)">绿＝模组</b>（可选，可写，判据：<code>*.mod</code>）。
+    </div>
+
+    <div class="grp req">
+      <h2><span class="dot game"></span>基础游戏<span class="tag req">必填</span></h2>
+      <div class="row">
+        <input type="text" class="req-in" id="basePath" placeholder="C:\Program Files (x86)\Steam\steamapps\common\Hearts of Iron IV">
+        <button id="detectBtn" class="mini">自动检测</button>
+        <button id="browseBase" class="mini">浏览…</button>
+      </div>
+      <div class="verdict" id="baseVerdict"></div>
+      <div id="cands"></div>
+      <div class="hint">判据是目录里存在 <code>hoi4.exe</code>。「自动检测」依次找 Steam 注册表、各游戏库与常见盘符；「浏览…」在网页里逐级选目录。</div>
+    </div>
+
+    <div class="grp">
+      <h2><span class="dot mod"></span>模组目录<span class="tag opt">可选 · 可多个</span></h2>
+      <div id="modList"></div>
+      <div style="display:flex;gap:8px;margin-top:9px">
+        <button id="addMod" class="mini">＋ 添加模组目录</button>
+        <button id="wsBtn" class="mini">🔍 扫描创意工坊</button>
+        <button id="scanLocalBtn" class="mini">📁 扫描用户目录 mod</button>
+      </div>
+      <div id="wsList"></div>
+      <div id="localList"></div>
+      <div class="hint">判据是目录里存在 <code>.mod</code> 文件（<code>descriptor.mod</code> 或任意 <code>*.mod</code>）。没有 .mod 的自建目录也能加载，只是标为「推断」。</div>
+    </div>
+
+    <!-- ★ 2026-10-10 用户要求:「新建模组」入口从本页移除 ——
+         本页只负责"打开已有的工程 / 挂载已有模组目录",不再提供从零建模组。
+         后端 /api/mod/new 与 open.js 里的 MAKE_MOD_V1 绑定一并摘掉,
+         避免留下一组指向已删除 DOM 的 getElementById(null) 代码。 -->
+
+    <label class="opt-row"><input type="checkbox" id="autoload"> 下次打开本页面时自动加载上次路径</label>
+
+    <button class="primary" id="loadBtn">保存并进入工作台</button>
+    <div id="status"></div>
+    <div class="cur" id="current"></div>
+    <div class="foot">路径仅保存在本机浏览器（localStorage）与本机 <code>gui-settings.json</code>，不会上传。</div>
+  </div>
+
+  <!-- 目录选择器 -->
+  <div class="mask" id="mask">
+    <div class="picker">
+      <header><span class="ttl">选择文件夹</span><button class="mini" id="pkClose">关闭</button></header>
+      <div class="crumb" id="pkPath"></div>
+      <div class="list" id="pkList"></div>
+      <footer><span class="sel" id="pkSel"></span><button class="mini" id="pkUp">↑ 上级</button><button class="mini primary-inline" id="pkOk">选择此目录</button></footer>
+    </div>
+  </div>
+
+  <!-- ★ i18n 必须最先加载:页面脚本在解析期就调用翻译函数,
+     i18n.js 若排在它们之后,翻译函数会是 undefined → ReferenceError。 -->
+<script src="/i18n.js"></script>
+<script src="/i18n-dict.js"></script>
+<script src="/target.js"></script>
+  <script src="/open.js?v=20261011"></script>
+  
+<script src="/progress.js"></script>
+<script type="module">
+    import { mountNav } from '/nav.js'
+    mountNav('#topnav')
+  </script>
+<!-- ★ FULLSCREEN_V1:全站全屏。必须在 nav.js 之前?否 —— nav.js 轮询等它,
+     放哪都行;统一放页面脚本区末尾,好维护。 -->
+<script src="/fullscreen.js"></script>
+  <!-- BOOTGATE_INLINE:独立页(非 iframe)保存/重建时的全屏加载画面 -->
+  <div id="bootmask" hidden>
+    <div class="bm-card">
+      <div class="bm-ring"><span id="bmPct">0%</span></div>
+      <div class="bm-msg" id="bmMsg">正在重建索引…</div>
+    </div>
+  </div>
+<script src="/ctx.js"></script>
+</body>
+</html>

@@ -1,0 +1,8980 @@
+{
+  "files": 1387,
+  "bytes": 32429015,
+  "elementTypes": [
+    {
+      "type": "SpriteType",
+      "count": 58256,
+      "files": 89,
+      "props": [
+        {
+          "key": "name",
+          "count": 58256,
+          "files": 89,
+          "kinds": {
+            "bare": 58256
+          },
+          "samples": [
+            "GFX_ability_force_attack_animated",
+            "GFX_ability_CHI_force_attack_no_entrenchment_loss_animated",
+            "GFX_ability_jap_better_staff_office_plan_animated",
+            "GFX_ability_siege_artillery_animated",
+            "GFX_ability_glider_planes_animated"
+          ]
+        },
+        {
+          "key": "texturefile",
+          "count": 58188,
+          "files": 84,
+          "kinds": {
+            "bare": 58188
+          },
+          "samples": [
+            "gfx/interface/abilitylist/ability_force_attack.dds",
+            "gfx/interface/abilitylist/ability_chi_force_attack.dds",
+            "gfx/interface/abilitylist/ability_staff_office_plan.dds",
+            "gfx/interface/abilitylist/ability_siege_artillery.dds",
+            "gfx/interface/abilitylist/ability_glider_planes.dds"
+          ]
+        },
+        {
+          "key": "animation",
+          "count": 12045,
+          "files": 15,
+          "kinds": {
+            "block": 12045
+          },
+          "samples": []
+        },
+        {
+          "key": "legacy_lazy_load",
+          "count": 6100,
+          "files": 16,
+          "kinds": {
+            "bool": 6100
+          },
+          "samples": [
+            "no"
+          ]
+        },
+        {
+          "key": "effectFile",
+          "count": 6083,
+          "files": 17,
+          "kinds": {
+            "bare": 6083
+          },
+          "samples": [
+            "gfx/FX/buttonstate.lua",
+            "gfx/FX/buttonstate_nodowneffect.lua",
+            "gfx/FX/buttonstate_onlydisable.lua",
+            "gfx/FX/buttonstate_nodownordisableeffect.lua"
+          ]
+        },
+        {
+          "key": "alwaystransparent",
+          "count": 268,
+          "files": 2,
+          "kinds": {
+            "bool": 268
+          },
+          "samples": [
+            "yes"
+          ]
+        },
+        {
+          "key": "textureFile",
+          "count": 68,
+          "files": 10,
+          "kinds": {
+            "bare": 68
+          },
+          "samples": [
+            "gfx//interface//subview_header_bg_300x101.dds",
+            "gfx//interface//subview_header_bg_375x101.dds",
+            "gfx//interface//red_cross_small.dds",
+            "gfx//interface//foreign_templates_dropdown_button.dds",
+            "gfx//interface//delete_template_button.dds"
+          ]
+        },
+        {
+          "key": "noOfFrames",
+          "count": 50,
+          "files": 11,
+          "kinds": {
+            "number": 50
+          },
+          "samples": [
+            "2",
+            "3",
+            "18",
+            "5",
+            "4"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "spriteType",
+      "count": 49008,
+      "files": 532,
+      "props": [
+        {
+          "key": "name",
+          "count": 49008,
+          "files": 532,
+          "kinds": {
+            "bare": 49008
+          },
+          "samples": [
+            "GFX_trait_jaeger",
+            "GFX_ability_list_begin",
+            "GFX_ability_list_mid",
+            "GFX_ability_list_end",
+            "GFX_ability_icon_default"
+          ]
+        },
+        {
+          "key": "texturefile",
+          "count": 44583,
+          "files": 495,
+          "kinds": {
+            "bare": 44583
+          },
+          "samples": [
+            "gfx/interface/traits/personal/trait_jaeger.dds",
+            "gfx/interface/abilitylist/bg_begin.dds",
+            "gfx/interface/abilitylist/bg_mid.dds",
+            "gfx/interface/abilitylist/bg_end.dds",
+            "gfx/interface/abilitylist/ability_default.dds"
+          ]
+        },
+        {
+          "key": "animation",
+          "count": 5051,
+          "files": 8,
+          "kinds": {
+            "block": 5051
+          },
+          "samples": []
+        },
+        {
+          "key": "legacy_lazy_load",
+          "count": 4869,
+          "files": 49,
+          "kinds": {
+            "bool": 4869
+          },
+          "samples": [
+            "no"
+          ]
+        },
+        {
+          "key": "textureFile",
+          "count": 4419,
+          "files": 100,
+          "kinds": {
+            "bare": 4419
+          },
+          "samples": [
+            "gfx/interface/strategicair/air_target_icon.dds",
+            "gfx//interface//union_control//union_control_progressbar_frame.dds",
+            "gfx/interface/battle_log_tab.dds",
+            "gfx/interface/in_game_menu_dark_overlay.dds",
+            "gfx//interface//tiles//tiled_window_color_picker.dds"
+          ]
+        },
+        {
+          "key": "effectFile",
+          "count": 2964,
+          "files": 53,
+          "kinds": {
+            "bare": 2964
+          },
+          "samples": [
+            "gfx/FX/buttonstate_nodowneffect.lua",
+            "gfx/FX/buttonstate.lua",
+            "gfx/FX/buttonstate.shader",
+            "gfx/FX/buttonstate_onlydisable.lua",
+            "gfx/FX/saturation_slider.lua"
+          ]
+        },
+        {
+          "key": "noOfFrames",
+          "count": 2068,
+          "files": 106,
+          "kinds": {
+            "number": 2068
+          },
+          "samples": [
+            "2",
+            "70",
+            "19",
+            "3",
+            "1"
+          ]
+        },
+        {
+          "key": "alwaystransparent",
+          "count": 102,
+          "files": 16,
+          "kinds": {
+            "bool": 102
+          },
+          "samples": [
+            "yes",
+            "no"
+          ]
+        },
+        {
+          "key": "transparencecheck",
+          "count": 79,
+          "files": 10,
+          "kinds": {
+            "bool": 79
+          },
+          "samples": [
+            "yes",
+            "no"
+          ]
+        },
+        {
+          "key": "clicksound",
+          "count": 23,
+          "files": 4,
+          "kinds": {
+            "bare": 23
+          },
+          "samples": [
+            "click_chat",
+            "click_default",
+            "decisions_ui_tab",
+            "click_close"
+          ]
+        },
+        {
+          "key": "dx_offset",
+          "count": 7,
+          "files": 2,
+          "kinds": {
+            "position": 7
+          },
+          "samples": []
+        },
+        {
+          "key": "allwaystransparent",
+          "count": 7,
+          "files": 1,
+          "kinds": {
+            "bool": 7
+          },
+          "samples": [
+            "yes"
+          ]
+        },
+        {
+          "key": "loadType",
+          "count": 6,
+          "files": 3,
+          "kinds": {
+            "bare": 6
+          },
+          "samples": [
+            "FRONTEND",
+            "INGAME"
+          ]
+        },
+        {
+          "key": "generate_mip_maps",
+          "count": 4,
+          "files": 4,
+          "kinds": {
+            "bool": 4
+          },
+          "samples": [
+            "yes"
+          ]
+        },
+        {
+          "key": "framedirectiony",
+          "count": 3,
+          "files": 1,
+          "kinds": {
+            "bool": 3
+          },
+          "samples": [
+            "yes"
+          ]
+        },
+        {
+          "key": "masking_texture",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "bare": 1
+          },
+          "samples": [
+            "gfx/interface/operatives/operative_portrait_mask.dds"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "containerWindowType",
+      "count": 13843,
+      "files": 636,
+      "props": [
+        {
+          "key": "name",
+          "count": 13843,
+          "files": 636,
+          "kinds": {
+            "bare": 13843
+          },
+          "samples": [
+            "abilitylist_button_container",
+            "abilitylist_window",
+            "acesview_entry",
+            "acesview",
+            "content"
+          ]
+        },
+        {
+          "key": "size",
+          "count": 13416,
+          "files": 628,
+          "kinds": {
+            "size": 13413,
+            "block": 3
+          },
+          "samples": []
+        },
+        {
+          "key": "position",
+          "count": 13383,
+          "files": 625,
+          "kinds": {
+            "position": 13379,
+            "block": 4
+          },
+          "samples": []
+        },
+        {
+          "key": "containerWindowType",
+          "count": 11416,
+          "files": 555,
+          "kinds": {
+            "block": 11416
+          },
+          "samples": []
+        },
+        {
+          "key": "iconType",
+          "count": 10045,
+          "files": 605,
+          "kinds": {
+            "block": 10045
+          },
+          "samples": []
+        },
+        {
+          "key": "instantTextboxType",
+          "count": 3241,
+          "files": 124,
+          "kinds": {
+            "block": 3241
+          },
+          "samples": []
+        },
+        {
+          "key": "buttonType",
+          "count": 3124,
+          "files": 164,
+          "kinds": {
+            "block": 3124
+          },
+          "samples": []
+        },
+        {
+          "key": "background",
+          "count": 2009,
+          "files": 158,
+          "kinds": {
+            "block": 2009
+          },
+          "samples": []
+        },
+        {
+          "key": "instantTextBoxType",
+          "count": 1978,
+          "files": 114,
+          "kinds": {
+            "block": 1978
+          },
+          "samples": []
+        },
+        {
+          "key": "clipping",
+          "count": 1424,
+          "files": 114,
+          "kinds": {
+            "bool": 1424
+          },
+          "samples": [
+            "no",
+            "yes"
+          ]
+        },
+        {
+          "key": "gridboxtype",
+          "count": 669,
+          "files": 52,
+          "kinds": {
+            "block": 669
+          },
+          "samples": []
+        },
+        {
+          "key": "orientation",
+          "count": 568,
+          "files": 103,
+          "kinds": {
+            "bare": 568
+          },
+          "samples": [
+            "upper_left",
+            "center",
+            "lower_left",
+            "upper_right",
+            "center_left"
+          ]
+        },
+        {
+          "key": "verticalScrollbar",
+          "count": 456,
+          "files": 94,
+          "kinds": {
+            "bare": 456
+          },
+          "samples": [
+            "right_vertical_slider",
+            "right_vertical_slider_intel",
+            "left_vertical_slider",
+            "career_profile_vertical_slider",
+            "right_vertical_sliderno_bg"
+          ]
+        },
+        {
+          "key": "Orientation",
+          "count": 429,
+          "files": 77,
+          "kinds": {
+            "bare": 429
+          },
+          "samples": [
+            "center_down",
+            "center",
+            "upper_left",
+            "UPPER_LEFT",
+            "lower_left"
+          ]
+        },
+        {
+          "key": "gridBoxType",
+          "count": 390,
+          "files": 72,
+          "kinds": {
+            "block": 390
+          },
+          "samples": []
+        },
+        {
+          "key": "moveable",
+          "count": 342,
+          "files": 90,
+          "kinds": {
+            "bool": 342
+          },
+          "samples": [
+            "yes",
+            "no"
+          ]
+        },
+        {
+          "key": "margin",
+          "count": 339,
+          "files": 77,
+          "kinds": {
+            "block": 339
+          },
+          "samples": []
+        },
+        {
+          "key": "ButtonType",
+          "count": 290,
+          "files": 26,
+          "kinds": {
+            "block": 290
+          },
+          "samples": []
+        },
+        {
+          "key": "scroll_wheel_factor",
+          "count": 245,
+          "files": 74,
+          "kinds": {
+            "number": 245
+          },
+          "samples": [
+            "40",
+            "50",
+            "37",
+            "70",
+            "38"
+          ]
+        },
+        {
+          "key": "smooth_scrolling",
+          "count": 217,
+          "files": 74,
+          "kinds": {
+            "bool": 217
+          },
+          "samples": [
+            "yes"
+          ]
+        },
+        {
+          "key": "positionType",
+          "count": 204,
+          "files": 49,
+          "kinds": {
+            "block": 204
+          },
+          "samples": []
+        },
+        {
+          "key": "click_to_front",
+          "count": 196,
+          "files": 45,
+          "kinds": {
+            "bool": 196
+          },
+          "samples": [
+            "yes",
+            "no"
+          ]
+        },
+        {
+          "key": "fade_time",
+          "count": 178,
+          "files": 60,
+          "kinds": {
+            "number": 174,
+            "bare": 4
+          },
+          "samples": [
+            "300",
+            "20",
+            "500",
+            "200",
+            "400"
+          ]
+        },
+        {
+          "key": "fade_type",
+          "count": 175,
+          "files": 59,
+          "kinds": {
+            "bare": 175
+          },
+          "samples": [
+            "linear",
+            "accelerated"
+          ]
+        },
+        {
+          "key": "origo",
+          "count": 169,
+          "files": 45,
+          "kinds": {
+            "bare": 169
+          },
+          "samples": [
+            "upper_right",
+            "center_up",
+            "center",
+            "upper_left",
+            "lower_left"
+          ]
+        },
+        {
+          "key": "show_position",
+          "count": 164,
+          "files": 38,
+          "kinds": {
+            "position": 164
+          },
+          "samples": []
+        },
+        {
+          "key": "checkboxType",
+          "count": 141,
+          "files": 19,
+          "kinds": {
+            "block": 141
+          },
+          "samples": []
+        },
+        {
+          "key": "animation_time",
+          "count": 133,
+          "files": 48,
+          "kinds": {
+            "number": 133
+          },
+          "samples": [
+            "300",
+            "200",
+            "1000",
+            "450",
+            "400"
+          ]
+        },
+        {
+          "key": "show_sound",
+          "count": 127,
+          "files": 56,
+          "kinds": {
+            "bare": 127
+          },
+          "samples": [
+            "pop_up",
+            "open_sub_window",
+            "menu_open_window",
+            "Spy_Agency_Branch_Upgrade_Window_Show_Sound",
+            "ui_ship_designer_panel_appear"
+          ]
+        },
+        {
+          "key": "show_animation_type",
+          "count": 106,
+          "files": 38,
+          "kinds": {
+            "bare": 106
+          },
+          "samples": [
+            "decelerated"
+          ]
+        },
+        {
+          "key": "hide_animation_type",
+          "count": 103,
+          "files": 37,
+          "kinds": {
+            "bare": 103
+          },
+          "samples": [
+            "accelerated",
+            "linear",
+            "decelerated"
+          ]
+        },
+        {
+          "key": "Origo",
+          "count": 78,
+          "files": 12,
+          "kinds": {
+            "bare": 78
+          },
+          "samples": [
+            "center",
+            "lower_right",
+            "center_left",
+            "center_up",
+            "upper_right"
+          ]
+        },
+        {
+          "key": "editBoxType",
+          "count": 78,
+          "files": 37,
+          "kinds": {
+            "block": 78
+          },
+          "samples": []
+        },
+        {
+          "key": "OverlappingElementsBoxType",
+          "count": 59,
+          "files": 23,
+          "kinds": {
+            "block": 59
+          },
+          "samples": []
+        },
+        {
+          "key": "horizontalScrollbar",
+          "count": 57,
+          "files": 9,
+          "kinds": {
+            "bare": 57
+          },
+          "samples": [
+            "bottom_horizontal_slider"
+          ]
+        },
+        {
+          "key": "drag_scroll",
+          "count": 54,
+          "files": 6,
+          "kinds": {
+            "block(空)": 54
+          },
+          "samples": []
+        },
+        {
+          "key": "hide_sound",
+          "count": 50,
+          "files": 16,
+          "kinds": {
+            "bare": 50
+          },
+          "samples": [
+            "menu_close_window"
+          ]
+        },
+        {
+          "key": "dropDownBoxType",
+          "count": 49,
+          "files": 18,
+          "kinds": {
+            "block": 49
+          },
+          "samples": []
+        },
+        {
+          "key": "Background",
+          "count": 41,
+          "files": 10,
+          "kinds": {
+            "block": 41
+          },
+          "samples": []
+        },
+        {
+          "key": "smoothListBoxType",
+          "count": 29,
+          "files": 16,
+          "kinds": {
+            "block": 29
+          },
+          "samples": []
+        },
+        {
+          "key": "vertical_scroll_step",
+          "count": 28,
+          "files": 16,
+          "kinds": {
+            "number": 28
+          },
+          "samples": [
+            "41",
+            "52",
+            "55",
+            "5",
+            "50"
+          ]
+        },
+        {
+          "key": "gridboxType",
+          "count": 28,
+          "files": 7,
+          "kinds": {
+            "block": 28
+          },
+          "samples": []
+        },
+        {
+          "key": "animation_type",
+          "count": 28,
+          "files": 3,
+          "kinds": {
+            "bare": 28
+          },
+          "samples": [
+            "decelerated"
+          ]
+        },
+        {
+          "key": "checkBoxType",
+          "count": 27,
+          "files": 8,
+          "kinds": {
+            "block": 27
+          },
+          "samples": []
+        },
+        {
+          "key": "scrollbarType",
+          "count": 26,
+          "files": 5,
+          "kinds": {
+            "block": 26
+          },
+          "samples": []
+        },
+        {
+          "key": "extendedScrollbarType",
+          "count": 21,
+          "files": 12,
+          "kinds": {
+            "block": 21
+          },
+          "samples": []
+        },
+        {
+          "key": "hide_position",
+          "count": 12,
+          "files": 6,
+          "kinds": {
+            "position": 12
+          },
+          "samples": []
+        },
+        {
+          "key": "background_margin",
+          "count": 11,
+          "files": 4,
+          "kinds": {
+            "block": 11
+          },
+          "samples": []
+        },
+        {
+          "key": "scale",
+          "count": 11,
+          "files": 3,
+          "kinds": {
+            "number": 11
+          },
+          "samples": [
+            "1",
+            "0",
+            "0.9",
+            "1.1",
+            "0.08"
+          ]
+        },
+        {
+          "key": "hide",
+          "count": 10,
+          "files": 3,
+          "kinds": {
+            "bool": 10
+          },
+          "samples": [
+            "yes"
+          ]
+        },
+        {
+          "key": "listboxType",
+          "count": 7,
+          "files": 4,
+          "kinds": {
+            "block": 7
+          },
+          "samples": []
+        },
+        {
+          "key": "@fixed_btn_mod_col_0",
+          "count": 3,
+          "files": 3,
+          "kinds": {
+            "number": 3
+          },
+          "samples": [
+            "0",
+            "1"
+          ]
+        },
+        {
+          "key": "@fixed_btn_mod_col_1",
+          "count": 3,
+          "files": 3,
+          "kinds": {
+            "number": 3
+          },
+          "samples": [
+            "73",
+            "74"
+          ]
+        },
+        {
+          "key": "@fixed_btn_mod_col_2",
+          "count": 3,
+          "files": 3,
+          "kinds": {
+            "number": 3
+          },
+          "samples": [
+            "146",
+            "147"
+          ]
+        },
+        {
+          "key": "@fixed_btn_mod_col_3",
+          "count": 3,
+          "files": 3,
+          "kinds": {
+            "number": 3
+          },
+          "samples": [
+            "219",
+            "220"
+          ]
+        },
+        {
+          "key": "@fixed_btn_mod_col_4",
+          "count": 3,
+          "files": 3,
+          "kinds": {
+            "number": 3
+          },
+          "samples": [
+            "292",
+            "293"
+          ]
+        },
+        {
+          "key": "@fixed_btn_mod_col_5",
+          "count": 3,
+          "files": 3,
+          "kinds": {
+            "number": 3
+          },
+          "samples": [
+            "365",
+            "366"
+          ]
+        },
+        {
+          "key": "@fixed_btn_mod_col_6",
+          "count": 3,
+          "files": 3,
+          "kinds": {
+            "number": 3
+          },
+          "samples": [
+            "438",
+            "439"
+          ]
+        },
+        {
+          "key": "@warn_icon_x",
+          "count": 3,
+          "files": 1,
+          "kinds": {
+            "number": 3
+          },
+          "samples": [
+            "280"
+          ]
+        },
+        {
+          "key": "buttontype",
+          "count": 3,
+          "files": 1,
+          "kinds": {
+            "block": 3
+          },
+          "samples": []
+        },
+        {
+          "key": "browserType",
+          "count": 2,
+          "files": 1,
+          "kinds": {
+            "block": 2
+          },
+          "samples": []
+        },
+        {
+          "key": "overlappingElementsBoxType",
+          "count": 2,
+          "files": 2,
+          "kinds": {
+            "block": 2
+          },
+          "samples": []
+        },
+        {
+          "key": "@btn_mission_y",
+          "count": 2,
+          "files": 1,
+          "kinds": {
+            "number": 2
+          },
+          "samples": [
+            "23"
+          ]
+        },
+        {
+          "key": "@icn_mission_y",
+          "count": 2,
+          "files": 1,
+          "kinds": {
+            "number": 2
+          },
+          "samples": [
+            "30"
+          ]
+        },
+        {
+          "key": "@scroll_button_y",
+          "count": 2,
+          "files": 1,
+          "kinds": {
+            "number": 2
+          },
+          "samples": [
+            "40"
+          ]
+        },
+        {
+          "key": "@fixed_btn_mod_row_0",
+          "count": 2,
+          "files": 2,
+          "kinds": {
+            "number": 2
+          },
+          "samples": [
+            "1"
+          ]
+        },
+        {
+          "key": "@fixed_btn_mod_row_1",
+          "count": 2,
+          "files": 2,
+          "kinds": {
+            "number": 2
+          },
+          "samples": [
+            "300"
+          ]
+        },
+        {
+          "key": "listBoxType",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "block": 1
+          },
+          "samples": []
+        },
+        {
+          "key": "@window_width",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "number": 1
+          },
+          "samples": [
+            "520"
+          ]
+        },
+        {
+          "key": "@operatives_height",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "number": 1
+          },
+          "samples": [
+            "130"
+          ]
+        },
+        {
+          "key": "@fixed_btn_mod_row",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "number": 1
+          },
+          "samples": [
+            "300"
+          ]
+        },
+        {
+          "key": "@custom_btn_mod_row",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "number": 1
+          },
+          "samples": [
+            "0"
+          ]
+        },
+        {
+          "key": "@unit_counters_pos_y",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "number": 1
+          },
+          "samples": [
+            "100"
+          ]
+        },
+        {
+          "key": "@small_status_icon_pos_y",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "number": 1
+          },
+          "samples": [
+            "65"
+          ]
+        },
+        {
+          "key": "autohide_scrollbars",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "bool": 1
+          },
+          "samples": [
+            "no"
+          ]
+        },
+        {
+          "key": "@nv_mission_btn_training_x",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "number": 1
+          },
+          "samples": [
+            "185"
+          ]
+        },
+        {
+          "key": "@nv_mission_btn_y",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "number": 1
+          },
+          "samples": [
+            "48"
+          ]
+        },
+        {
+          "key": "@nv_dominance_ico_y",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "number": 1
+          },
+          "samples": [
+            "30"
+          ]
+        },
+        {
+          "key": "@buttons_height",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "number": 1
+          },
+          "samples": [
+            "54"
+          ]
+        },
+        {
+          "key": "@nv_tb_btn_y",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "number": 1
+          },
+          "samples": [
+            "6"
+          ]
+        },
+        {
+          "key": "@trait_window_height",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "number": 1
+          },
+          "samples": [
+            "640"
+          ]
+        },
+        {
+          "key": "@terrain_trait_width",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "number": 1
+          },
+          "samples": [
+            "210"
+          ]
+        },
+        {
+          "key": "closed_position",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "position": 1
+          },
+          "samples": []
+        },
+        {
+          "key": "open_position",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "position": 1
+          },
+          "samples": []
+        },
+        {
+          "key": "peek_position",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "position": 1
+          },
+          "samples": []
+        },
+        {
+          "key": "peek_check_top_left",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "position": 1
+          },
+          "samples": []
+        },
+        {
+          "key": "peek_check_size",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "size": 1
+          },
+          "samples": []
+        },
+        {
+          "key": "@history_entry_height",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "number": 1
+          },
+          "samples": [
+            "68"
+          ]
+        },
+        {
+          "key": "@history_entry_width",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "number": 1
+          },
+          "samples": [
+            "410"
+          ]
+        },
+        {
+          "key": "@cabinet_top_border_size",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "number": 1
+          },
+          "samples": [
+            "39"
+          ]
+        },
+        {
+          "key": "fade_delay",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "number": 1
+          },
+          "samples": [
+            "150"
+          ]
+        },
+        {
+          "key": "@backdrop_width",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "number": 1
+          },
+          "samples": [
+            "172"
+          ]
+        },
+        {
+          "key": "@backdrop_height",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "number": 1
+          },
+          "samples": [
+            "275"
+          ]
+        },
+        {
+          "key": "@row_1",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "number": 1
+          },
+          "samples": [
+            "8"
+          ]
+        },
+        {
+          "key": "@row_2",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "number": 1
+          },
+          "samples": [
+            "40"
+          ]
+        },
+        {
+          "key": "@icon_1",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "number": 1
+          },
+          "samples": [
+            "4"
+          ]
+        },
+        {
+          "key": "@icon_2",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "number": 1
+          },
+          "samples": [
+            "36"
+          ]
+        },
+        {
+          "key": "@textbox_1",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "number": 1
+          },
+          "samples": [
+            "8"
+          ]
+        },
+        {
+          "key": "@textbox_2",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "number": 1
+          },
+          "samples": [
+            "40"
+          ]
+        },
+        {
+          "key": "@state_action_button_slot_1",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "number": 1
+          },
+          "samples": [
+            "26"
+          ]
+        },
+        {
+          "key": "@state_action_button_slot_2",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "number": 1
+          },
+          "samples": [
+            "62"
+          ]
+        },
+        {
+          "key": "@state_action_button_slot_3",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "number": 1
+          },
+          "samples": [
+            "98"
+          ]
+        },
+        {
+          "key": "@state_action_button_slot_y",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "number": 1
+          },
+          "samples": [
+            "10"
+          ]
+        },
+        {
+          "key": "@container_pos_x",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "number": 1
+          },
+          "samples": [
+            "2"
+          ]
+        },
+        {
+          "key": "@container_pos_slot_0_y",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "number": 1
+          },
+          "samples": [
+            "22"
+          ]
+        },
+        {
+          "key": "@container_pos_slot_1_y",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "number": 1
+          },
+          "samples": [
+            "44"
+          ]
+        },
+        {
+          "key": "@container_pos_slot_2_y",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "number": 1
+          },
+          "samples": [
+            "66"
+          ]
+        },
+        {
+          "key": "@container_pos_slot_3_y",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "number": 1
+          },
+          "samples": [
+            "88"
+          ]
+        },
+        {
+          "key": "@container_pos_slot_4_y",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "number": 1
+          },
+          "samples": [
+            "110"
+          ]
+        },
+        {
+          "key": "@checkbox_pos_x",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "number": 1
+          },
+          "samples": [
+            "0"
+          ]
+        },
+        {
+          "key": "@checkbox_pos_y",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "number": 1
+          },
+          "samples": [
+            "0"
+          ]
+        },
+        {
+          "key": "@label_pos_x",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "number": 1
+          },
+          "samples": [
+            "30"
+          ]
+        },
+        {
+          "key": "@label_pos_y",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "number": 1
+          },
+          "samples": [
+            "3"
+          ]
+        },
+        {
+          "key": "@label_width",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "number": 1
+          },
+          "samples": [
+            "150"
+          ]
+        },
+        {
+          "key": "IconType",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "block": 1
+          },
+          "samples": []
+        }
+      ]
+    },
+    {
+      "type": "iconType",
+      "count": 10114,
+      "files": 611,
+      "props": [
+        {
+          "key": "name",
+          "count": 10114,
+          "files": 611,
+          "kinds": {
+            "bare": 10114
+          },
+          "samples": [
+            "abilitylist_bg_mid",
+            "bg_begin",
+            "bg_end",
+            "abilitylist_active_bg",
+            "abilitylist_cooldown_bg"
+          ]
+        },
+        {
+          "key": "position",
+          "count": 9914,
+          "files": 609,
+          "kinds": {
+            "position": 9914
+          },
+          "samples": []
+        },
+        {
+          "key": "spriteType",
+          "count": 9043,
+          "files": 602,
+          "kinds": {
+            "bare": 9043
+          },
+          "samples": [
+            "GFX_ability_list_mid",
+            "GFX_ability_list_begin",
+            "GFX_ability_list_end",
+            "GFX_ability_active_bg",
+            "GFX_ability_cooldown_bg"
+          ]
+        },
+        {
+          "key": "alwaystransparent",
+          "count": 2111,
+          "files": 131,
+          "kinds": {
+            "bool": 2111
+          },
+          "samples": [
+            "yes",
+            "no"
+          ]
+        },
+        {
+          "key": "quadTextureSprite",
+          "count": 1015,
+          "files": 96,
+          "kinds": {
+            "bare": 1015
+          },
+          "samples": [
+            "GFX_idea_slot_high_command",
+            "GFX_leader_unknown",
+            "GFX_clip",
+            "GFX_skill_transparent",
+            "GFX_flag_small2"
+          ]
+        },
+        {
+          "key": "Orientation",
+          "count": 780,
+          "files": 76,
+          "kinds": {
+            "bare": 780
+          },
+          "samples": [
+            "UPPER_LEFT",
+            "LOWER_LEFT",
+            "upper_right",
+            "UPPER_RIGHT",
+            "CENTER"
+          ]
+        },
+        {
+          "key": "centerposition",
+          "count": 705,
+          "files": 66,
+          "kinds": {
+            "bool": 705
+          },
+          "samples": [
+            "yes"
+          ]
+        },
+        {
+          "key": "scale",
+          "count": 630,
+          "files": 93,
+          "kinds": {
+            "number": 625,
+            "bare": 5
+          },
+          "samples": [
+            "0.42",
+            "0.6",
+            "0.8",
+            "0.5",
+            "0.9"
+          ]
+        },
+        {
+          "key": "frame",
+          "count": 616,
+          "files": 68,
+          "kinds": {
+            "number": 616
+          },
+          "samples": [
+            "7",
+            "16",
+            "15",
+            "14",
+            "13"
+          ]
+        },
+        {
+          "key": "pdx_tooltip",
+          "count": 278,
+          "files": 57,
+          "kinds": {
+            "bare": 278
+          },
+          "samples": [
+            "GIE_AIRWING_SELECTION_ITEM_EXILE_FLAG",
+            "AIR_CARRIER_CAPABLE",
+            "ATTACHED_AIR_WING_DESC",
+            "AIR_VOLUNTEERS_LIMIT",
+            "IN_COMBAT"
+          ]
+        },
+        {
+          "key": "centerPosition",
+          "count": 271,
+          "files": 17,
+          "kinds": {
+            "bool": 271
+          },
+          "samples": [
+            "yes"
+          ]
+        },
+        {
+          "key": "rotation",
+          "count": 258,
+          "files": 19,
+          "kinds": {
+            "number": 258
+          },
+          "samples": [
+            "1.5708",
+            "-0.04",
+            "1.0",
+            "0",
+            "0.0628318531"
+          ]
+        },
+        {
+          "key": "orientation",
+          "count": 257,
+          "files": 40,
+          "kinds": {
+            "bare": 257
+          },
+          "samples": [
+            "center_up",
+            "center",
+            "center_left",
+            "LOWER_LEFT",
+            "UPPER_LEFT"
+          ]
+        },
+        {
+          "key": "alwaysTransparent",
+          "count": 202,
+          "files": 8,
+          "kinds": {
+            "bool": 202
+          },
+          "samples": [
+            "yes",
+            "no"
+          ]
+        },
+        {
+          "key": "tooltip",
+          "count": 123,
+          "files": 7,
+          "kinds": {
+            "bare": 123
+          },
+          "samples": [
+            "OPERATIVE_CAPTURED",
+            "OPERATIVE_KILLED",
+            "GARRISON_HARDNESS_TOOLTIP",
+            "OCCUPATION_ZOOM_TO_STATE_TOOLTIP",
+            "OCCUPATION_INVALID_DEFAULT_LAW"
+          ]
+        },
+        {
+          "key": "hide",
+          "count": 101,
+          "files": 26,
+          "kinds": {
+            "bool": 101
+          },
+          "samples": [
+            "yes"
+          ]
+        },
+        {
+          "key": "context_aware_tooltip",
+          "count": 64,
+          "files": 5,
+          "kinds": {
+            "bare": 64
+          },
+          "samples": [
+            "AST_expected_election_winner_tt",
+            "[AST_GET_ELECTION_WINNER_LEADER_TEXT]",
+            "AST_alp_votes_count",
+            "AST_alp_candidate_text",
+            "AST_alp_win_count"
+          ]
+        },
+        {
+          "key": "pdx_tooltip_delayed",
+          "count": 40,
+          "files": 12,
+          "kinds": {
+            "bare": 40
+          },
+          "samples": [
+            "ATTACHED_AIR_WING_DELAYED_DESC",
+            "RAILWAY_GUN_ASSIGNED_DELAYED",
+            "china_faction_tenets_desc",
+            "GER_crisis_tt_long",
+            "top_agenda_icon_desc"
+          ]
+        },
+        {
+          "key": "SpriteType",
+          "count": 3,
+          "files": 3,
+          "kinds": {
+            "bare": 3
+          },
+          "samples": [
+            "GFX_resources_bg"
+          ]
+        },
+        {
+          "key": "buttonMesh",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "bare": 1
+          },
+          "samples": [
+            "MenuCreditsBg"
+          ]
+        },
+        {
+          "key": "hint_tag",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "bare": 1
+          },
+          "samples": [
+            "hint_waroverview"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "instantTextboxType",
+      "count": 3255,
+      "files": 124,
+      "props": [
+        {
+          "key": "name",
+          "count": 3255,
+          "files": 124,
+          "kinds": {
+            "bare": 3255
+          },
+          "samples": [
+            "title",
+            "name",
+            "modifiers",
+            "current_wing_name",
+            "header_text"
+          ]
+        },
+        {
+          "key": "font",
+          "count": 3255,
+          "files": 124,
+          "kinds": {
+            "bare": 3255
+          },
+          "samples": [
+            "hoi_18mbs",
+            "hoi_16mbs",
+            "hoi_36header",
+            "hoi_20bs",
+            "hoi4_typewriter16"
+          ]
+        },
+        {
+          "key": "position",
+          "count": 3250,
+          "files": 124,
+          "kinds": {
+            "position": 3250
+          },
+          "samples": []
+        },
+        {
+          "key": "maxWidth",
+          "count": 3238,
+          "files": 124,
+          "kinds": {
+            "number": 2987,
+            "bare": 251
+          },
+          "samples": [
+            "330",
+            "170",
+            "210",
+            "470",
+            "550"
+          ]
+        },
+        {
+          "key": "format",
+          "count": 2897,
+          "files": 121,
+          "kinds": {
+            "bare": 2897
+          },
+          "samples": [
+            "center",
+            "left",
+            "centre",
+            "right",
+            "CENTER"
+          ]
+        },
+        {
+          "key": "maxHeight",
+          "count": 2826,
+          "files": 123,
+          "kinds": {
+            "number": 2768,
+            "bare": 58
+          },
+          "samples": [
+            "25",
+            "23",
+            "100",
+            "20",
+            "18"
+          ]
+        },
+        {
+          "key": "text",
+          "count": 2420,
+          "files": 116,
+          "kinds": {
+            "bare": 2180,
+            "number": 240
+          },
+          "samples": [
+            "UNIT_LEADER_CHOOSE_ADVISOR_ROLE",
+            "UNIT_LEADER_APPLICABLE_ADVISOR_ROLES",
+            "Mr.",
+            "name",
+            "skill"
+          ]
+        },
+        {
+          "key": "fixedsize",
+          "count": 911,
+          "files": 89,
+          "kinds": {
+            "bool": 911
+          },
+          "samples": [
+            "yes",
+            "no"
+          ]
+        },
+        {
+          "key": "alwaystransparent",
+          "count": 812,
+          "files": 79,
+          "kinds": {
+            "bool": 812
+          },
+          "samples": [
+            "yes",
+            "no"
+          ]
+        },
+        {
+          "key": "borderSize",
+          "count": 418,
+          "files": 54,
+          "kinds": {
+            "position": 418
+          },
+          "samples": []
+        },
+        {
+          "key": "textureFile",
+          "count": 305,
+          "files": 45,
+          "kinds": {
+            "bare": 305
+          },
+          "samples": []
+        },
+        {
+          "key": "alwaysTransparent",
+          "count": 230,
+          "files": 2,
+          "kinds": {
+            "bool": 230
+          },
+          "samples": [
+            "yes"
+          ]
+        },
+        {
+          "key": "Orientation",
+          "count": 217,
+          "files": 25,
+          "kinds": {
+            "bare": 217
+          },
+          "samples": [
+            "upper_right",
+            "UPPER_RIGHT",
+            "UPPER_LEFT",
+            "LOWER_LEFT",
+            "LEFT"
+          ]
+        },
+        {
+          "key": "multiline",
+          "count": 178,
+          "files": 34,
+          "kinds": {
+            "bool": 178
+          },
+          "samples": [
+            "yes",
+            "no"
+          ]
+        },
+        {
+          "key": "text_color_code",
+          "count": 147,
+          "files": 13,
+          "kinds": {
+            "bare": 147
+          },
+          "samples": [
+            "b",
+            "L",
+            "g",
+            "H"
+          ]
+        },
+        {
+          "key": "vertical_alignment",
+          "count": 143,
+          "files": 29,
+          "kinds": {
+            "bare": 143
+          },
+          "samples": [
+            "center",
+            "top",
+            "bottom",
+            "CENTER"
+          ]
+        },
+        {
+          "key": "pdx_tooltip",
+          "count": 85,
+          "files": 24,
+          "kinds": {
+            "bare": 85
+          },
+          "samples": [
+            "BASIC_TRAITS_DESC",
+            "FIELD_MARSHAL_TRAITS_DESC",
+            "ASSIGNABLE_TRAITS_DESC",
+            "TERRAIN_TRAITS_DESC",
+            "REPAIR_ASSIGNMENT_INFO_FACTORIES"
+          ]
+        },
+        {
+          "key": "orientation",
+          "count": 69,
+          "files": 18,
+          "kinds": {
+            "bare": 69
+          },
+          "samples": [
+            "LOWER_LEFT",
+            "Upper_LEFT",
+            "UPPER_RIGHT",
+            "LOWER_RIGHT",
+            "UPPER_LEFT"
+          ]
+        },
+        {
+          "key": "tooltip",
+          "count": 12,
+          "files": 2,
+          "kinds": {
+            "bare": 12
+          },
+          "samples": [
+            "CRYPTO_NOT_ACTIVE_DESC",
+            "OPERATIONS_NOT_ACTIVE_DESC",
+            "OPERATIVE_CAPTURED",
+            "OPERATIVE_KILLED",
+            "NUMBER_OF_ALLY_SHIPS"
+          ]
+        },
+        {
+          "key": "scrollbarType",
+          "count": 12,
+          "files": 3,
+          "kinds": {
+            "bare": 12
+          },
+          "samples": [
+            "standardtext_slider"
+          ]
+        },
+        {
+          "key": "maxwidth",
+          "count": 11,
+          "files": 1,
+          "kinds": {
+            "number": 11
+          },
+          "samples": [
+            "120"
+          ]
+        },
+        {
+          "key": "truncate",
+          "count": 10,
+          "files": 4,
+          "kinds": {
+            "bool": 10
+          },
+          "samples": [
+            "yes"
+          ]
+        },
+        {
+          "key": "hide",
+          "count": 7,
+          "files": 5,
+          "kinds": {
+            "bool": 7
+          },
+          "samples": [
+            "yes"
+          ]
+        },
+        {
+          "key": "scrollbartype",
+          "count": 5,
+          "files": 3,
+          "kinds": {
+            "bare": 5
+          },
+          "samples": [
+            "standardlistbox_slider",
+            "standardtext_slider"
+          ]
+        },
+        {
+          "key": "context_aware_text",
+          "count": 3,
+          "files": 2,
+          "kinds": {
+            "bare": 3
+          },
+          "samples": [
+            "[AST_GET_ALP_CAMPAIGN_POL_POWER_COST]",
+            "[AST_GET_UAP_CAMPAIGN_POL_POWER_COST]",
+            "PROGRAM_VIEW_TITLE"
+          ]
+        },
+        {
+          "key": "pdx_tooltip_delayed",
+          "count": 2,
+          "files": 2,
+          "kinds": {
+            "bare": 2
+          },
+          "samples": [
+            "economic_sphere_label_tooltip_delayed",
+            "PHI_pie_chart_desc_delay_tt"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "buttonType",
+      "count": 3126,
+      "files": 164,
+      "props": [
+        {
+          "key": "name",
+          "count": 3126,
+          "files": 164,
+          "kinds": {
+            "bare": 3126
+          },
+          "samples": [
+            "abilitylist_button",
+            "close_button",
+            "bg",
+            "ace_btn",
+            "select_button"
+          ]
+        },
+        {
+          "key": "position",
+          "count": 3039,
+          "files": 161,
+          "kinds": {
+            "position": 3039
+          },
+          "samples": []
+        },
+        {
+          "key": "quadTextureSprite",
+          "count": 2260,
+          "files": 142,
+          "kinds": {
+            "bare": 2260
+          },
+          "samples": [
+            "GFX_button_261x34",
+            "GFX_closebutton",
+            "GFX_mini_tooltip",
+            "GFX_wing_prio_strip",
+            "GFX_generic_checkbox3"
+          ]
+        },
+        {
+          "key": "clicksound",
+          "count": 1992,
+          "files": 137,
+          "kinds": {
+            "bare": 1992
+          },
+          "samples": [
+            "click_close",
+            "click_default",
+            "disband",
+            "air_mission_select",
+            "select_aircraft"
+          ]
+        },
+        {
+          "key": "spriteType",
+          "count": 869,
+          "files": 99,
+          "kinds": {
+            "bare": 869
+          },
+          "samples": [
+            "GFX_ability_icon_default",
+            "GFX_closebutton",
+            "GFX_aces_view_bg",
+            "GFX_ace_none",
+            "GFX_theatre_army_shield"
+          ]
+        },
+        {
+          "key": "buttonFont",
+          "count": 834,
+          "files": 114,
+          "kinds": {
+            "bare": 834
+          },
+          "samples": [
+            "hoi_16mbs",
+            "Main_14_black",
+            "hoi_20b",
+            "hoi_18mbs",
+            "vic_18"
+          ]
+        },
+        {
+          "key": "pdx_tooltip",
+          "count": 779,
+          "files": 112,
+          "kinds": {
+            "bare": 779
+          },
+          "samples": [
+            "CLOSE",
+            "DESELECT_UNIT",
+            "QUICK_DEPLOY_SELECTION_WINDOW_OPEN_DESC",
+            "AIRWING_DELETE",
+            "AIR_REINFORCE_OBSOLETE_ONLY"
+          ]
+        },
+        {
+          "key": "Orientation",
+          "count": 689,
+          "files": 103,
+          "kinds": {
+            "bare": 689
+          },
+          "samples": [
+            "UPPER_RIGHT",
+            "LEFT",
+            "UPPER_LEFT",
+            "upper_right",
+            "LOWER_LEFT"
+          ]
+        },
+        {
+          "key": "shortcut",
+          "count": 623,
+          "files": 104,
+          "kinds": {
+            "bare": 623
+          },
+          "samples": [
+            "ESCAPE",
+            "d",
+            "g",
+            "o",
+            "a"
+          ]
+        },
+        {
+          "key": "buttonText",
+          "count": 572,
+          "files": 76,
+          "kinds": {
+            "bare": 572
+          },
+          "samples": [
+            "CLOSE",
+            "AST_form_unity_government_text",
+            "AST_party_campaign_text",
+            "OK",
+            "COMBAT_LOG_TAB_COMBAT"
+          ]
+        },
+        {
+          "key": "frame",
+          "count": 443,
+          "files": 66,
+          "kinds": {
+            "number": 443
+          },
+          "samples": [
+            "1",
+            "4",
+            "2",
+            "3",
+            "8"
+          ]
+        },
+        {
+          "key": "font",
+          "count": 378,
+          "files": 43,
+          "kinds": {
+            "bare": 378
+          },
+          "samples": [
+            "hoi_16mbs",
+            "hoi_18mbs",
+            "hoi_18b",
+            "hoi4_typewriter16"
+          ]
+        },
+        {
+          "key": "oversound",
+          "count": 339,
+          "files": 30,
+          "kinds": {
+            "bare": 339
+          },
+          "samples": [
+            "command_power_ability_over",
+            "ui_menu_over",
+            "Spy_Agency_Cryptology_Decipher_Pointer_Over_Target",
+            "Spy_Map_Mode_Pointer_Over_Agent",
+            "traits_ui_over"
+          ]
+        },
+        {
+          "key": "orientation",
+          "count": 261,
+          "files": 46,
+          "kinds": {
+            "bare": 261
+          },
+          "samples": [
+            "UPPER_RIGHT",
+            "upper_left",
+            "center_up",
+            "center_left",
+            "UPPER_LEFT"
+          ]
+        },
+        {
+          "key": "scale",
+          "count": 203,
+          "files": 53,
+          "kinds": {
+            "number": 202,
+            "bare": 1
+          },
+          "samples": [
+            "0.7",
+            "0.8",
+            "0.76",
+            "1.1",
+            "0.9"
+          ]
+        },
+        {
+          "key": "text",
+          "count": 198,
+          "files": 25,
+          "kinds": {
+            "bare": 198
+          },
+          "samples": [
+            "SELECT",
+            "BUTTON_OK",
+            "regular_trait_tab_title",
+            "advisor_trait_tab_title",
+            "COMBAT_LOG_FILTER_BTN"
+          ]
+        },
+        {
+          "key": "pdx_tooltip_delayed",
+          "count": 136,
+          "files": 21,
+          "kinds": {
+            "bare": 136
+          },
+          "samples": [
+            "LEADER_PROXIMITY_FRONTLINE_DESC",
+            "LEADER_PROXIMITY_CLOSE_DESC",
+            "LEADER_PROXIMITY_MEDIUM_DESC",
+            "LEADER_PROXIMITY_FAR_DESC",
+            "LEADER_PROXIMITY_FREE_CONTROL_DESC"
+          ]
+        },
+        {
+          "key": "size",
+          "count": 128,
+          "files": 42,
+          "kinds": {
+            "position": 128
+          },
+          "samples": []
+        },
+        {
+          "key": "web_link",
+          "count": 71,
+          "files": 8,
+          "kinds": {
+            "bare": 71
+          },
+          "samples": [
+            "Division#division_template",
+            "Experience#army_experience",
+            "World_tension",
+            "Naval_warfare#Naval_Missions",
+            "supply"
+          ]
+        },
+        {
+          "key": "alwaystransparent",
+          "count": 63,
+          "files": 26,
+          "kinds": {
+            "bool": 63
+          },
+          "samples": [
+            "yes",
+            "no"
+          ]
+        },
+        {
+          "key": "pdx_tooltip_anchor",
+          "count": 55,
+          "files": 1,
+          "kinds": {
+            "position": 55
+          },
+          "samples": []
+        },
+        {
+          "key": "centerposition",
+          "count": 50,
+          "files": 16,
+          "kinds": {
+            "bool": 50
+          },
+          "samples": [
+            "yes"
+          ]
+        },
+        {
+          "key": "buttontext",
+          "count": 49,
+          "files": 13,
+          "kinds": {
+            "bare": 49
+          },
+          "samples": [
+            "ARMY_SORT_TYPE",
+            "ARMY_SORT_NAME",
+            "ARMY_SORT_REGION",
+            "ARMY_SORT_BASE",
+            "ARMY_SORT_SIZE"
+          ]
+        },
+        {
+          "key": "tooltip",
+          "count": 33,
+          "files": 8,
+          "kinds": {
+            "bare": 33
+          },
+          "samples": [
+            "LEDGER_CIV_GRAPH_SHOW_INDUSTRY",
+            "LEDGER_CIV_GRAPH_SHOW_CONVOYS",
+            "LEDGER_CIV_GRAPH_SHOW_BOMBERS",
+            "LEDGER_CIV_GRAPH_SHOW_TRUCKS",
+            "LEDGER_CIV_GRAPH_SHOW_TRAINS"
+          ]
+        },
+        {
+          "key": "centerPosition",
+          "count": 25,
+          "files": 6,
+          "kinds": {
+            "bool": 25
+          },
+          "samples": [
+            "yes"
+          ]
+        },
+        {
+          "key": "no_clicksound",
+          "count": 23,
+          "files": 5,
+          "kinds": {
+            "bool": 23
+          },
+          "samples": [
+            "yes"
+          ]
+        },
+        {
+          "key": "alwaysTransparent",
+          "count": 19,
+          "files": 3,
+          "kinds": {
+            "bool": 19
+          },
+          "samples": [
+            "yes"
+          ]
+        },
+        {
+          "key": "format",
+          "count": 18,
+          "files": 8,
+          "kinds": {
+            "bare": 18
+          },
+          "samples": [
+            "center",
+            "left;",
+            "right",
+            "left"
+          ]
+        },
+        {
+          "key": "hide",
+          "count": 9,
+          "files": 6,
+          "kinds": {
+            "bool": 9
+          },
+          "samples": [
+            "yes"
+          ]
+        },
+        {
+          "key": "context_aware_tooltip",
+          "count": 9,
+          "files": 2,
+          "kinds": {
+            "bare": 9
+          },
+          "samples": [
+            "PROGRAM_ITEM_CLICK_TO_ASSIGN_SCIENTIST",
+            "PROGRAM_ITEM_CHANGE_SCIENTIST_BUTTON",
+            "PROGRAM_ITEM_UNASSIGN_SCIENTIST_BUTTON"
+          ]
+        },
+        {
+          "key": "enabled",
+          "count": 8,
+          "files": 2,
+          "kinds": {
+            "bool": 8
+          },
+          "samples": [
+            "no"
+          ]
+        },
+        {
+          "key": "borderSize",
+          "count": 6,
+          "files": 5,
+          "kinds": {
+            "position": 6
+          },
+          "samples": []
+        },
+        {
+          "key": "tooltipText",
+          "count": 4,
+          "files": 1,
+          "kinds": {
+            "bare": 4
+          },
+          "samples": []
+        },
+        {
+          "key": "delayedTooltipText",
+          "count": 4,
+          "files": 1,
+          "kinds": {
+            "bare": 4
+          },
+          "samples": []
+        },
+        {
+          "key": "shortCut",
+          "count": 3,
+          "files": 1,
+          "kinds": {
+            "bare": 3
+          },
+          "samples": [
+            "ESCAPE"
+          ]
+        },
+        {
+          "key": "rotation",
+          "count": 2,
+          "files": 1,
+          "kinds": {
+            "number": 2
+          },
+          "samples": [
+            "0.05"
+          ]
+        },
+        {
+          "key": "pdx_disabled_tooltip",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "bare": 1
+          },
+          "samples": [
+            "DESIGNER_SELECT_NICHE_DISABLED"
+          ]
+        },
+        {
+          "key": "pdx_disabled_tooltip_delayed",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "bare": 1
+          },
+          "samples": [
+            "DESIGNER_SELECT_NICHE_DISABLED_DELAYED"
+          ]
+        },
+        {
+          "key": "buttonfont",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "bare": 1
+          },
+          "samples": [
+            "hoi_18mbs"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "instantTextBoxType",
+      "count": 2086,
+      "files": 125,
+      "props": [
+        {
+          "key": "name",
+          "count": 2086,
+          "files": 125,
+          "kinds": {
+            "bare": 2086
+          },
+          "samples": [
+            "achievement_name",
+            "achievement_desc",
+            "achievement_progress_text",
+            "title_label",
+            "armies_count_box"
+          ]
+        },
+        {
+          "key": "position",
+          "count": 2084,
+          "files": 124,
+          "kinds": {
+            "position": 2084
+          },
+          "samples": []
+        },
+        {
+          "key": "font",
+          "count": 2053,
+          "files": 123,
+          "kinds": {
+            "bare": 2053
+          },
+          "samples": [
+            "hoi_20b",
+            "hoi_18mbs",
+            "hoi_16mbs",
+            "hoi_30header",
+            "hoi_24header"
+          ]
+        },
+        {
+          "key": "maxWidth",
+          "count": 1909,
+          "files": 112,
+          "kinds": {
+            "number": 1890,
+            "bare": 19
+          },
+          "samples": [
+            "300",
+            "450",
+            "100",
+            "500",
+            "28"
+          ]
+        },
+        {
+          "key": "text",
+          "count": 1855,
+          "files": 114,
+          "kinds": {
+            "bare": 1331,
+            "number": 524
+          },
+          "samples": [
+            "name",
+            "desc",
+            "7/14",
+            "ACHIEVEMENTS",
+            "28"
+          ]
+        },
+        {
+          "key": "format",
+          "count": 1849,
+          "files": 115,
+          "kinds": {
+            "bare": 1849
+          },
+          "samples": [
+            "left",
+            "centre",
+            "center",
+            "right",
+            "CENTER"
+          ]
+        },
+        {
+          "key": "maxHeight",
+          "count": 1737,
+          "files": 109,
+          "kinds": {
+            "number": 1736,
+            "bare": 1
+          },
+          "samples": [
+            "32",
+            "100",
+            "23",
+            "20",
+            "90"
+          ]
+        },
+        {
+          "key": "borderSize",
+          "count": 1294,
+          "files": 48,
+          "kinds": {
+            "position": 1294
+          },
+          "samples": []
+        },
+        {
+          "key": "textureFile",
+          "count": 897,
+          "files": 29,
+          "kinds": {
+            "bare": 897
+          },
+          "samples": []
+        },
+        {
+          "key": "Orientation",
+          "count": 691,
+          "files": 22,
+          "kinds": {
+            "bare": 691
+          },
+          "samples": [
+            "UPPER_LEFT",
+            "LEFT",
+            "UPPER_RIGHT",
+            "LOWER_RIGHT",
+            "LOWER_LEFT"
+          ]
+        },
+        {
+          "key": "fixedsize",
+          "count": 458,
+          "files": 69,
+          "kinds": {
+            "bool": 458
+          },
+          "samples": [
+            "yes",
+            "no"
+          ]
+        },
+        {
+          "key": "alwaystransparent",
+          "count": 258,
+          "files": 49,
+          "kinds": {
+            "bool": 258
+          },
+          "samples": [
+            "yes"
+          ]
+        },
+        {
+          "key": "orientation",
+          "count": 241,
+          "files": 31,
+          "kinds": {
+            "bare": 241
+          },
+          "samples": [
+            "UPPER_LEFT",
+            "CENTER",
+            "upper_left",
+            "UPPER_RIGHT",
+            "center"
+          ]
+        },
+        {
+          "key": "pdx_tooltip",
+          "count": 171,
+          "files": 24,
+          "kinds": {
+            "bare": 171
+          },
+          "samples": [
+            "AST_cabinet_trust_effects_1",
+            "AST_cabinet_trust_effects_2",
+            "AST_cabinet_trust_effects_3",
+            "AST_cabinet_trust_effects_4",
+            "AST_cabinet_trust_effects_5"
+          ]
+        },
+        {
+          "key": "maxwidth",
+          "count": 99,
+          "files": 11,
+          "kinds": {
+            "number": 99
+          },
+          "samples": [
+            "90",
+            "300",
+            "310",
+            "230",
+            "110"
+          ]
+        },
+        {
+          "key": "vertical_alignment",
+          "count": 70,
+          "files": 15,
+          "kinds": {
+            "bare": 70
+          },
+          "samples": [
+            "center"
+          ]
+        },
+        {
+          "key": "context_aware_text",
+          "count": 55,
+          "files": 8,
+          "kinds": {
+            "bare": 55
+          },
+          "samples": [
+            "AST_next_election_countdown_text",
+            "AST_expected_election_winner_text",
+            "[AST_GET_GOVERNMENT_FORMATION_PERIOD_TITLE]",
+            "[AST_GET_GOVERNMENT_FORMATION_PERIOD_TIMER]",
+            "[AST_GET_CONFIRMED_WINNING_PARTY]"
+          ]
+        },
+        {
+          "key": "truncate",
+          "count": 53,
+          "files": 9,
+          "kinds": {
+            "bool": 53
+          },
+          "samples": [
+            "yes",
+            "no"
+          ]
+        },
+        {
+          "key": "scrollbartype",
+          "count": 35,
+          "files": 6,
+          "kinds": {
+            "bare": 35
+          },
+          "samples": [
+            "standardtext_slider"
+          ]
+        },
+        {
+          "key": "multiline",
+          "count": 17,
+          "files": 6,
+          "kinds": {
+            "bool": 17
+          },
+          "samples": [
+            "no",
+            "yes"
+          ]
+        },
+        {
+          "key": "pdx_tooltip_delayed",
+          "count": 9,
+          "files": 3,
+          "kinds": {
+            "bare": 9
+          },
+          "samples": [
+            "GER_crisis_tt_long",
+            "GER_investment_label_tt_long",
+            "GER_stability_label_tt_long",
+            "party_popularity_delayed_tooltip",
+            "LUX_chamberofdeputies_main_overview_results_stab_delayed_tt"
+          ]
+        },
+        {
+          "key": "alwaysTransparent",
+          "count": 5,
+          "files": 3,
+          "kinds": {
+            "bool": 5
+          },
+          "samples": [
+            "yes"
+          ]
+        },
+        {
+          "key": "text_color_code",
+          "count": 3,
+          "files": 2,
+          "kinds": {
+            "bare": 3
+          },
+          "samples": [
+            "H"
+          ]
+        },
+        {
+          "key": "context_aware_tooltip",
+          "count": 3,
+          "files": 2,
+          "kinds": {
+            "bare": 3
+          },
+          "samples": [
+            "CZE_skoda_optimization_tier_hover_tt",
+            "RUS_savinkov_inner_circle_bop_status_modifiers_tooltip"
+          ]
+        },
+        {
+          "key": "tooltip",
+          "count": 2,
+          "files": 1,
+          "kinds": {
+            "bare": 2
+          },
+          "samples": [
+            "GARRISON_HARDNESS_TOOLTIP",
+            "FOREIGN_SUPPORT_TOOLTIP"
+          ]
+        },
+        {
+          "key": "maxheight",
+          "count": 2,
+          "files": 1,
+          "kinds": {
+            "number": 2
+          },
+          "samples": [
+            "32"
+          ]
+        },
+        {
+          "key": "hide",
+          "count": 2,
+          "files": 1,
+          "kinds": {
+            "bool": 2
+          },
+          "samples": [
+            "yes"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "gridBoxType",
+      "count": 437,
+      "files": 76,
+      "props": [
+        {
+          "key": "name",
+          "count": 437,
+          "files": 76,
+          "kinds": {
+            "bare": 437
+          },
+          "samples": [
+            "grid",
+            "list",
+            "roles_grid",
+            "wings_compact",
+            "button_grid"
+          ]
+        },
+        {
+          "key": "slotsize",
+          "count": 435,
+          "files": 76,
+          "kinds": {
+            "size": 434,
+            "block": 1
+          },
+          "samples": []
+        },
+        {
+          "key": "position",
+          "count": 425,
+          "files": 74,
+          "kinds": {
+            "position": 425
+          },
+          "samples": []
+        },
+        {
+          "key": "size",
+          "count": 421,
+          "files": 74,
+          "kinds": {
+            "size": 421
+          },
+          "samples": []
+        },
+        {
+          "key": "format",
+          "count": 407,
+          "files": 72,
+          "kinds": {
+            "bare": 407
+          },
+          "samples": [
+            "UPPER_LEFT",
+            "RIGHT",
+            "LOWER_LEFT",
+            "UPPER_RIGHT"
+          ]
+        },
+        {
+          "key": "max_slots_horizontal",
+          "count": 326,
+          "files": 69,
+          "kinds": {
+            "number": 324,
+            "bare": 2
+          },
+          "samples": [
+            "1",
+            "4",
+            "6",
+            "2",
+            "7"
+          ]
+        },
+        {
+          "key": "max_slots_vertical",
+          "count": 123,
+          "files": 34,
+          "kinds": {
+            "number": 123
+          },
+          "samples": [
+            "1",
+            "4",
+            "6",
+            "2",
+            "3"
+          ]
+        },
+        {
+          "key": "add_horizontal",
+          "count": 51,
+          "files": 15,
+          "kinds": {
+            "bool": 51
+          },
+          "samples": [
+            "yes",
+            "no"
+          ]
+        },
+        {
+          "key": "Orientation",
+          "count": 29,
+          "files": 8,
+          "kinds": {
+            "bare": 29
+          },
+          "samples": [
+            "upper_left",
+            "UPPER_LEFT"
+          ]
+        },
+        {
+          "key": "max_slots",
+          "count": 12,
+          "files": 6,
+          "kinds": {
+            "position": 12
+          },
+          "samples": []
+        },
+        {
+          "key": "orientation",
+          "count": 7,
+          "files": 5,
+          "kinds": {
+            "bare": 7
+          },
+          "samples": [
+            "CENTER_UP",
+            "lower_left",
+            "center_up"
+          ]
+        },
+        {
+          "key": "background",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "block": 1
+          },
+          "samples": []
+        }
+      ]
+    },
+    {
+      "type": "guiButtonType",
+      "count": 369,
+      "files": 20,
+      "props": [
+        {
+          "key": "name",
+          "count": 369,
+          "files": 20,
+          "kinds": {
+            "bare": 369
+          },
+          "samples": [
+            "landslider_SliderButton",
+            "landslider_TrackButton",
+            "landslider_upButton",
+            "landslider_downButton",
+            "Exit"
+          ]
+        },
+        {
+          "key": "quadTextureSprite",
+          "count": 361,
+          "files": 20,
+          "kinds": {
+            "bare": 361
+          },
+          "samples": [
+            "GFX_scroll_drager",
+            "yearslider_background",
+            "GFX_scroll_left",
+            "GFX_scroll_right",
+            "button_type_7"
+          ]
+        },
+        {
+          "key": "position",
+          "count": 352,
+          "files": 20,
+          "kinds": {
+            "position": 352
+          },
+          "samples": []
+        },
+        {
+          "key": "buttonFont",
+          "count": 177,
+          "files": 13,
+          "kinds": {
+            "bare": 177
+          },
+          "samples": [
+            "Main_14_black",
+            "hoi_16mbs",
+            "vic_18",
+            "standard_font",
+            "Main_16"
+          ]
+        },
+        {
+          "key": "buttonText",
+          "count": 168,
+          "files": 11,
+          "kinds": {
+            "bare": 166,
+            "number": 2
+          },
+          "samples": [
+            "EXIT",
+            "BACK",
+            "START",
+            "ABANDON_GAME",
+            "  "
+          ]
+        },
+        {
+          "key": "shortcut",
+          "count": 48,
+          "files": 6,
+          "kinds": {
+            "bare": 46,
+            "number": 2
+          },
+          "samples": [
+            "<",
+            "ESCAPE",
+            "RETURN",
+            "m",
+            "a"
+          ]
+        },
+        {
+          "key": "parent",
+          "count": 42,
+          "files": 6,
+          "kinds": {
+            "bare": 42
+          },
+          "samples": [
+            "listboxSliderButton",
+            "SliderButton",
+            "landslider_SliderButton"
+          ]
+        },
+        {
+          "key": "Orientation",
+          "count": 31,
+          "files": 7,
+          "kinds": {
+            "bare": 31
+          },
+          "samples": [
+            "CENTER",
+            "UPPER_LEFT",
+            "LOWER_RIGHT",
+            "UPPER_RIGHT"
+          ]
+        },
+        {
+          "key": "clicksound",
+          "count": 28,
+          "files": 9,
+          "kinds": {
+            "bare": 28
+          },
+          "samples": [
+            "click_default",
+            "click_close",
+            "click_ok",
+            "click_main",
+            "click_scroll"
+          ]
+        },
+        {
+          "key": "spriteType",
+          "count": 8,
+          "files": 3,
+          "kinds": {
+            "bare": 8
+          },
+          "samples": [
+            "GFX_pink_bold_selection_frame",
+            "GFX_pink_selection_frame",
+            "GFX_tiled_window_transparent",
+            "GFX_sub_message_bg",
+            "GFX_alerts"
+          ]
+        },
+        {
+          "key": "size",
+          "count": 7,
+          "files": 3,
+          "kinds": {
+            "position": 7
+          },
+          "samples": []
+        },
+        {
+          "key": "no_clicksound",
+          "count": 5,
+          "files": 1,
+          "kinds": {
+            "bool": 5
+          },
+          "samples": [
+            "yes"
+          ]
+        },
+        {
+          "key": "frame",
+          "count": 5,
+          "files": 2,
+          "kinds": {
+            "number": 5
+          },
+          "samples": [
+            "1"
+          ]
+        },
+        {
+          "key": "pdx_tooltip",
+          "count": 4,
+          "files": 2,
+          "kinds": {
+            "bare": 4
+          },
+          "samples": [
+            "CLOSE",
+            "HIGH_PRIORITY",
+            "MEDIUM_PRIORITY",
+            "LOW_PRIORITY"
+          ]
+        },
+        {
+          "key": "format",
+          "count": 3,
+          "files": 2,
+          "kinds": {
+            "bare": 3
+          },
+          "samples": [
+            "left",
+            "centre"
+          ]
+        },
+        {
+          "key": "pdx_tooltip_delayed",
+          "count": 3,
+          "files": 1,
+          "kinds": {
+            "bare": 3
+          },
+          "samples": [
+            "THEATRE_PRIORITY_DESC"
+          ]
+        },
+        {
+          "key": "hint_tag",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "bare": 1
+          },
+          "samples": [
+            "hint_waroverview"
+          ]
+        },
+        {
+          "key": "orientation",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "bare": 1
+          },
+          "samples": [
+            "UPPER_LEFT"
+          ]
+        },
+        {
+          "key": "scale",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "number": 1
+          },
+          "samples": [
+            "0.7"
+          ]
+        },
+        {
+          "key": "alwaystransparent",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "bool": 1
+          },
+          "samples": [
+            "yes"
+          ]
+        },
+        {
+          "key": "oversound",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "bare": 1
+          },
+          "samples": [
+            "ui_menu_over"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "ButtonType",
+      "count": 290,
+      "files": 26,
+      "props": [
+        {
+          "key": "name",
+          "count": 290,
+          "files": 26,
+          "kinds": {
+            "bare": 290
+          },
+          "samples": [
+            "leader_button",
+            "chart_size_3_years",
+            "chart_size_1_year",
+            "chart_size_3_months",
+            "btn_stored"
+          ]
+        },
+        {
+          "key": "position",
+          "count": 290,
+          "files": 26,
+          "kinds": {
+            "position": 290
+          },
+          "samples": []
+        },
+        {
+          "key": "quadTextureSprite",
+          "count": 223,
+          "files": 17,
+          "kinds": {
+            "bare": 223
+          },
+          "samples": [
+            "GFX_chart_history_level_button",
+            "GFX_chart_history_type_button",
+            "GFX_button_123x34",
+            "GFX_button_reset_123x34",
+            "GFX_button_221x34"
+          ]
+        },
+        {
+          "key": "clicksound",
+          "count": 218,
+          "files": 22,
+          "kinds": {
+            "bare": 218
+          },
+          "samples": [
+            "click_default",
+            "ui_ship_designer_save",
+            "ui_ship_designer_reset",
+            "ui_ship_designer_duplicate",
+            "ui_ship_designer_auto"
+          ]
+        },
+        {
+          "key": "buttonFont",
+          "count": 192,
+          "files": 19,
+          "kinds": {
+            "bare": 192
+          },
+          "samples": [
+            "hoi_16mbs",
+            "hoi_18mbs",
+            "hoi_20b",
+            "hoi_30header",
+            "hoi_24header"
+          ]
+        },
+        {
+          "key": "buttonText",
+          "count": 148,
+          "files": 18,
+          "kinds": {
+            "bare": 148
+          },
+          "samples": [
+            "LEDGER_CIV_LINECHART_DETAILS_3_YEARS",
+            "LEDGER_CIV_LINECHART_DETAILS_1_YEAR",
+            "LEDGER_CIV_LINECHART_DETAILS_3_MONTHS",
+            "LOGISTICS_FUEL_STORED",
+            "LOGISTICS_FUEL_CONSUMED"
+          ]
+        },
+        {
+          "key": "pdx_tooltip",
+          "count": 88,
+          "files": 11,
+          "kinds": {
+            "bare": 88
+          },
+          "samples": [
+            "DESIGNER_RESET_DESC",
+            "SAVE_AS_PRESET_TOOLTIP",
+            "OPEN_PRESETS_TOOLTIP",
+            "EQUIPMENT_DESIGNER_RESET_DESC",
+            "EQUIPMENT_DESIGNER_DUPLICATE_DESC"
+          ]
+        },
+        {
+          "key": "spriteType",
+          "count": 67,
+          "files": 10,
+          "kinds": {
+            "bare": 67
+          },
+          "samples": [
+            "GFX_country_army_navy_leader",
+            "GFX_play_button_ready",
+            "GFX_group_add_marshal_bg",
+            "GFX_LG_select_group_marshal_btn",
+            "GFX_LG_disband_group_btn"
+          ]
+        },
+        {
+          "key": "oversound",
+          "count": 64,
+          "files": 3,
+          "kinds": {
+            "bare": 64
+          },
+          "samples": [
+            "ui_menu_over"
+          ]
+        },
+        {
+          "key": "frame",
+          "count": 51,
+          "files": 9,
+          "kinds": {
+            "number": 51
+          },
+          "samples": [
+            "2",
+            "1",
+            "10"
+          ]
+        },
+        {
+          "key": "Orientation",
+          "count": 45,
+          "files": 3,
+          "kinds": {
+            "bare": 45
+          },
+          "samples": [
+            "LOWER_RIGHT",
+            "UPPER_LEFT",
+            "UPPER_RIGHT",
+            "CENTER_DOWN",
+            "LOWER_LEFT"
+          ]
+        },
+        {
+          "key": "shortcut",
+          "count": 42,
+          "files": 5,
+          "kinds": {
+            "bare": 42
+          },
+          "samples": [
+            "RETURN",
+            "ESCAPE",
+            "l",
+            "o",
+            "i"
+          ]
+        },
+        {
+          "key": "web_link",
+          "count": 31,
+          "files": 2,
+          "kinds": {
+            "bare": 31
+          },
+          "samples": [
+            "https://bsky.app/profile/hoi.paradoxinteractive.com",
+            "https://x.com/hoi_game",
+            "https://www.facebook.com/Heartsofiron",
+            "https://www.instagram.com/hearts_of_iron_pdx",
+            "https://www.youtube.com/@HeartsOfIronOfficial"
+          ]
+        },
+        {
+          "key": "scale",
+          "count": 30,
+          "files": 6,
+          "kinds": {
+            "number": 30
+          },
+          "samples": [
+            "0.147",
+            "0.8",
+            "0.9",
+            "1",
+            "0.39"
+          ]
+        },
+        {
+          "key": "hide",
+          "count": 14,
+          "files": 3,
+          "kinds": {
+            "bool": 14
+          },
+          "samples": [
+            "yes"
+          ]
+        },
+        {
+          "key": "text",
+          "count": 12,
+          "files": 4,
+          "kinds": {
+            "bare": 12
+          },
+          "samples": [
+            "BUTTON_SHOW_ALL_DESIGNS",
+            "FE_SINGLE_PLAYER",
+            "FE_MULTI_PLAYER",
+            "FE_EXIT"
+          ]
+        },
+        {
+          "key": "orientation",
+          "count": 10,
+          "files": 3,
+          "kinds": {
+            "bare": 10
+          },
+          "samples": [
+            "LOWER_LEFT",
+            "lower_right",
+            "center_down"
+          ]
+        },
+        {
+          "key": "font",
+          "count": 9,
+          "files": 1,
+          "kinds": {
+            "bare": 9
+          },
+          "samples": [
+            "hoi_24header"
+          ]
+        },
+        {
+          "key": "multiline",
+          "count": 6,
+          "files": 1,
+          "kinds": {
+            "bool": 6
+          },
+          "samples": [
+            "yes"
+          ]
+        },
+        {
+          "key": "centerposition",
+          "count": 6,
+          "files": 1,
+          "kinds": {
+            "bool": 6
+          },
+          "samples": [
+            "yes"
+          ]
+        },
+        {
+          "key": "tooltip",
+          "count": 3,
+          "files": 1,
+          "kinds": {
+            "bare": 3
+          },
+          "samples": [
+            "LEDGER_CIV_LINECHART_DETAILS_3_YEARS_TOOLTIP",
+            "LEDGER_CIV_LINECHART_DETAILS_1_YEAR_TOOLTIP",
+            "LEDGER_CIV_LINECHART_DETAILS_3_MONTHS_TOOLTIP"
+          ]
+        },
+        {
+          "key": "size",
+          "count": 3,
+          "files": 2,
+          "kinds": {
+            "position": 3
+          },
+          "samples": []
+        },
+        {
+          "key": "borderSize",
+          "count": 2,
+          "files": 1,
+          "kinds": {
+            "position": 2
+          },
+          "samples": []
+        },
+        {
+          "key": "format",
+          "count": 2,
+          "files": 1,
+          "kinds": {
+            "bare": 2
+          },
+          "samples": [
+            "left",
+            "center"
+          ]
+        },
+        {
+          "key": "alwaystransparent",
+          "count": 2,
+          "files": 1,
+          "kinds": {
+            "bool": 2
+          },
+          "samples": [
+            "yes"
+          ]
+        },
+        {
+          "key": "bound_tooltip",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "block": 1
+          },
+          "samples": []
+        }
+      ]
+    },
+    {
+      "type": "positionType",
+      "count": 263,
+      "files": 55,
+      "props": [
+        {
+          "key": "name",
+          "count": 263,
+          "files": 55,
+          "kinds": {
+            "bare": 263
+          },
+          "samples": [
+            "wings_compact_number_of_elements",
+            "air_wings_list_padding",
+            "niche_selection_position",
+            "reinforcement_preferences_position",
+            "alerticon_startposition"
+          ]
+        },
+        {
+          "key": "position",
+          "count": 263,
+          "files": 55,
+          "kinds": {
+            "position": 263
+          },
+          "samples": []
+        }
+      ]
+    },
+    {
+      "type": "corneredTileSpriteType",
+      "count": 204,
+      "files": 47,
+      "props": [
+        {
+          "key": "name",
+          "count": 204,
+          "files": 47,
+          "kinds": {
+            "bare": 204
+          },
+          "samples": [
+            "GFX_air_priorities_tiled_bg",
+            "GFX_tiled_window_small_small",
+            "SandboxFloaterBackground",
+            "GFX_pink_selection_frame",
+            "GFX_pink_bold_selection_frame"
+          ]
+        },
+        {
+          "key": "borderSize",
+          "count": 199,
+          "files": 47,
+          "kinds": {
+            "position": 199
+          },
+          "samples": []
+        },
+        {
+          "key": "size",
+          "count": 175,
+          "files": 43,
+          "kinds": {
+            "position": 175
+          },
+          "samples": []
+        },
+        {
+          "key": "effectFile",
+          "count": 140,
+          "files": 33,
+          "kinds": {
+            "bare": 140
+          },
+          "samples": [
+            "gfx/FX/buttonstate_nodowneffect.lua",
+            "gfx/FX/buttonstate.lua",
+            "gfx/FX/buttonstate.shader",
+            "gfx/FX/buttonstate_onlydisable.lua",
+            "pdx_online_assets/gfx/FX/newsfeed_onlydisable.lua"
+          ]
+        },
+        {
+          "key": "tilingCenter",
+          "count": 136,
+          "files": 34,
+          "kinds": {
+            "bool": 136
+          },
+          "samples": [
+            "yes",
+            "no"
+          ]
+        },
+        {
+          "key": "textureFile",
+          "count": 131,
+          "files": 35,
+          "kinds": {
+            "bare": 131
+          },
+          "samples": [
+            "gfx/interface/unitcontrol/air_priorities_tiled_bg.dds",
+            "gfx//interface//tiles//tiled_window_small_small.dds",
+            "gfx//interface//tiles//tiles_dialog.tga",
+            "gfx//interface//tiles//tiled_selection.dds",
+            "gfx//interface//tiles//tiled_selection_bold.dds"
+          ]
+        },
+        {
+          "key": "texturefile",
+          "count": 73,
+          "files": 21,
+          "kinds": {
+            "bare": 73
+          },
+          "samples": [
+            "gfx//interface//tooltip_tile.dds",
+            "gfx//interface//small_tiles_dialog.dds",
+            "gfx//interface//tiles//tiled_mini_dialog.dds",
+            "gfx//interface//tiles//tiled_mini_dialog_with_header.dds",
+            "gfx//interface//tiles//tiled_mini_dialog_grey.dds"
+          ]
+        },
+        {
+          "key": "alwaystransparent",
+          "count": 34,
+          "files": 11,
+          "kinds": {
+            "bool": 34
+          },
+          "samples": [
+            "yes",
+            "no"
+          ]
+        },
+        {
+          "key": "allwaystransparent",
+          "count": 8,
+          "files": 2,
+          "kinds": {
+            "bool": 8
+          },
+          "samples": [
+            "yes",
+            "no"
+          ]
+        },
+        {
+          "key": "noOfFrames",
+          "count": 7,
+          "files": 4,
+          "kinds": {
+            "number": 7
+          },
+          "samples": [
+            "2",
+            "4",
+            "1"
+          ]
+        },
+        {
+          "key": "looping",
+          "count": 4,
+          "files": 1,
+          "kinds": {
+            "bool": 4
+          },
+          "samples": [
+            "yes"
+          ]
+        },
+        {
+          "key": "animation_rate_spf",
+          "count": 4,
+          "files": 1,
+          "kinds": {
+            "number": 4
+          },
+          "samples": [
+            "4",
+            "2"
+          ]
+        },
+        {
+          "key": "noofframes",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "number": 1
+          },
+          "samples": [
+            "2"
+          ]
+        },
+        {
+          "key": "bordersize",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "position": 1
+          },
+          "samples": []
+        }
+      ]
+    },
+    {
+      "type": "checkboxType",
+      "count": 189,
+      "files": 23,
+      "props": [
+        {
+          "key": "name",
+          "count": 189,
+          "files": 23,
+          "kinds": {
+            "bare": 189
+          },
+          "samples": [
+            "very_easy_cb",
+            "easy_cb",
+            "normal_cb",
+            "hard_cb",
+            "very_hard_cb"
+          ]
+        },
+        {
+          "key": "position",
+          "count": 189,
+          "files": 23,
+          "kinds": {
+            "position": 189
+          },
+          "samples": []
+        },
+        {
+          "key": "quadTextureSprite",
+          "count": 189,
+          "files": 23,
+          "kinds": {
+            "bare": 189
+          },
+          "samples": [
+            "GFX_difficulty_button_civilian",
+            "GFX_difficulty_button_recruit",
+            "GFX_difficulty_button_regular",
+            "GFX_difficulty_button_veteran",
+            "GFX_difficulty_button_elite"
+          ]
+        },
+        {
+          "key": "clicksound",
+          "count": 106,
+          "files": 11,
+          "kinds": {
+            "bare": 106
+          },
+          "samples": [
+            "click_checkbox",
+            "click_default"
+          ]
+        },
+        {
+          "key": "Orientation",
+          "count": 68,
+          "files": 10,
+          "kinds": {
+            "bare": 68
+          },
+          "samples": [
+            "UPPER_LEFT",
+            "LOWER_LEFT",
+            "UPPER_RIGHT"
+          ]
+        },
+        {
+          "key": "buttonFont",
+          "count": 63,
+          "files": 7,
+          "kinds": {
+            "bare": 63
+          },
+          "samples": [
+            "hoi_20b",
+            "Main_14_black",
+            "vic_18"
+          ]
+        },
+        {
+          "key": "buttonText",
+          "count": 56,
+          "files": 6,
+          "kinds": {
+            "bare": 56
+          },
+          "samples": [
+            "FE_DIFFICULTY_EASY",
+            "FE_DIFFICULTY_NORMAL",
+            "FE_DIFFICULTY_HARD",
+            "FE_DIFFICULTY_VERY_HARD",
+            "MENU_MESSAGES_ALL"
+          ]
+        },
+        {
+          "key": "pdx_tooltip",
+          "count": 7,
+          "files": 5,
+          "kinds": {
+            "bare": 7
+          },
+          "samples": [
+            "FE_HOTJOIN_TOOLTIP",
+            "OPERATIVE_RESUME_MISSION_AFTER_OPERATION_TOOLTIP",
+            "FACTION_THEATER_SHOW_PIN_TOOLTIP",
+            "FE_IRONMAN_TOOLTIP",
+            "FE_HISTORICAL_TOOLTIP"
+          ]
+        },
+        {
+          "key": "frame",
+          "count": 2,
+          "files": 1,
+          "kinds": {
+            "number": 2
+          },
+          "samples": [
+            "1",
+            "2"
+          ]
+        },
+        {
+          "key": "orientation",
+          "count": 2,
+          "files": 1,
+          "kinds": {
+            "bare": 2
+          },
+          "samples": [
+            "LOWER_LEFT"
+          ]
+        },
+        {
+          "key": "centerposition",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "bool": 1
+          },
+          "samples": [
+            "yes"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frameAnimatedSpriteType",
+      "count": 173,
+      "files": 38,
+      "props": [
+        {
+          "key": "name",
+          "count": 173,
+          "files": 38,
+          "kinds": {
+            "bare": 173
+          },
+          "samples": [
+            "GFX_green_alert_glow",
+            "GFX_yellow_alert_glow",
+            "GFX_btn_yellow_glow",
+            "GFX_red_alert_glow",
+            "GFX_alert_tutorial_glow"
+          ]
+        },
+        {
+          "key": "noOfFrames",
+          "count": 173,
+          "files": 38,
+          "kinds": {
+            "number": 173
+          },
+          "samples": [
+            "2",
+            "12",
+            "18",
+            "11",
+            "3"
+          ]
+        },
+        {
+          "key": "animation_rate_fps",
+          "count": 173,
+          "files": 38,
+          "kinds": {
+            "number": 173
+          },
+          "samples": [
+            "0.5",
+            "1",
+            "1.5",
+            "24",
+            "3"
+          ]
+        },
+        {
+          "key": "looping",
+          "count": 173,
+          "files": 38,
+          "kinds": {
+            "bool": 173
+          },
+          "samples": [
+            "yes",
+            "no"
+          ]
+        },
+        {
+          "key": "texturefile",
+          "count": 171,
+          "files": 37,
+          "kinds": {
+            "bare": 171
+          },
+          "samples": [
+            "gfx/interface/green_alert_glow.dds",
+            "gfx/interface/yellow_alert_glow.dds",
+            "gfx/interface/naviesview/btn_yellow_glow.dds",
+            "gfx/interface/red_alert_glow.dds",
+            "gfx/interface/tutorial/tutorial_alert_glow.png"
+          ]
+        },
+        {
+          "key": "pause_on_loop",
+          "count": 169,
+          "files": 37,
+          "kinds": {
+            "number": 169
+          },
+          "samples": [
+            "0.0",
+            "0.4",
+            "2.0"
+          ]
+        },
+        {
+          "key": "play_on_show",
+          "count": 166,
+          "files": 37,
+          "kinds": {
+            "bool": 166
+          },
+          "samples": [
+            "yes",
+            "no"
+          ]
+        },
+        {
+          "key": "effectFile",
+          "count": 88,
+          "files": 29,
+          "kinds": {
+            "bare": 88
+          },
+          "samples": [
+            "gfx/FX/buttonstate_blendframes.lua",
+            "gfx/FX/buttonstate_fade_frames_to_black.lua"
+          ]
+        },
+        {
+          "key": "alwaystransparent",
+          "count": 83,
+          "files": 30,
+          "kinds": {
+            "bool": 83
+          },
+          "samples": [
+            "yes"
+          ]
+        },
+        {
+          "key": "loadType",
+          "count": 80,
+          "files": 13,
+          "kinds": {
+            "bare": 80
+          },
+          "samples": [
+            "INGAME"
+          ]
+        },
+        {
+          "key": "transparencecheck",
+          "count": 79,
+          "files": 13,
+          "kinds": {
+            "bool": 79
+          },
+          "samples": [
+            "yes",
+            "no"
+          ]
+        },
+        {
+          "key": "textureFile",
+          "count": 2,
+          "files": 1,
+          "kinds": {
+            "bare": 2
+          },
+          "samples": [
+            "gfx/interface/sub/main/subscription_widget.dds"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "textSpriteType",
+      "count": 124,
+      "files": 16,
+      "props": [
+        {
+          "key": "name",
+          "count": 124,
+          "files": 16,
+          "kinds": {
+            "bare": 124
+          },
+          "samples": [
+            "GFX_battle_log_battle_button",
+            "largefloaterbutton",
+            "GFX_red_cross_texticon",
+            "GFX_preset_button_open",
+            "GFX_preset_button_import"
+          ]
+        },
+        {
+          "key": "texturefile",
+          "count": 119,
+          "files": 13,
+          "kinds": {
+            "bare": 119
+          },
+          "samples": [
+            "gfx//interface//battle_log_battle_button.dds",
+            "gfx//interface//button_type_1.tga",
+            "gfx/interface/red_cross_small.dds",
+            "gfx//interface//equipmentdesigner//preset_button.dds",
+            "gfx//interface//equipmentdesigner//preset_import_button.dds"
+          ]
+        },
+        {
+          "key": "noOfFrames",
+          "count": 91,
+          "files": 12,
+          "kinds": {
+            "number": 91
+          },
+          "samples": [
+            "1",
+            "4",
+            "3",
+            "2"
+          ]
+        },
+        {
+          "key": "effectFile",
+          "count": 83,
+          "files": 11,
+          "kinds": {
+            "bare": 83
+          },
+          "samples": [
+            "gfx/FX/buttonstate.lua",
+            "gfx/FX/buttonstate_onlydisable.lua"
+          ]
+        },
+        {
+          "key": "textureFile",
+          "count": 5,
+          "files": 4,
+          "kinds": {
+            "bare": 5
+          },
+          "samples": [
+            "gfx//interface//small_button_71x26.dds",
+            "gfx//interface//stockpile_button.dds",
+            "gfx//interface//occupation_policy_button.dds",
+            "gfx/interface/main_lobby_button.dds"
+          ]
+        },
+        {
+          "key": "clicksound",
+          "count": 2,
+          "files": 1,
+          "kinds": {
+            "bare": 2
+          },
+          "samples": [
+            "click"
+          ]
+        },
+        {
+          "key": "loadType",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "bare": 1
+          },
+          "samples": [
+            "FRONTEND"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "editBoxType",
+      "count": 114,
+      "files": 46,
+      "props": [
+        {
+          "key": "name",
+          "count": 114,
+          "files": 46,
+          "kinds": {
+            "bare": 114
+          },
+          "samples": [
+            "unit_name",
+            "air_wing_name",
+            "operation_name",
+            "number_box",
+            "chat_input"
+          ]
+        },
+        {
+          "key": "position",
+          "count": 114,
+          "files": 46,
+          "kinds": {
+            "position": 114
+          },
+          "samples": []
+        },
+        {
+          "key": "font",
+          "count": 114,
+          "files": 46,
+          "kinds": {
+            "bare": 114
+          },
+          "samples": [
+            "hoi_18",
+            "hoi_20b",
+            "hoi_18mbs",
+            "hoi_16mbs",
+            "hoi_22chat"
+          ]
+        },
+        {
+          "key": "size",
+          "count": 114,
+          "files": 46,
+          "kinds": {
+            "position": 114
+          },
+          "samples": []
+        },
+        {
+          "key": "text",
+          "count": 85,
+          "files": 32,
+          "kinds": {
+            "bare": 84,
+            "number": 1
+          },
+          "samples": [
+            "Unnamed Air Group",
+            "0",
+            " ",
+            "variant",
+            "FE_MY_GAME"
+          ]
+        },
+        {
+          "key": "borderSize",
+          "count": 60,
+          "files": 19,
+          "kinds": {
+            "position": 60
+          },
+          "samples": []
+        },
+        {
+          "key": "orientation",
+          "count": 52,
+          "files": 16,
+          "kinds": {
+            "bare": 52
+          },
+          "samples": [
+            "left",
+            "UPPER_LEFT",
+            "upper_left",
+            "LOWER_LEFT"
+          ]
+        },
+        {
+          "key": "instantTextBoxType",
+          "count": 36,
+          "files": 7,
+          "kinds": {
+            "bool": 36
+          },
+          "samples": [
+            "yes",
+            "no"
+          ]
+        },
+        {
+          "key": "textureFile",
+          "count": 35,
+          "files": 7,
+          "kinds": {
+            "bare": 35
+          },
+          "samples": [
+            "gfx\\\\interface\\\\small_tiles_dialog.dds",
+            "gfx/interface/small_tiles_dialog.dds",
+            "pdx_online_assets/gfx/interface/online_accountlogin_line.dds",
+            "pdx_online_assets/gfx/interface/online_accountcreate_line.dds"
+          ]
+        },
+        {
+          "key": "use_special_chars",
+          "count": 7,
+          "files": 2,
+          "kinds": {
+            "bool": 7
+          },
+          "samples": [
+            "no"
+          ]
+        },
+        {
+          "key": "only_numbers",
+          "count": 6,
+          "files": 4,
+          "kinds": {
+            "bool": 6
+          },
+          "samples": [
+            "yes"
+          ]
+        },
+        {
+          "key": "cursor",
+          "count": 6,
+          "files": 3,
+          "kinds": {
+            "position": 6
+          },
+          "samples": []
+        },
+        {
+          "key": "ignore_enter",
+          "count": 6,
+          "files": 1,
+          "kinds": {
+            "bool": 6
+          },
+          "samples": [
+            "yes"
+          ]
+        },
+        {
+          "key": "tooltip",
+          "count": 3,
+          "files": 2,
+          "kinds": {
+            "bare": 3
+          },
+          "samples": [
+            "FOCUS_SEARCH_TOOLTIP",
+            "SCIENTIST_ROSTER_SEARCH_FILTER_TT"
+          ]
+        },
+        {
+          "key": "is_multiline",
+          "count": 3,
+          "files": 2,
+          "kinds": {
+            "bool": 3
+          },
+          "samples": [
+            "no",
+            "yes"
+          ]
+        },
+        {
+          "key": "pdx_tooltip",
+          "count": 2,
+          "files": 1,
+          "kinds": {
+            "bare": 2
+          },
+          "samples": [
+            "CONVEYOR_GENERIC_NAME_EDIT_DESC"
+          ]
+        },
+        {
+          "key": "Orientation",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "bare": 1
+          },
+          "samples": [
+            "LOWER_LEFT"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "windowType",
+      "count": 88,
+      "files": 18,
+      "props": [
+        {
+          "key": "guiButtonType",
+          "count": 215,
+          "files": 14,
+          "kinds": {
+            "block": 215
+          },
+          "samples": []
+        },
+        {
+          "key": "instantTextBoxType",
+          "count": 106,
+          "files": 13,
+          "kinds": {
+            "block": 106
+          },
+          "samples": []
+        },
+        {
+          "key": "name",
+          "count": 88,
+          "files": 18,
+          "kinds": {
+            "bare": 88
+          },
+          "samples": [
+            "back_end",
+            "king_entry",
+            "king_entry2",
+            "king_entry_text",
+            "chat_item"
+          ]
+        },
+        {
+          "key": "position",
+          "count": 88,
+          "files": 18,
+          "kinds": {
+            "position": 88
+          },
+          "samples": []
+        },
+        {
+          "key": "size",
+          "count": 85,
+          "files": 18,
+          "kinds": {
+            "position": 85
+          },
+          "samples": []
+        },
+        {
+          "key": "moveable",
+          "count": 79,
+          "files": 15,
+          "kinds": {
+            "number": 79
+          },
+          "samples": [
+            "0",
+            "1"
+          ]
+        },
+        {
+          "key": "backGround",
+          "count": 74,
+          "files": 14,
+          "kinds": {
+            "bare": 74
+          },
+          "samples": [
+            "chat_bg",
+            "Background",
+            "bg"
+          ]
+        },
+        {
+          "key": "fullScreen",
+          "count": 61,
+          "files": 11,
+          "kinds": {
+            "bool": 61
+          },
+          "samples": [
+            "no",
+            "yes"
+          ]
+        },
+        {
+          "key": "horizontalBorder",
+          "count": 56,
+          "files": 13,
+          "kinds": {
+            "bare": 52,
+            "number": 4
+          },
+          "samples": [
+            "0"
+          ]
+        },
+        {
+          "key": "verticalBorder",
+          "count": 56,
+          "files": 13,
+          "kinds": {
+            "bare": 56
+          },
+          "samples": []
+        },
+        {
+          "key": "dontRender",
+          "count": 53,
+          "files": 13,
+          "kinds": {
+            "bare": 53
+          },
+          "samples": []
+        },
+        {
+          "key": "checkboxType",
+          "count": 48,
+          "files": 4,
+          "kinds": {
+            "block": 48
+          },
+          "samples": []
+        },
+        {
+          "key": "Orientation",
+          "count": 47,
+          "files": 10,
+          "kinds": {
+            "bare": 47
+          },
+          "samples": [
+            "LOWER_LEFT",
+            "CENTER",
+            "UPPER_LEFT",
+            "CENTER_UP",
+            "CENTER_DOWN"
+          ]
+        },
+        {
+          "key": "iconType",
+          "count": 39,
+          "files": 10,
+          "kinds": {
+            "block": 39
+          },
+          "samples": []
+        },
+        {
+          "key": "editBoxType",
+          "count": 26,
+          "files": 4,
+          "kinds": {
+            "block": 26
+          },
+          "samples": []
+        },
+        {
+          "key": "windowType",
+          "count": 20,
+          "files": 4,
+          "kinds": {
+            "block": 20
+          },
+          "samples": []
+        },
+        {
+          "key": "textBoxType",
+          "count": 20,
+          "files": 1,
+          "kinds": {
+            "block": 20
+          },
+          "samples": []
+        },
+        {
+          "key": "listboxType",
+          "count": 19,
+          "files": 7,
+          "kinds": {
+            "block": 19
+          },
+          "samples": []
+        },
+        {
+          "key": "OverlappingElementsBoxType",
+          "count": 8,
+          "files": 3,
+          "kinds": {
+            "block": 8
+          },
+          "samples": []
+        },
+        {
+          "key": "orientation",
+          "count": 7,
+          "files": 3,
+          "kinds": {
+            "bare": 7
+          },
+          "samples": [
+            "UPPER_LEFT",
+            "CENTER",
+            "LOWER_LEFT",
+            "LOWER_RIGHT"
+          ]
+        },
+        {
+          "key": "fullscreen",
+          "count": 6,
+          "files": 5,
+          "kinds": {
+            "bool": 6
+          },
+          "samples": [
+            "yes",
+            "no"
+          ]
+        },
+        {
+          "key": "animation_time",
+          "count": 6,
+          "files": 2,
+          "kinds": {
+            "number": 6
+          },
+          "samples": [
+            "1000",
+            "3",
+            "300",
+            "500"
+          ]
+        },
+        {
+          "key": "show_position",
+          "count": 5,
+          "files": 2,
+          "kinds": {
+            "position": 5
+          },
+          "samples": []
+        },
+        {
+          "key": "hide_position",
+          "count": 5,
+          "files": 2,
+          "kinds": {
+            "position": 5
+          },
+          "samples": []
+        },
+        {
+          "key": "animation_type",
+          "count": 5,
+          "files": 2,
+          "kinds": {
+            "bare": 5
+          },
+          "samples": [
+            "decelerated"
+          ]
+        },
+        {
+          "key": "listBoxType",
+          "count": 4,
+          "files": 2,
+          "kinds": {
+            "block": 4
+          },
+          "samples": []
+        },
+        {
+          "key": "scrollbarType",
+          "count": 4,
+          "files": 2,
+          "kinds": {
+            "block": 4
+          },
+          "samples": []
+        },
+        {
+          "key": "guibuttonType",
+          "count": 2,
+          "files": 1,
+          "kinds": {
+            "block": 2
+          },
+          "samples": []
+        },
+        {
+          "key": "checkBoxType",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "block": 1
+          },
+          "samples": []
+        }
+      ]
+    },
+    {
+      "type": "OverlappingElementsBoxType",
+      "count": 67,
+      "files": 25,
+      "props": [
+        {
+          "key": "name",
+          "count": 67,
+          "files": 25,
+          "kinds": {
+            "bare": 67
+          },
+          "samples": [
+            "channels",
+            "groups",
+            "custom_icons",
+            "divisions_summary",
+            "relations"
+          ]
+        },
+        {
+          "key": "position",
+          "count": 67,
+          "files": 25,
+          "kinds": {
+            "position": 67
+          },
+          "samples": []
+        },
+        {
+          "key": "size",
+          "count": 67,
+          "files": 25,
+          "kinds": {
+            "position": 67
+          },
+          "samples": []
+        },
+        {
+          "key": "spacing",
+          "count": 66,
+          "files": 24,
+          "kinds": {
+            "number": 66
+          },
+          "samples": [
+            "1.0",
+            "14.0",
+            "0",
+            "2.0",
+            "8.0"
+          ]
+        },
+        {
+          "key": "format",
+          "count": 61,
+          "files": 22,
+          "kinds": {
+            "bare": 61
+          },
+          "samples": [
+            "left",
+            "center",
+            "right",
+            "down"
+          ]
+        },
+        {
+          "key": "Orientation",
+          "count": 14,
+          "files": 4,
+          "kinds": {
+            "bare": 14
+          },
+          "samples": [
+            "LEFT",
+            "LOWER_LEFT",
+            "UPPER_LEFT",
+            "UPPER_RIGHT"
+          ]
+        },
+        {
+          "key": "first_on_top",
+          "count": 9,
+          "files": 2,
+          "kinds": {
+            "bool": 9
+          },
+          "samples": [
+            "yes"
+          ]
+        },
+        {
+          "key": "orientation",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "bare": 1
+          },
+          "samples": [
+            "upper_left"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "dropDownBoxType",
+      "count": 49,
+      "files": 18,
+      "props": [
+        {
+          "key": "name",
+          "count": 49,
+          "files": 18,
+          "kinds": {
+            "bare": 49
+          },
+          "samples": [
+            "reinforcement_preference_dropdown",
+            "niche_selection_dropdown",
+            "aggressiveness_dropdown",
+            "day_night_dropdown",
+            "manpower_dropdown"
+          ]
+        },
+        {
+          "key": "position",
+          "count": 49,
+          "files": 18,
+          "kinds": {
+            "position": 49
+          },
+          "samples": []
+        },
+        {
+          "key": "expandedWindow",
+          "count": 49,
+          "files": 18,
+          "kinds": {
+            "block": 49
+          },
+          "samples": []
+        },
+        {
+          "key": "expandButton",
+          "count": 46,
+          "files": 17,
+          "kinds": {
+            "block": 46
+          },
+          "samples": []
+        },
+        {
+          "key": "size",
+          "count": 36,
+          "files": 17,
+          "kinds": {
+            "size": 36
+          },
+          "samples": []
+        },
+        {
+          "key": "containerWindowType",
+          "count": 21,
+          "files": 12,
+          "kinds": {
+            "block": 21
+          },
+          "samples": []
+        },
+        {
+          "key": "instantTextboxType",
+          "count": 11,
+          "files": 8,
+          "kinds": {
+            "block": 11
+          },
+          "samples": []
+        },
+        {
+          "key": "editBoxType",
+          "count": 10,
+          "files": 8,
+          "kinds": {
+            "block": 10
+          },
+          "samples": []
+        },
+        {
+          "key": "clipping",
+          "count": 9,
+          "files": 4,
+          "kinds": {
+            "bool": 9
+          },
+          "samples": [
+            "no",
+            "yes"
+          ]
+        },
+        {
+          "key": "iconType",
+          "count": 7,
+          "files": 5,
+          "kinds": {
+            "block": 7
+          },
+          "samples": []
+        },
+        {
+          "key": "switch_frame_on_expand",
+          "count": 4,
+          "files": 3,
+          "kinds": {
+            "bool": 4
+          },
+          "samples": [
+            "no"
+          ]
+        },
+        {
+          "key": "expandedOnTop",
+          "count": 2,
+          "files": 2,
+          "kinds": {
+            "bool": 2
+          },
+          "samples": [
+            "no",
+            "yes"
+          ]
+        },
+        {
+          "key": "buttonType",
+          "count": 2,
+          "files": 2,
+          "kinds": {
+            "block": 2
+          },
+          "samples": []
+        }
+      ]
+    },
+    {
+      "type": "scrollbarType",
+      "count": 38,
+      "files": 8,
+      "props": [
+        {
+          "key": "guiButtonType",
+          "count": 152,
+          "files": 8,
+          "kinds": {
+            "block": 152
+          },
+          "samples": []
+        },
+        {
+          "key": "name",
+          "count": 38,
+          "files": 8,
+          "kinds": {
+            "bare": 38
+          },
+          "samples": [
+            "split_slider",
+            "standardlistbox_slider",
+            "standardlistbox_horizontal_slider",
+            "standardtext_slider",
+            "standardlistbox_noslider"
+          ]
+        },
+        {
+          "key": "slider",
+          "count": 38,
+          "files": 8,
+          "kinds": {
+            "bare": 38
+          },
+          "samples": [
+            "landslider_SliderButton",
+            "listboxSliderButton",
+            "SliderButton"
+          ]
+        },
+        {
+          "key": "track",
+          "count": 38,
+          "files": 8,
+          "kinds": {
+            "bare": 38
+          },
+          "samples": [
+            "landslider_TrackButton",
+            "listboxTrackButton",
+            "TrackButton"
+          ]
+        },
+        {
+          "key": "leftbutton",
+          "count": 38,
+          "files": 8,
+          "kinds": {
+            "bare": 38
+          },
+          "samples": [
+            "landslider_upButton",
+            "downButton",
+            "upButton"
+          ]
+        },
+        {
+          "key": "rightbutton",
+          "count": 38,
+          "files": 8,
+          "kinds": {
+            "bare": 38
+          },
+          "samples": [
+            "landslider_downButton",
+            "upButton",
+            "downButton"
+          ]
+        },
+        {
+          "key": "size",
+          "count": 38,
+          "files": 8,
+          "kinds": {
+            "position": 38
+          },
+          "samples": []
+        },
+        {
+          "key": "position",
+          "count": 38,
+          "files": 8,
+          "kinds": {
+            "position": 38
+          },
+          "samples": []
+        },
+        {
+          "key": "priority",
+          "count": 38,
+          "files": 8,
+          "kinds": {
+            "number": 38
+          },
+          "samples": [
+            "100"
+          ]
+        },
+        {
+          "key": "borderSize",
+          "count": 38,
+          "files": 8,
+          "kinds": {
+            "position": 38
+          },
+          "samples": []
+        },
+        {
+          "key": "maxValue",
+          "count": 38,
+          "files": 8,
+          "kinds": {
+            "number": 38
+          },
+          "samples": [
+            "100",
+            "1",
+            "2"
+          ]
+        },
+        {
+          "key": "minValue",
+          "count": 38,
+          "files": 8,
+          "kinds": {
+            "number": 38
+          },
+          "samples": [
+            "0"
+          ]
+        },
+        {
+          "key": "stepSize",
+          "count": 38,
+          "files": 8,
+          "kinds": {
+            "number": 38
+          },
+          "samples": [
+            "1",
+            "0.01",
+            "8"
+          ]
+        },
+        {
+          "key": "startValue",
+          "count": 38,
+          "files": 8,
+          "kinds": {
+            "number": 38
+          },
+          "samples": [
+            "50",
+            "0",
+            "0.0",
+            "2",
+            "20"
+          ]
+        },
+        {
+          "key": "horizontal",
+          "count": 38,
+          "files": 8,
+          "kinds": {
+            "number": 38
+          },
+          "samples": [
+            "1",
+            "0"
+          ]
+        },
+        {
+          "key": "scroll_speed",
+          "count": 2,
+          "files": 1,
+          "kinds": {
+            "number": 2
+          },
+          "samples": [
+            "40"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "extendedScrollbarType",
+      "count": 34,
+      "files": 14,
+      "props": [
+        {
+          "key": "name",
+          "count": 34,
+          "files": 14,
+          "kinds": {
+            "bare": 34
+          },
+          "samples": [
+            "combats_slider",
+            "log_month_slider",
+            "right_vertical_sliderno_bg",
+            "right_vertical_slider",
+            "right_cabinet_vertical_slider"
+          ]
+        },
+        {
+          "key": "position",
+          "count": 34,
+          "files": 14,
+          "kinds": {
+            "position": 34
+          },
+          "samples": []
+        },
+        {
+          "key": "size",
+          "count": 34,
+          "files": 14,
+          "kinds": {
+            "size": 34
+          },
+          "samples": []
+        },
+        {
+          "key": "startValue",
+          "count": 34,
+          "files": 14,
+          "kinds": {
+            "number": 34
+          },
+          "samples": [
+            "0",
+            "12",
+            "50"
+          ]
+        },
+        {
+          "key": "slider",
+          "count": 34,
+          "files": 14,
+          "kinds": {
+            "block": 34
+          },
+          "samples": []
+        },
+        {
+          "key": "track",
+          "count": 32,
+          "files": 14,
+          "kinds": {
+            "block": 32
+          },
+          "samples": []
+        },
+        {
+          "key": "decreaseButton",
+          "count": 30,
+          "files": 12,
+          "kinds": {
+            "block": 30
+          },
+          "samples": []
+        },
+        {
+          "key": "increaseButton",
+          "count": 30,
+          "files": 12,
+          "kinds": {
+            "block": 30
+          },
+          "samples": []
+        },
+        {
+          "key": "background",
+          "count": 21,
+          "files": 9,
+          "kinds": {
+            "block": 21
+          },
+          "samples": []
+        },
+        {
+          "key": "tileSize",
+          "count": 17,
+          "files": 10,
+          "kinds": {
+            "size": 17
+          },
+          "samples": []
+        },
+        {
+          "key": "maxValue",
+          "count": 17,
+          "files": 10,
+          "kinds": {
+            "number": 17
+          },
+          "samples": [
+            "12",
+            "1",
+            "100",
+            "10"
+          ]
+        },
+        {
+          "key": "minValue",
+          "count": 17,
+          "files": 10,
+          "kinds": {
+            "number": 17
+          },
+          "samples": [
+            "1",
+            "0"
+          ]
+        },
+        {
+          "key": "stepSize",
+          "count": 17,
+          "files": 10,
+          "kinds": {
+            "number": 17
+          },
+          "samples": [
+            "1",
+            "0.01"
+          ]
+        },
+        {
+          "key": "horizontal",
+          "count": 17,
+          "files": 10,
+          "kinds": {
+            "bool": 17
+          },
+          "samples": [
+            "yes"
+          ]
+        },
+        {
+          "key": "orientation",
+          "count": 13,
+          "files": 4,
+          "kinds": {
+            "bare": 13
+          },
+          "samples": [
+            "upper_right",
+            "lower_left"
+          ]
+        },
+        {
+          "key": "origo",
+          "count": 13,
+          "files": 4,
+          "kinds": {
+            "bare": 13
+          },
+          "samples": [
+            "upper_right",
+            "lower_left"
+          ]
+        },
+        {
+          "key": "clickonly",
+          "count": 8,
+          "files": 5,
+          "kinds": {
+            "bool": 8
+          },
+          "samples": [
+            "yes"
+          ]
+        },
+        {
+          "key": "smooth_scrolling",
+          "count": 7,
+          "files": 2,
+          "kinds": {
+            "number": 7
+          },
+          "samples": [
+            "0.25",
+            "1.25"
+          ]
+        },
+        {
+          "key": "clickOnly",
+          "count": 5,
+          "files": 2,
+          "kinds": {
+            "bool": 5
+          },
+          "samples": [
+            "yes"
+          ]
+        },
+        {
+          "key": "setTrackFrameOnChange",
+          "count": 2,
+          "files": 2,
+          "kinds": {
+            "bool": 2
+          },
+          "samples": [
+            "yes"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "smoothListBoxType",
+      "count": 29,
+      "files": 16,
+      "props": [
+        {
+          "key": "name",
+          "count": 29,
+          "files": 16,
+          "kinds": {
+            "bare": 29
+          },
+          "samples": [
+            "air_group_view_entries",
+            "air_selection",
+            "air_wings_list",
+            "high_command_traits",
+            "advisor_traits"
+          ]
+        },
+        {
+          "key": "position",
+          "count": 29,
+          "files": 16,
+          "kinds": {
+            "position": 29
+          },
+          "samples": []
+        },
+        {
+          "key": "size",
+          "count": 29,
+          "files": 16,
+          "kinds": {
+            "position": 29
+          },
+          "samples": []
+        },
+        {
+          "key": "scrollbartype",
+          "count": 27,
+          "files": 16,
+          "kinds": {
+            "bare": 27
+          },
+          "samples": [
+            "standardlistbox_slider"
+          ]
+        },
+        {
+          "key": "orientation",
+          "count": 6,
+          "files": 2,
+          "kinds": {
+            "bare": 6
+          },
+          "samples": [
+            "UPPER_LEFT",
+            "upper_left"
+          ]
+        },
+        {
+          "key": "borderSize",
+          "count": 6,
+          "files": 2,
+          "kinds": {
+            "position": 6
+          },
+          "samples": []
+        },
+        {
+          "key": "priority",
+          "count": 3,
+          "files": 1,
+          "kinds": {
+            "number": 3
+          },
+          "samples": [
+            "100"
+          ]
+        },
+        {
+          "key": "spacing",
+          "count": 3,
+          "files": 1,
+          "kinds": {
+            "number": 3
+          },
+          "samples": [
+            "-10",
+            "0"
+          ]
+        },
+        {
+          "key": "clipping",
+          "count": 2,
+          "files": 1,
+          "kinds": {
+            "bool": 2
+          },
+          "samples": [
+            "no",
+            "yes"
+          ]
+        },
+        {
+          "key": "alwaystransparent",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "bool": 1
+          },
+          "samples": [
+            "yes"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "checkBoxType",
+      "count": 28,
+      "files": 9,
+      "props": [
+        {
+          "key": "name",
+          "count": 28,
+          "files": 9,
+          "kinds": {
+            "bare": 28
+          },
+          "samples": [
+            "popup_news_checkbox",
+            "popup_events_checkbox",
+            "popup_minor_events_checkbox",
+            "call_allies_checkbox",
+            "toggle_expand_all"
+          ]
+        },
+        {
+          "key": "position",
+          "count": 28,
+          "files": 9,
+          "kinds": {
+            "position": 28
+          },
+          "samples": []
+        },
+        {
+          "key": "quadTextureSprite",
+          "count": 28,
+          "files": 9,
+          "kinds": {
+            "bare": 28
+          },
+          "samples": [
+            "GFX_generic_checkbox3",
+            "GFX_generic_checkbox",
+            "GFX_expand_all_checkbox",
+            "GFX_inf_art_checkbox",
+            "GFX_armour_checkbox"
+          ]
+        },
+        {
+          "key": "clicksound",
+          "count": 28,
+          "files": 9,
+          "kinds": {
+            "bare": 28
+          },
+          "samples": [
+            "decisions_ui_button",
+            "click_checkbox",
+            "click_close"
+          ]
+        },
+        {
+          "key": "Orientation",
+          "count": 8,
+          "files": 4,
+          "kinds": {
+            "bare": 8
+          },
+          "samples": [
+            "LEFT",
+            "UPPER_RIGHT",
+            "UPPER_LEFT"
+          ]
+        },
+        {
+          "key": "frame",
+          "count": 7,
+          "files": 3,
+          "kinds": {
+            "number": 7
+          },
+          "samples": [
+            "0",
+            "1"
+          ]
+        },
+        {
+          "key": "pdx_tooltip",
+          "count": 5,
+          "files": 3,
+          "kinds": {
+            "bare": 5
+          },
+          "samples": [
+            "NEWS_POPUP_CHECKBOX_TOOLTIP",
+            "EVENT_POPUP_CHECKBOX_TOOLTIP",
+            "MINOR_EVENT_POPUP_CHECKBOX_TOOLTIP",
+            "NAVAL_REPAIR_QUEUE_EXPAND_COLLAPSE_ALL",
+            "THEATRE_PIN_AREA"
+          ]
+        },
+        {
+          "key": "pdx_tooltip_delayed",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "bare": 1
+          },
+          "samples": [
+            "THEATRE_PIN_AREA_DESC"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "gridboxType",
+      "count": 28,
+      "files": 7,
+      "props": [
+        {
+          "key": "name",
+          "count": 28,
+          "files": 7,
+          "kinds": {
+            "bare": 28
+          },
+          "samples": [
+            "research_groups_grid",
+            "research_slots_grid",
+            "heavy_battleship2_tree",
+            "focus_grid",
+            "ideas_grid"
+          ]
+        },
+        {
+          "key": "position",
+          "count": 28,
+          "files": 7,
+          "kinds": {
+            "position": 28
+          },
+          "samples": []
+        },
+        {
+          "key": "size",
+          "count": 28,
+          "files": 7,
+          "kinds": {
+            "size": 28
+          },
+          "samples": []
+        },
+        {
+          "key": "slotsize",
+          "count": 28,
+          "files": 7,
+          "kinds": {
+            "size": 28
+          },
+          "samples": []
+        },
+        {
+          "key": "format",
+          "count": 28,
+          "files": 7,
+          "kinds": {
+            "bare": 28
+          },
+          "samples": [
+            "RIGHT",
+            "UPPER_LEFT",
+            "LEFT"
+          ]
+        },
+        {
+          "key": "add_horizontal",
+          "count": 19,
+          "files": 2,
+          "kinds": {
+            "bool": 19
+          },
+          "samples": [
+            "yes",
+            "no"
+          ]
+        },
+        {
+          "key": "max_slots_vertical",
+          "count": 16,
+          "files": 4,
+          "kinds": {
+            "number": 16
+          },
+          "samples": [
+            "8",
+            "2",
+            "1",
+            "4"
+          ]
+        },
+        {
+          "key": "max_slots_horizontal",
+          "count": 13,
+          "files": 6,
+          "kinds": {
+            "number": 13
+          },
+          "samples": [
+            "1",
+            "23",
+            "8",
+            "5",
+            "20"
+          ]
+        },
+        {
+          "key": "max_slots",
+          "count": 6,
+          "files": 1,
+          "kinds": {
+            "position": 6
+          },
+          "samples": []
+        },
+        {
+          "key": "padding",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "block": 1
+          },
+          "samples": []
+        }
+      ]
+    },
+    {
+      "type": "listboxType",
+      "count": 26,
+      "files": 11,
+      "props": [
+        {
+          "key": "name",
+          "count": 26,
+          "files": 11,
+          "kinds": {
+            "bare": 26
+          },
+          "samples": [
+            "kings",
+            "users",
+            "chat",
+            "multiplayer_list",
+            "chatlog"
+          ]
+        },
+        {
+          "key": "position",
+          "count": 26,
+          "files": 11,
+          "kinds": {
+            "position": 26
+          },
+          "samples": []
+        },
+        {
+          "key": "size",
+          "count": 26,
+          "files": 11,
+          "kinds": {
+            "position": 26
+          },
+          "samples": []
+        },
+        {
+          "key": "scrollbartype",
+          "count": 25,
+          "files": 10,
+          "kinds": {
+            "bare": 25
+          },
+          "samples": [
+            "standardlistbox_slider"
+          ]
+        },
+        {
+          "key": "spacing",
+          "count": 24,
+          "files": 10,
+          "kinds": {
+            "number": 24
+          },
+          "samples": [
+            "0",
+            "2",
+            "1"
+          ]
+        },
+        {
+          "key": "Orientation",
+          "count": 22,
+          "files": 9,
+          "kinds": {
+            "bare": 22
+          },
+          "samples": [
+            "CENTER",
+            "UPPER_LEFT"
+          ]
+        },
+        {
+          "key": "backGround",
+          "count": 18,
+          "files": 9,
+          "kinds": {
+            "bare": 18
+          },
+          "samples": [
+            "SandboxFloaterBackground"
+          ]
+        },
+        {
+          "key": "borderSize",
+          "count": 16,
+          "files": 10,
+          "kinds": {
+            "position": 16
+          },
+          "samples": []
+        },
+        {
+          "key": "horizontal",
+          "count": 9,
+          "files": 6,
+          "kinds": {
+            "number": 9
+          },
+          "samples": [
+            "0"
+          ]
+        },
+        {
+          "key": "alwaystransparent",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "bool": 1
+          },
+          "samples": [
+            "yes"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "textBoxType",
+      "count": 26,
+      "files": 2,
+      "props": [
+        {
+          "key": "position",
+          "count": 26,
+          "files": 2,
+          "kinds": {
+            "position": 26
+          },
+          "samples": []
+        },
+        {
+          "key": "name",
+          "count": 26,
+          "files": 2,
+          "kinds": {
+            "bare": 26
+          },
+          "samples": [
+            "ChatMemberText",
+            "ToolTip",
+            "FPS_Counter",
+            "nudge_name",
+            "ao_name_title"
+          ]
+        },
+        {
+          "key": "textureFile",
+          "count": 26,
+          "files": 2,
+          "kinds": {
+            "bare": 26
+          },
+          "samples": [
+            "gfx\\\\interface\\\\tiles\\\\tiles_dialog.tga"
+          ]
+        },
+        {
+          "key": "borderSize",
+          "count": 26,
+          "files": 2,
+          "kinds": {
+            "position": 26
+          },
+          "samples": []
+        },
+        {
+          "key": "font",
+          "count": 26,
+          "files": 2,
+          "kinds": {
+            "bare": 26
+          },
+          "samples": [
+            "Main_14_eu",
+            "cg_16b",
+            "Main_16"
+          ]
+        },
+        {
+          "key": "maxWidth",
+          "count": 26,
+          "files": 2,
+          "kinds": {
+            "number": 26
+          },
+          "samples": [
+            "300",
+            "400",
+            "128",
+            "200"
+          ]
+        },
+        {
+          "key": "maxHeight",
+          "count": 26,
+          "files": 2,
+          "kinds": {
+            "number": 26
+          },
+          "samples": [
+            "22",
+            "256",
+            "64",
+            "32"
+          ]
+        },
+        {
+          "key": "text",
+          "count": 22,
+          "files": 2,
+          "kinds": {
+            "bare": 18,
+            "number": 4
+          },
+          "samples": [
+            "menutextbox1",
+            "World Ambient Object",
+            "Name",
+            "Type",
+            "Position"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "maskedShieldType",
+      "count": 15,
+      "files": 5,
+      "props": [
+        {
+          "key": "name",
+          "count": 15,
+          "files": 5,
+          "kinds": {
+            "bare": 15
+          },
+          "samples": [
+            "GFX_minishield",
+            "GFX_minishield_war",
+            "GFX_construction_flag",
+            "GFX_flag_small",
+            "GFX_flag_smallest"
+          ]
+        },
+        {
+          "key": "textureFile1",
+          "count": 15,
+          "files": 5,
+          "kinds": {
+            "bare": 15
+          },
+          "samples": [
+            "gfx//interface//minishield.tga",
+            "gfx/interface/construction_flag_overlay.dds",
+            "gfx\\\\interface\\\\flag_small_overlay.dds",
+            "gfx\\\\interface\\\\flag_smallest_overlay.dds",
+            "gfx/interface/small_shield_overlay.dds"
+          ]
+        },
+        {
+          "key": "textureFile2",
+          "count": 15,
+          "files": 5,
+          "kinds": {
+            "bare": 15
+          },
+          "samples": [
+            "gfx//interface//minimask.tga",
+            "gfx/interface/shield_construction_medium_mask.tga",
+            "gfx\\\\interface\\\\flag_small_mask.tga",
+            "gfx\\\\interface\\\\flag_smallest_mask.tga",
+            "gfx/interface/small_shield_mask.tga"
+          ]
+        },
+        {
+          "key": "effectFile",
+          "count": 15,
+          "files": 5,
+          "kinds": {
+            "bare": 15
+          },
+          "samples": [
+            "gfx//FX//maskedflag.lua",
+            "gfx/FX/maskedflag.lua"
+          ]
+        },
+        {
+          "key": "alwaystransparent",
+          "count": 2,
+          "files": 1,
+          "kinds": {
+            "bool": 2
+          },
+          "samples": [
+            "yes"
+          ]
+        },
+        {
+          "key": "small",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "bool": 1
+          },
+          "samples": [
+            "yes"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "arrowType",
+      "count": 8,
+      "files": 1,
+      "props": [
+        {
+          "key": "name",
+          "count": 8,
+          "files": 1,
+          "kinds": {
+            "bare": 8
+          },
+          "samples": [
+            "moveArrow",
+            "followOrdersArrow",
+            "retreatArrow",
+            "withdrawArrow",
+            "attackArrow"
+          ]
+        },
+        {
+          "key": "texture",
+          "count": 8,
+          "files": 1,
+          "kinds": {
+            "bare": 8
+          },
+          "samples": [
+            "gfx/mapitems/movearrow_move.dds",
+            "gfx/mapitems/movearrow_followorders.dds",
+            "gfx/mapitems/movearrow_retreat.dds",
+            "gfx/mapitems/movearrow_withdraw.dds",
+            "gfx/mapitems/movearrow_attack.dds"
+          ]
+        },
+        {
+          "key": "normal",
+          "count": 8,
+          "files": 1,
+          "kinds": {
+            "bare": 8
+          },
+          "samples": [
+            "gfx/mapitems/movearrow_normals.dds"
+          ]
+        },
+        {
+          "key": "specular",
+          "count": 8,
+          "files": 1,
+          "kinds": {
+            "bare": 8
+          },
+          "samples": [
+            "gfx/mapitems/movearrow_spec.dds"
+          ]
+        },
+        {
+          "key": "effect",
+          "count": 8,
+          "files": 1,
+          "kinds": {
+            "bare": 8
+          },
+          "samples": [
+            "gfx/FX/arrow.lua"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "pieChartType",
+      "count": 6,
+      "files": 3,
+      "props": [
+        {
+          "key": "name",
+          "count": 6,
+          "files": 3,
+          "kinds": {
+            "bare": 6
+          },
+          "samples": [
+            "GFX_trade_resource_chart",
+            "GFX_political_chart_big",
+            "GFX_political_chart",
+            "GFX_political_chart_small",
+            "GFX_phase_progress_pie_chart"
+          ]
+        },
+        {
+          "key": "size",
+          "count": 6,
+          "files": 3,
+          "kinds": {
+            "number": 6
+          },
+          "samples": [
+            "10",
+            "30",
+            "27",
+            "26",
+            "32"
+          ]
+        },
+        {
+          "key": "colors",
+          "count": 3,
+          "files": 2,
+          "kinds": {
+            "block": 3
+          },
+          "samples": []
+        }
+      ]
+    },
+    {
+      "type": "listBoxType",
+      "count": 5,
+      "files": 3,
+      "props": [
+        {
+          "key": "name",
+          "count": 5,
+          "files": 3,
+          "kinds": {
+            "bare": 5
+          },
+          "samples": [
+            "plane_selection_items_list",
+            "console_list",
+            "chat_list",
+            "message_list"
+          ]
+        },
+        {
+          "key": "position",
+          "count": 5,
+          "files": 3,
+          "kinds": {
+            "position": 5
+          },
+          "samples": []
+        },
+        {
+          "key": "size",
+          "count": 5,
+          "files": 3,
+          "kinds": {
+            "position": 5
+          },
+          "samples": []
+        },
+        {
+          "key": "scrollbartype",
+          "count": 4,
+          "files": 3,
+          "kinds": {
+            "bare": 4
+          },
+          "samples": [
+            "standardlistbox_slider"
+          ]
+        },
+        {
+          "key": "background",
+          "count": 4,
+          "files": 2,
+          "kinds": {
+            "bare": 4
+          },
+          "samples": [
+            "GFX_console_win_bg"
+          ]
+        },
+        {
+          "key": "orientation",
+          "count": 4,
+          "files": 2,
+          "kinds": {
+            "bare": 4
+          },
+          "samples": [
+            "UPPER_LEFT",
+            "LOWER_LEFT"
+          ]
+        },
+        {
+          "key": "borderSize",
+          "count": 4,
+          "files": 2,
+          "kinds": {
+            "position": 4
+          },
+          "samples": []
+        },
+        {
+          "key": "offset",
+          "count": 3,
+          "files": 2,
+          "kinds": {
+            "position": 3
+          },
+          "samples": []
+        },
+        {
+          "key": "priority",
+          "count": 3,
+          "files": 2,
+          "kinds": {
+            "number": 3
+          },
+          "samples": [
+            "100"
+          ]
+        },
+        {
+          "key": "alwaystransparent",
+          "count": 3,
+          "files": 2,
+          "kinds": {
+            "bool": 3
+          },
+          "samples": [
+            "yes"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "circularProgressBarType",
+      "count": 4,
+      "files": 4,
+      "props": [
+        {
+          "key": "name",
+          "count": 4,
+          "files": 4,
+          "kinds": {
+            "bare": 4
+          },
+          "samples": [
+            "GFX_textured_pie_chart",
+            "GFX_phase_circular_progress_pie_chart_on_map",
+            "GFX_phase_circular_progress_pie_chart",
+            "GFX_project_phase_progress_circular_chart"
+          ]
+        },
+        {
+          "key": "textureFile1",
+          "count": 4,
+          "files": 4,
+          "kinds": {
+            "bare": 4
+          },
+          "samples": [
+            "gfx/interface/ideas/idea_volunteer_only.dds",
+            "gfx/interface/operations/circular_progress_bar_bg.dds"
+          ]
+        },
+        {
+          "key": "textureFile2",
+          "count": 4,
+          "files": 4,
+          "kinds": {
+            "bare": 4
+          },
+          "samples": [
+            "gfx/interface/ideas/idea_extensive_conscription.dds",
+            "gfx/interface/operations/circular_progress_bar.dds"
+          ]
+        },
+        {
+          "key": "size",
+          "count": 4,
+          "files": 4,
+          "kinds": {
+            "number": 4
+          },
+          "samples": [
+            "30",
+            "25",
+            "35"
+          ]
+        },
+        {
+          "key": "rotation",
+          "count": 4,
+          "files": 4,
+          "kinds": {
+            "number": 4
+          },
+          "samples": [
+            "90"
+          ]
+        },
+        {
+          "key": "amount",
+          "count": 4,
+          "files": 4,
+          "kinds": {
+            "number": 4
+          },
+          "samples": [
+            "75",
+            "10"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "progressBarType",
+      "count": 4,
+      "files": 1,
+      "props": [
+        {
+          "key": "name",
+          "count": 4,
+          "files": 1,
+          "kinds": {
+            "bare": 4
+          },
+          "samples": [
+            "GFX_power_balance_left",
+            "GFX_power_balance_right",
+            "GFX_power_balance_left_moving",
+            "GFX_power_balance_right_moving"
+          ]
+        },
+        {
+          "key": "textureFile1",
+          "count": 4,
+          "files": 1,
+          "kinds": {
+            "bare": 4
+          },
+          "samples": [
+            "gfx/interface/bop/bop_bar_orange_light.dds",
+            "gfx/interface/bop/bop_bar_blue_light.dds",
+            "gfx/interface/bop/bop_bar_orange_arrow.dds",
+            "gfx/interface/bop/bop_bar_blue_arrow.dds"
+          ]
+        },
+        {
+          "key": "textureFile2",
+          "count": 4,
+          "files": 1,
+          "kinds": {
+            "bare": 4
+          },
+          "samples": [
+            "gfx/interface/absolute_nothing.dds"
+          ]
+        },
+        {
+          "key": "size",
+          "count": 4,
+          "files": 1,
+          "kinds": {
+            "position": 4
+          },
+          "samples": []
+        },
+        {
+          "key": "effectFile",
+          "count": 4,
+          "files": 1,
+          "kinds": {
+            "bare": 4
+          },
+          "samples": [
+            "gfx/FX/progress_minmax.lua"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "LineChartType",
+      "count": 3,
+      "files": 3,
+      "props": [
+        {
+          "key": "name",
+          "count": 3,
+          "files": 3,
+          "kinds": {
+            "bare": 3
+          },
+          "samples": [
+            "GFX_intel_ledger_chart",
+            "GFX_logistics_details_linechart",
+            "GFX_strategicair_linechart"
+          ]
+        },
+        {
+          "key": "size",
+          "count": 3,
+          "files": 3,
+          "kinds": {
+            "position": 3
+          },
+          "samples": []
+        },
+        {
+          "key": "linewidth",
+          "count": 3,
+          "files": 3,
+          "kinds": {
+            "number": 3
+          },
+          "samples": [
+            "1.5",
+            "1"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "browserType",
+      "count": 2,
+      "files": 1,
+      "props": [
+        {
+          "key": "name",
+          "count": 2,
+          "files": 1,
+          "kinds": {
+            "bare": 2
+          },
+          "samples": [
+            "browser"
+          ]
+        },
+        {
+          "key": "spriteType",
+          "count": 2,
+          "files": 1,
+          "kinds": {
+            "bare": 2
+          },
+          "samples": [
+            "GFX_dummy_browser"
+          ]
+        },
+        {
+          "key": "position",
+          "count": 2,
+          "files": 1,
+          "kinds": {
+            "position": 2
+          },
+          "samples": []
+        },
+        {
+          "key": "size",
+          "count": 2,
+          "files": 1,
+          "kinds": {
+            "position": 2
+          },
+          "samples": []
+        }
+      ]
+    },
+    {
+      "type": "guibuttonType",
+      "count": 2,
+      "files": 1,
+      "props": [
+        {
+          "key": "name",
+          "count": 2,
+          "files": 1,
+          "kinds": {
+            "bare": 2
+          },
+          "samples": [
+            "stakeholder_country_flag"
+          ]
+        },
+        {
+          "key": "quadTextureSprite",
+          "count": 2,
+          "files": 1,
+          "kinds": {
+            "bare": 2
+          },
+          "samples": [
+            "GFX_flag_small2"
+          ]
+        },
+        {
+          "key": "position",
+          "count": 2,
+          "files": 1,
+          "kinds": {
+            "position": 2
+          },
+          "samples": []
+        }
+      ]
+    },
+    {
+      "type": "overlappingElementsBoxType",
+      "count": 2,
+      "files": 2,
+      "props": [
+        {
+          "key": "name",
+          "count": 2,
+          "files": 2,
+          "kinds": {
+            "bare": 2
+          },
+          "samples": [
+            "entries",
+            "page_dots"
+          ]
+        },
+        {
+          "key": "position",
+          "count": 2,
+          "files": 2,
+          "kinds": {
+            "position": 2
+          },
+          "samples": []
+        },
+        {
+          "key": "size",
+          "count": 2,
+          "files": 2,
+          "kinds": {
+            "position": 2
+          },
+          "samples": []
+        },
+        {
+          "key": "format",
+          "count": 2,
+          "files": 2,
+          "kinds": {
+            "bare": 2
+          },
+          "samples": [
+            "center"
+          ]
+        },
+        {
+          "key": "first_on_top",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "bool": 1
+          },
+          "samples": [
+            "no"
+          ]
+        },
+        {
+          "key": "spacing",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "number": 1
+          },
+          "samples": [
+            "1.0"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "textspriteType",
+      "count": 1,
+      "files": 1,
+      "props": [
+        {
+          "key": "name",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "bare": 1
+          },
+          "samples": [
+            "GFX_theatre_selection_unit_indicator"
+          ]
+        },
+        {
+          "key": "texturefile",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "bare": 1
+          },
+          "samples": [
+            "gfx/interface/unitcontrol/theatre_selection_unit_indicator.dds"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "IconType",
+      "count": 1,
+      "files": 1,
+      "props": [
+        {
+          "key": "name",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "bare": 1
+          },
+          "samples": [
+            "GFX_r56_vechicles_tech_tree_bg"
+          ]
+        },
+        {
+          "key": "spriteType",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "bare": 1
+          },
+          "samples": [
+            "GFX_r56_vechicles_tech_tree_bg"
+          ]
+        },
+        {
+          "key": "position",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "position": 1
+          },
+          "samples": []
+        },
+        {
+          "key": "alwaystransparent",
+          "count": 1,
+          "files": 1,
+          "kinds": {
+            "bool": 1
+          },
+          "samples": [
+            "yes"
+          ]
+        }
+      ]
+    }
+  ],
+  "rootKeys": [
+    {
+      "key": "guiTypes",
+      "count": 678,
+      "files": 645,
+      "kinds": {
+        "block": 677,
+        "block(空)": 1
+      },
+      "samples": []
+    },
+    {
+      "key": "spriteTypes",
+      "count": 616,
+      "files": 589,
+      "kinds": {
+        "block": 613,
+        "block(空)": 3
+      },
+      "samples": []
+    },
+    {
+      "key": "@HEADERS_Y",
+      "count": 8,
+      "files": 8,
+      "kinds": {
+        "number": 8
+      },
+      "samples": [
+        "0",
+        "15",
+        "67"
+      ]
+    },
+    {
+      "key": "bitmapfonts",
+      "count": 8,
+      "files": 7,
+      "kinds": {
+        "block": 8
+      },
+      "samples": []
+    },
+    {
+      "key": "@POSTERS_Y",
+      "count": 6,
+      "files": 6,
+      "kinds": {
+        "number": 6
+      },
+      "samples": [
+        "0"
+      ]
+    },
+    {
+      "key": "@TEXT_LEFT_X",
+      "count": 6,
+      "files": 6,
+      "kinds": {
+        "number": 6
+      },
+      "samples": [
+        "15"
+      ]
+    },
+    {
+      "key": "@TEXT_CENTER_X",
+      "count": 6,
+      "files": 6,
+      "kinds": {
+        "number": 6
+      },
+      "samples": [
+        "170"
+      ]
+    },
+    {
+      "key": "@TEXT_RIGHT_X",
+      "count": 6,
+      "files": 6,
+      "kinds": {
+        "number": 6
+      },
+      "samples": [
+        "315"
+      ]
+    },
+    {
+      "key": "@TEXTS_Y",
+      "count": 6,
+      "files": 6,
+      "kinds": {
+        "number": 6
+      },
+      "samples": [
+        "215"
+      ]
+    },
+    {
+      "key": "@FOLKHEMMET_ICON_X",
+      "count": 4,
+      "files": 4,
+      "kinds": {
+        "number": 4
+      },
+      "samples": [
+        "250"
+      ]
+    },
+    {
+      "key": "@FOLKHEMMET_ICON_Y",
+      "count": 4,
+      "files": 4,
+      "kinds": {
+        "number": 4
+      },
+      "samples": [
+        "35",
+        "140"
+      ]
+    },
+    {
+      "key": "@FOLKHEMMET_TEXT_X",
+      "count": 4,
+      "files": 4,
+      "kinds": {
+        "number": 4
+      },
+      "samples": [
+        "185"
+      ]
+    },
+    {
+      "key": "@FOLKHEMMET_TEXT_Y",
+      "count": 4,
+      "files": 4,
+      "kinds": {
+        "number": 4
+      },
+      "samples": [
+        "45",
+        "155"
+      ]
+    },
+    {
+      "key": "@BG_X",
+      "count": 4,
+      "files": 4,
+      "kinds": {
+        "number": 4
+      },
+      "samples": [
+        "144"
+      ]
+    },
+    {
+      "key": "@BG_Y",
+      "count": 4,
+      "files": 4,
+      "kinds": {
+        "number": 4
+      },
+      "samples": [
+        "-3"
+      ]
+    },
+    {
+      "key": "objectTypes",
+      "count": 3,
+      "files": 2,
+      "kinds": {
+        "block": 3
+      },
+      "samples": []
+    },
+    {
+      "key": "@FACTION_TEXT_X",
+      "count": 3,
+      "files": 3,
+      "kinds": {
+        "number": 3
+      },
+      "samples": [
+        "55"
+      ]
+    },
+    {
+      "key": "@FACTION_ICONS_X",
+      "count": 3,
+      "files": 3,
+      "kinds": {
+        "number": 3
+      },
+      "samples": [
+        "10"
+      ]
+    },
+    {
+      "key": "@FACTION_NAMES_X",
+      "count": 3,
+      "files": 3,
+      "kinds": {
+        "number": 3
+      },
+      "samples": [
+        "55"
+      ]
+    },
+    {
+      "key": "guitypes",
+      "count": 3,
+      "files": 3,
+      "kinds": {
+        "block": 3
+      },
+      "samples": []
+    },
+    {
+      "key": "@LOYALTY_TEXT_X",
+      "count": 2,
+      "files": 2,
+      "kinds": {
+        "number": 2
+      },
+      "samples": [
+        "240"
+      ]
+    },
+    {
+      "key": "@POPULARITY_TEXT_X",
+      "count": 2,
+      "files": 2,
+      "kinds": {
+        "number": 2
+      },
+      "samples": [
+        "380"
+      ]
+    },
+    {
+      "key": "default_clicksound",
+      "count": 2,
+      "files": 1,
+      "kinds": {
+        "bare": 2
+      },
+      "samples": [
+        "click_default"
+      ]
+    },
+    {
+      "key": "default_downsound",
+      "count": 2,
+      "files": 1,
+      "kinds": {
+        "bare": 2
+      },
+      "samples": [
+        "ui_menu_click"
+      ]
+    },
+    {
+      "key": "default_upsound",
+      "count": 2,
+      "files": 1,
+      "kinds": {
+        "bare": 2
+      },
+      "samples": [
+        "ui_menu_leave"
+      ]
+    },
+    {
+      "key": "@STABILITY_TEXT_X",
+      "count": 2,
+      "files": 2,
+      "kinds": {
+        "number": 2
+      },
+      "samples": [
+        "275",
+        "250"
+      ]
+    },
+    {
+      "key": "@STABILITY_ICON_X",
+      "count": 2,
+      "files": 2,
+      "kinds": {
+        "number": 2
+      },
+      "samples": [
+        "317",
+        "290"
+      ]
+    },
+    {
+      "key": "@STABILITY_TT_X",
+      "count": 2,
+      "files": 2,
+      "kinds": {
+        "number": 2
+      },
+      "samples": [
+        "290",
+        "273"
+      ]
+    },
+    {
+      "key": "@MANPOWER_TEXT_X",
+      "count": 2,
+      "files": 2,
+      "kinds": {
+        "number": 2
+      },
+      "samples": [
+        "385",
+        "445"
+      ]
+    },
+    {
+      "key": "@MANPOWER_ICON_X",
+      "count": 2,
+      "files": 2,
+      "kinds": {
+        "number": 2
+      },
+      "samples": [
+        "432",
+        "465"
+      ]
+    },
+    {
+      "key": "@MANPOWER_TT_X",
+      "count": 2,
+      "files": 2,
+      "kinds": {
+        "number": 2
+      },
+      "samples": [
+        "400",
+        "465"
+      ]
+    },
+    {
+      "key": "@WE_TEXT_X",
+      "count": 2,
+      "files": 2,
+      "kinds": {
+        "number": 2
+      },
+      "samples": [
+        "55"
+      ]
+    },
+    {
+      "key": "@WE_ICON_X",
+      "count": 2,
+      "files": 2,
+      "kinds": {
+        "number": 2
+      },
+      "samples": [
+        "10"
+      ]
+    },
+    {
+      "key": "@lon_we_icon_y",
+      "count": 2,
+      "files": 2,
+      "kinds": {
+        "number": 2
+      },
+      "samples": [
+        "50"
+      ]
+    },
+    {
+      "key": "@lon_we_1_icon_x",
+      "count": 2,
+      "files": 2,
+      "kinds": {
+        "number": 2
+      },
+      "samples": [
+        "20"
+      ]
+    },
+    {
+      "key": "@lon_we_2_icon_x",
+      "count": 2,
+      "files": 2,
+      "kinds": {
+        "number": 2
+      },
+      "samples": [
+        "50"
+      ]
+    },
+    {
+      "key": "@lon_we_3_icon_x",
+      "count": 2,
+      "files": 2,
+      "kinds": {
+        "number": 2
+      },
+      "samples": [
+        "80"
+      ]
+    },
+    {
+      "key": "@lon_we_4_icon_x",
+      "count": 2,
+      "files": 2,
+      "kinds": {
+        "number": 2
+      },
+      "samples": [
+        "110"
+      ]
+    },
+    {
+      "key": "@lon_we_5_icon_x",
+      "count": 2,
+      "files": 2,
+      "kinds": {
+        "number": 2
+      },
+      "samples": [
+        "140"
+      ]
+    },
+    {
+      "key": "@lon_we_6_icon_x",
+      "count": 2,
+      "files": 2,
+      "kinds": {
+        "number": 2
+      },
+      "samples": [
+        "170"
+      ]
+    },
+    {
+      "key": "@lon_we_7_icon_x",
+      "count": 2,
+      "files": 2,
+      "kinds": {
+        "number": 2
+      },
+      "samples": [
+        "200"
+      ]
+    },
+    {
+      "key": "@lon_we_8_icon_x",
+      "count": 2,
+      "files": 2,
+      "kinds": {
+        "number": 2
+      },
+      "samples": [
+        "230"
+      ]
+    },
+    {
+      "key": "@lon_we_9_icon_x",
+      "count": 2,
+      "files": 2,
+      "kinds": {
+        "number": 2
+      },
+      "samples": [
+        "260"
+      ]
+    },
+    {
+      "key": "@lon_we_10_icon_x",
+      "count": 2,
+      "files": 2,
+      "kinds": {
+        "number": 2
+      },
+      "samples": [
+        "290"
+      ]
+    },
+    {
+      "key": "@POSTER_LEFT_X",
+      "count": 2,
+      "files": 2,
+      "kinds": {
+        "number": 2
+      },
+      "samples": [
+        "10"
+      ]
+    },
+    {
+      "key": "@POSTER_CENTER_X",
+      "count": 2,
+      "files": 2,
+      "kinds": {
+        "number": 2
+      },
+      "samples": [
+        "170"
+      ]
+    },
+    {
+      "key": "@POSTER_RIGHT_X",
+      "count": 2,
+      "files": 2,
+      "kinds": {
+        "number": 2
+      },
+      "samples": [
+        "325"
+      ]
+    },
+    {
+      "key": "@BACKGROUND_X",
+      "count": 2,
+      "files": 2,
+      "kinds": {
+        "number": 2
+      },
+      "samples": [
+        "6",
+        "-3"
+      ]
+    },
+    {
+      "key": "@BACKGROUND_Y",
+      "count": 2,
+      "files": 2,
+      "kinds": {
+        "number": 2
+      },
+      "samples": [
+        "0"
+      ]
+    },
+    {
+      "key": "@prod_icon_pos_x",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "358"
+      ]
+    },
+    {
+      "key": "@prod_sub_pos_x",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "379"
+      ]
+    },
+    {
+      "key": "@prod_add_pos_x",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "453"
+      ]
+    },
+    {
+      "key": "@prod_nof_pos_x",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "403"
+      ]
+    },
+    {
+      "key": "@ASCENDED_ADVISOR_CONTAINER_POS_Y",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "295"
+      ]
+    },
+    {
+      "key": "@ASCENDED_ADVISOR_CONTAINER_WIDTH",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "150"
+      ]
+    },
+    {
+      "key": "@ASCENDED_ADVISOR_CONTAINER_HEIGHT",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "120"
+      ]
+    },
+    {
+      "key": "@ASCENDED_ADVISOR_TEXT_POS_X",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "-75"
+      ]
+    },
+    {
+      "key": "@ASCENDED_ADVISOR_TEXT_POS_Y",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "23"
+      ]
+    },
+    {
+      "key": "@ASCENDED_ADVISOR_FRAME_POS_Y",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "-11"
+      ]
+    },
+    {
+      "key": "@ADVISOR_CONTAINER_POS_Y",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "490"
+      ]
+    },
+    {
+      "key": "@ADVISOR_POS_Y",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "-28"
+      ]
+    },
+    {
+      "key": "@ATTITUDE_TEXT_X",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "160"
+      ]
+    },
+    {
+      "key": "@IMPERIAL_FACTION_CONTAINER_POS_Y",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "295"
+      ]
+    },
+    {
+      "key": "@IMPERIAL_FACTION_CONTAINER_WIDTH",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "150"
+      ]
+    },
+    {
+      "key": "@IMPERIAL_FACTION_CONTAINER_HEIGHT",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "120"
+      ]
+    },
+    {
+      "key": "@IMPERIAL_FACTION_TEXT_POS_X",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "-75"
+      ]
+    },
+    {
+      "key": "@IMPERIAL_FACTION_TEXT_POS_Y",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "25"
+      ]
+    },
+    {
+      "key": "@IMPERIAL_FACTION_NAME_POS_X",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "-5"
+      ]
+    },
+    {
+      "key": "@IMPERIAL_DECISION_TEXT_POS_X",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "-50"
+      ]
+    },
+    {
+      "key": "@IMPERIAL_FACTION_FRAME_POS_Y",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "-11"
+      ]
+    },
+    {
+      "key": "@FACTION_CONTAINER_POS_Y",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "490"
+      ]
+    },
+    {
+      "key": "@FACTION_POS_Y",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "-28"
+      ]
+    },
+    {
+      "key": "@survivor_flag_center_pos_x",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "10"
+      ]
+    },
+    {
+      "key": "@survivor_flag_center_pos_y",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "30"
+      ]
+    },
+    {
+      "key": "@survivor_flag_left_pos_x",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "4"
+      ]
+    },
+    {
+      "key": "@survivor_flag_left_pos_y",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "30"
+      ]
+    },
+    {
+      "key": "@survivor_flag_right_pos_x",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "16"
+      ]
+    },
+    {
+      "key": "@survivor_flag_right_pos_y",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "30"
+      ]
+    },
+    {
+      "key": "@survivor_fleet_icon_pos_x",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "0"
+      ]
+    },
+    {
+      "key": "@survivor_fleet_icon_pos_y",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "18"
+      ]
+    },
+    {
+      "key": "@survivor_air_icon_pos_x",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "0"
+      ]
+    },
+    {
+      "key": "@survivor_air_icon_pos_y",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "16"
+      ]
+    },
+    {
+      "key": "@survivor_count_pos_x",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "-9"
+      ]
+    },
+    {
+      "key": "@survivor_count_pos_y",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "0"
+      ]
+    },
+    {
+      "key": "@survivor_grid_horizontal_slots",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "6"
+      ]
+    },
+    {
+      "key": "@survivor_grid_slot_width",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "34"
+      ]
+    },
+    {
+      "key": "@lost_grid_slot_height",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "34"
+      ]
+    },
+    {
+      "key": "@CHANCE_TEXT_X",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "240"
+      ]
+    },
+    {
+      "key": "@INVESTMENTS_TEXT_X",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "380"
+      ]
+    },
+    {
+      "key": "@INVESTMENT_TYPE_ICONS_X",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "10"
+      ]
+    },
+    {
+      "key": "@INVESTMENT_TYPE_NAMES_X",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "55"
+      ]
+    },
+    {
+      "key": "@PARANOIA_PARANOIAMETER_MAIN_X",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "190"
+      ]
+    },
+    {
+      "key": "@PARANOIA_PARANOIAMETER_MAIN_Y",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "70"
+      ]
+    },
+    {
+      "key": "@PARANOIA_PARANOIAMETER_BG_X",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "144"
+      ]
+    },
+    {
+      "key": "@PARANOIA_PARANOIAMETER_BG_Y",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "-3"
+      ]
+    },
+    {
+      "key": "@PARANOIA_TEXT_X",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "50"
+      ]
+    },
+    {
+      "key": "@PARANOIA_TEXT_Y",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "180"
+      ]
+    },
+    {
+      "key": "@PHOTO_1_X",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "25"
+      ]
+    },
+    {
+      "key": "@PHOTO_1_Y",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "105"
+      ]
+    },
+    {
+      "key": "@PHOTO_2_X",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "330"
+      ]
+    },
+    {
+      "key": "@PHOTO_2_Y",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "22"
+      ]
+    },
+    {
+      "key": "@PHOTO_3_X",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "440"
+      ]
+    },
+    {
+      "key": "@PHOTO_3_Y",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "3"
+      ]
+    },
+    {
+      "key": "@PHOTO_4_X",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "363"
+      ]
+    },
+    {
+      "key": "@PHOTO_4_Y",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "115"
+      ]
+    },
+    {
+      "key": "@PHOTO_5_X",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "75"
+      ]
+    },
+    {
+      "key": "@PHOTO_5_Y",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "5"
+      ]
+    },
+    {
+      "key": "@ARMY_ICON_X",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "250"
+      ]
+    },
+    {
+      "key": "@ARMY_ICON_Y",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "-10"
+      ]
+    },
+    {
+      "key": "@ARMY_TEXT_X",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "185"
+      ]
+    },
+    {
+      "key": "@ARMY_TEXT_Y",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "10"
+      ]
+    },
+    {
+      "key": "@AIR_ICON_X",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "250"
+      ]
+    },
+    {
+      "key": "@AIR_ICON_Y",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "40"
+      ]
+    },
+    {
+      "key": "@AIR_TEXT_X",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "180"
+      ]
+    },
+    {
+      "key": "@AIR_TEXT_Y",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "55"
+      ]
+    },
+    {
+      "key": "@NAVY_ICON_X",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "250"
+      ]
+    },
+    {
+      "key": "@NAVY_ICON_Y",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "90"
+      ]
+    },
+    {
+      "key": "@NAVY_TEXT_X",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "185"
+      ]
+    },
+    {
+      "key": "@NAVY_TEXT_Y",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "105"
+      ]
+    },
+    {
+      "key": "@SENATE_TEXT_X",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "16"
+      ]
+    },
+    {
+      "key": "@HOUSE_TEXT_X",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "212"
+      ]
+    },
+    {
+      "key": "@STATUS_Y",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "52"
+      ]
+    },
+    {
+      "key": "@accountlogin_title_font",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "bare": 1
+      },
+      "samples": [
+        "hoi_20b"
+      ]
+    },
+    {
+      "key": "@accountlogin_label_font",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "bare": 1
+      },
+      "samples": [
+        "cg_16b"
+      ]
+    },
+    {
+      "key": "@accountlogin_error_font",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "bare": 1
+      },
+      "samples": [
+        "cg_16b"
+      ]
+    },
+    {
+      "key": "@accountlogin_success_font",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "bare": 1
+      },
+      "samples": [
+        "cg_16b"
+      ]
+    },
+    {
+      "key": "@accountcreate_title_font",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "bare": 1
+      },
+      "samples": [
+        "hoi_20b"
+      ]
+    },
+    {
+      "key": "@accountcreate_label_font",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "bare": 1
+      },
+      "samples": [
+        "cg_16b"
+      ]
+    },
+    {
+      "key": "@accountcreate_suggestion_font",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "bare": 1
+      },
+      "samples": [
+        "cg_16b"
+      ]
+    },
+    {
+      "key": "@accountcreate_success_font",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "bare": 1
+      },
+      "samples": [
+        "cg_16b"
+      ]
+    },
+    {
+      "key": "@accountcreate_error_font",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "bare": 1
+      },
+      "samples": [
+        "cg_16b"
+      ]
+    },
+    {
+      "key": "@ProfileBackgroundScale",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "0.71"
+      ]
+    },
+    {
+      "key": "@ProfilePictureScale",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "0.57"
+      ]
+    },
+    {
+      "key": "@army_reform_x_pos",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "-2"
+      ]
+    },
+    {
+      "key": "@army_reform_y_pos",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "-48"
+      ]
+    },
+    {
+      "key": "@china_alignment_window_height",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "140"
+      ]
+    },
+    {
+      "key": "@TOP_LABEL_Y",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "10"
+      ]
+    },
+    {
+      "key": "@TOP_VALUE_Y",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "28"
+      ]
+    },
+    {
+      "key": "@BOTTOM_LABEL_Y",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "-30"
+      ]
+    },
+    {
+      "key": "@BOTTOM_VALUE_Y",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "-64"
+      ]
+    },
+    {
+      "key": "@council_member_container_y_1",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "300"
+      ]
+    },
+    {
+      "key": "@council_member_container_y_2",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "500"
+      ]
+    },
+    {
+      "key": "@council_member_container_width",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "150"
+      ]
+    },
+    {
+      "key": "@council_member_container_height",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "120"
+      ]
+    },
+    {
+      "key": "@council_member_text_x",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "-75"
+      ]
+    },
+    {
+      "key": "@council_member_text_y",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "23"
+      ]
+    },
+    {
+      "key": "@council_member_portrait_frame_x",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "0"
+      ]
+    },
+    {
+      "key": "@council_member_portrait_frame_y",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "3"
+      ]
+    },
+    {
+      "key": "@council_member_portrait_x",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "-1"
+      ]
+    },
+    {
+      "key": "@council_member_portrait_y",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "-6"
+      ]
+    },
+    {
+      "key": "@window_width",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "850"
+      ]
+    },
+    {
+      "key": "@agenda_entry_width",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "336"
+      ]
+    },
+    {
+      "key": "@agenda_entry_height",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "35"
+      ]
+    },
+    {
+      "key": "@top_agenda_width",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "145"
+      ]
+    },
+    {
+      "key": "@top_agenda_height",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "230"
+      ]
+    },
+    {
+      "key": "@member_entry_width",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "52"
+      ]
+    },
+    {
+      "key": "@member_entry_height",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "38"
+      ]
+    },
+    {
+      "key": "@balance_of_power_icon_containers_y",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "0"
+      ]
+    },
+    {
+      "key": "@GROUP_WIDTH",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "500"
+      ]
+    },
+    {
+      "key": "@GROUP_HEIGHT",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "105"
+      ]
+    },
+    {
+      "key": "@POINTS_X",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "26"
+      ]
+    },
+    {
+      "key": "@POINTS_Y",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "69"
+      ]
+    },
+    {
+      "key": "@POINTS_WIDTH",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "32"
+      ]
+    },
+    {
+      "key": "@POINTS_HEIGHT",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "32"
+      ]
+    },
+    {
+      "key": "@POINTS_TEXT_X",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "5"
+      ]
+    },
+    {
+      "key": "@POINTS_TEXT_Y",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "6"
+      ]
+    },
+    {
+      "key": "@POINTS_TEXT_WIDTH",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "25"
+      ]
+    },
+    {
+      "key": "@POINTS_TEXT_HEIGHT",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "10"
+      ]
+    },
+    {
+      "key": "@POINTS_BUTTON_X",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "22"
+      ]
+    },
+    {
+      "key": "@POINTS_BUTTON_Y",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "100"
+      ]
+    },
+    {
+      "key": "@soi_icon_x_pos",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "55"
+      ]
+    },
+    {
+      "key": "@soi_icon_y_pos",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "18"
+      ]
+    },
+    {
+      "key": "@soi_text_x_pos",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "80"
+      ]
+    },
+    {
+      "key": "@soi_text_y_pos",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "-4"
+      ]
+    },
+    {
+      "key": "@GROUP_TEXT_X",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "55"
+      ]
+    },
+    {
+      "key": "@GROUP_ICONS_X",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "10"
+      ]
+    },
+    {
+      "key": "@GROUP_NAMES_X",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "55"
+      ]
+    },
+    {
+      "key": "@STATUS_TEXT_X",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "160"
+      ]
+    },
+    {
+      "key": "@POLITICS_TEXT_X",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "319"
+      ]
+    },
+    {
+      "key": "@POLITICS_ICON_X",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "336"
+      ]
+    },
+    {
+      "key": "@POLITICS_TT_X",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "330"
+      ]
+    },
+    {
+      "key": "@FACTORY_TEXT_X",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "385"
+      ]
+    },
+    {
+      "key": "@FACTORY_ICON_X",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "402"
+      ]
+    },
+    {
+      "key": "@FACTORY_TT_X",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "number": 1
+      },
+      "samples": [
+        "400"
+      ]
+    },
+    {
+      "key": "SpriteTypes",
+      "count": 1,
+      "files": 1,
+      "kinds": {
+        "block": 1
+      },
+      "samples": []
+    }
+  ]
+}

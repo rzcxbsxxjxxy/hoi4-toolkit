@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>单位和装备</title>
+<link rel="stylesheet" href="/theme.css">
+<style>
+  :root{ --canvas:#e9ebef }
+  #left{width:250px;border-right:1px solid var(--line)}
+  #right{width:330px;border-left:1px solid var(--line)}
+  #stage{flex:1;position:relative;overflow:auto;background:var(--canvas);min-width:0;padding:14px}
+
+  #sum{padding:0 0 10px;color:var(--ink3);font-size:11.5px;display:flex;gap:14px;flex-wrap:wrap}
+
+  /* ── 页签 ── */
+  #tabs{display:inline-flex;gap:2px;margin-right:12px;background:var(--inset);border:1px solid var(--line);border-radius:8px;padding:2px}
+  #tabs .tab{padding:3px 14px;font-size:11.5px;border-radius:6px;cursor:pointer;color:var(--ink3);border:none;background:transparent}
+  #tabs .tab:hover{color:var(--ink2)}
+  #tabs .tab.on{background:var(--accent-soft);color:var(--accent);font-weight:650}
+
+  /* ── 左栏:分组 + 文件列表 ── */
+  #fileList{padding:4px 0}
+  .grprow{
+    padding:5px 10px;font-size:11.5px;display:flex;align-items:center;gap:6px;
+    cursor:pointer;border-bottom:1px solid var(--line2);font-weight:650;color:var(--ink2);
+  }
+  .grprow:hover{background:var(--line2)}
+  .grprow .caret{flex:none;width:10px;color:var(--ink3);font-size:9px}
+  .grprow .gn{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .grprow .ct{color:var(--ink3);font-size:10.5px;font-weight:400;font-variant-numeric:tabular-nums}
+  .frow{
+    padding:4px 10px 4px 28px;font-size:11.5px;display:flex;align-items:center;gap:7px;
+    cursor:pointer;border-left:3px solid transparent;border-bottom:1px solid var(--line2);
+  }
+  .frow:hover{background:var(--line2)}
+  .frow.hit{border-left-color:var(--accent);background:var(--accent-soft)}
+  .frow .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:var(--mono,Consolas)}
+  .frow .ct{color:var(--ink3);font-size:10.5px;font-variant-numeric:tabular-nums}
+  .frow .ow{flex:none}
+
+  /* ── 中栏:条目卡片墙 ── */
+  #cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+  .char{
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--r-card);
+    padding:8px;cursor:pointer;display:flex;flex-direction:column;gap:5px;
+    transition:border-color .12s,box-shadow .12s;
+  }
+  .char:hover{border-color:#aeb6c2;box-shadow:var(--shadow)}
+  .char.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+  .char .nm{font-size:11.5px;font-weight:650;word-break:break-all;line-height:1.3}
+  .char .id{font-size:9.5px;color:var(--ink3);word-break:break-all;line-height:1.2;font-family:var(--mono,Consolas)}
+  .char .badges{display:flex;flex-wrap:wrap;gap:3px}
+  .char .min{font-size:9.5px;padding:0 5px;border-radius:8px;background:var(--line2);color:var(--ink2);white-space:nowrap}
+  .char.modnew{box-shadow:inset 3px 0 0 var(--ok)}
+  .char.ovr{box-shadow:inset 3px 0 0 var(--warn)}
+  .empty{color:var(--ink3);padding:30px 0;text-align:center}
+
+  /* ── 右栏:检查器 ── */
+  #insp{padding:2px 11px 16px}
+  #insp .her{padding:10px 0;border-bottom:1px solid var(--line)}
+  #insp .her .nm{font-size:15px;font-weight:700;word-break:break-all}
+  #insp .her .id{font-size:10.5px;color:var(--ink3);word-break:break-all;margin-top:2px;font-family:var(--mono,Consolas)}
+  #insp .her .loc{font-size:11px;color:var(--ink2);margin-top:3px;word-break:break-all}
+  #insp .kv{display:flex;gap:6px;padding:1px 0;align-items:baseline}
+  #insp .kv b{flex:none;width:74px;font-weight:600;color:var(--ink2)}
+  #insp .kv span{word-break:break-all;flex:1;min-width:0}
+  #insp h4{margin:11px 0 4px;font-size:12px;color:var(--ink2);border-bottom:1px solid var(--line2);padding-bottom:3px}
+  #insp .fld{display:flex;gap:6px;padding:1px 0;align-items:baseline}
+  #insp .fld b{flex:none;width:128px;font-weight:500;color:var(--ink2);font-size:11px}
+  #insp .fld span{word-break:break-all;flex:1;min-width:0;font-size:11.5px}
+  #insp .mono{font-family:var(--mono,Consolas);font-size:10.5px;color:var(--ink2)}
+  #insp .ic{margin:2px 0;font-size:10.5px;color:var(--ink3);word-break:break-all;font-family:var(--mono,Consolas)}
+</style>
+</head>
+<body>
+<header>
+  <div id="nav"></div>
+</header>
+<div class="subbar">
+  <h1><span data-i18n="un.title">单位和装备</span> <small id="statChip">—</small></h1>
+  <div id="tabs">
+    <button type="button" class="tab on" data-tab="units" data-i18n="un.tabUnits">单位</button>
+    <button type="button" class="tab" data-tab="equipment" data-i18n="un.tabEquipment">装备</button>
+  </div>
+  <div class="tgroup">
+    <input type="text" id="q" data-i18n-ph="un.search" placeholder="搜索 id / 名称">
+    <div class="tgroup" data-collapse>
+      <select id="srcSel" title="按来源筛选"><option value="" data-i18n="un.srcAll">全部来源</option></select>
+    </div>
+  </div>
+  <span class="spacer"></span>
+  <span id="srcSum" style="font-weight:400;color:var(--ink3);font-size:11px"></span>
+  <div id="langbar"></div>
+</div>
+<main>
+  <aside id="left" data-sizer="left" data-sizer-def="300">
+    <div class="sizer-bar" title="拖动调宽 · 双击复位 · 双击侧栏折叠"></div>
+    <div class="pane-title"><span data-i18n="un.file">文件</span> <span class="spacer"></span><span id="fileCount" style="font-weight:400"></span></div>
+    <div class="pane-body" id="fileList"></div>
+  </aside>
+  <div id="stage">
+    <div id="sum"></div>
+    <div id="cards"><div class="empty" style="padding:30px 0;color:var(--ink3)">…</div></div>
+  </div>
+  <aside id="right" data-no-i18n data-sizer="right" data-sizer-def="340">
+    <div class="sizer-bar" title="拖动调宽 · 双击复位 · 双击侧栏折叠"></div>
+    <div class="pane-title">检查器</div>
+    <div class="pane-body">
+      <div id="insp"><div style="color:var(--ink3);padding:6px 11px" data-i18n="un.insEmpty">点选一个条目</div></div>
+    </div>
+  </aside>
+</main>
+<div id="toast"></div>
+<script src="/i18n.js"></script>
+<script src="/i18n-dict.js"></script>
+<script src="/progress.js"></script>
+<script src="/loadgate.js"></script>
+<script type="module">
+  import { mountNav } from '/nav.js'
+  mountNav('#nav')
+</script>
+<script src="/sizer.js"></script>
+<script src="/toolbar.js"></script>
+<script src="/edgepath.js"></script>
+<script src="/locclient.js"></script>
+<script src="/incr.js"></script>
+<script src="/tex.js"></script>
+<script src="/ctx.js"></script>
+<script src="/keymap.js"></script>
+<script src="/keys.js"></script>
+<script src="/ctxwire.js"></script>
+<script src="/ownchip.js"></script>
+<script src="/units.js"></script>
+<script src="/fullscreen.js"></script>
+</body>
+</html>

@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>HOI4 学说系统</title>
+<link rel="stylesheet" href="/theme.css">
+<style>
+  :root{ --canvas:#eef0f3 }
+  #left{width:212px;border-right:1px solid var(--line)}
+  #right{width:322px;border-left:1px solid var(--line)}
+  #stage{flex:1;position:relative;overflow:auto;background:var(--canvas);min-width:0}
+
+  /* ══════════════════════════════════════════════════════════════
+   * ★★★ DOCTRINE_LAYOUT_V3(2026-10-04 重做)
+   *
+   * 上一版的问题(用户反馈"无法查看其他次要学说"):
+   *   每个轨道默认只渲染 1 条 subdoctrine,其余 8~9 条要勾顶栏的
+   *   「展开全部互斥分支」才出来 —— 那个勾在顶栏第三组里,极难发现,
+   *   于是 95 条次要学说里只有 14 条可见,看起来像"只有一条"。
+   *
+   * 改法:
+   *   ① 默认全展开。轨道卡片的折叠是有状态的手风琴,默认开;
+   *      收起状态记 localStorage,下次保持 —— 显式的用户选择才持久化。
+   *   ② 次要学说改成多列网格(自适应 2~4 列),一屏能看完一个轨道的全部候选,
+   *      不再是一条一条纵向堆。
+   *   ③ 轨道标题右侧直接标"N 选 1",互斥关系写在标题上,不用勾选才看得出。
+   *   ④ 主要学说与轨道视觉分层:主要学说=药丸(浅),轨道=卡片(带边框)。
+   * ══════════════════════════════════════════════════════════════ */
+  #tree{padding:14px;display:flex;flex-direction:column;gap:16px}
+
+  /* ── 类别区块 ── */
+  .fsec{
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--r-card);
+    overflow:hidden;box-shadow:var(--shadow);
+  }
+  .fhead{
+    display:flex;align-items:center;gap:10px;padding:9px 12px;
+    border-bottom:1px solid var(--line);cursor:pointer;user-select:none;
+    background:linear-gradient(180deg,var(--panel-2),var(--panel));
+  }
+  .fhead:hover{background:var(--panel-2)}
+  .fhead .cf{width:4px;height:28px;border-radius:2px;flex:none}
+  .fhead .ic{width:26px;height:26px;border-radius:6px;background:var(--line2);object-fit:contain;flex:none}
+  .fhead .nm{font-size:14px;font-weight:700}
+  .fhead .n{font-size:11px;color:var(--ink3)}
+  .fhead .sp{flex:1}
+  .fbody{padding:11px 12px 13px}
+
+  /* ── 分区标题 ── */
+  .sechead{
+    display:flex;align-items:baseline;gap:8px;margin:0 0 8px;
+    font-size:11px;font-weight:700;letter-spacing:.04em;color:var(--ink2);
+  }
+  .sechead::after{content:"";flex:1;height:1px;background:var(--line2)}
+  .sechead .hint{font-weight:400;letter-spacing:0;font-size:10.5px;color:var(--ink3)}
+  .sechead + .sechead{margin-top:14px}
+
+  /* ── 主要学说:横排药丸 ── */
+  .grandrow{display:grid;grid-template-columns:repeat(auto-fill,minmax(212px,1fr));gap:7px}
+  .gpill{
+    display:flex;align-items:center;gap:8px;cursor:pointer;
+    background:var(--panel-2);border:1px solid var(--line2);border-radius:8px;
+    padding:7px 9px;transition:border-color .12s,box-shadow .12s;
+  }
+  .gpill:hover{border-color:#aeb6c2;box-shadow:var(--shadow)}
+  .gpill.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft);background:var(--panel)}
+  .gpill .ic{width:30px;height:30px;border-radius:6px;background:var(--line2);object-fit:contain;flex:none}
+  .gpill .ic.ph{display:flex;align-items:center;justify-content:center;color:var(--ink3);font-size:13px}
+  .gpill .tx{flex:1;min-width:0}
+  .gpill .nm{font-size:12.5px;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .gpill .id{font-size:9.5px;color:var(--ink3);font-family:Consolas,monospace;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+  /* ── 轨道卡片(手风琴)── */
+  .tracks{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:9px}
+  .tcard{
+    background:var(--panel-2);border:1px solid var(--line2);border-radius:9px;overflow:hidden;
+  }
+  .tcard.sel{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+  .thead{
+    display:flex;align-items:center;gap:8px;padding:7px 9px;cursor:pointer;user-select:none;
+  }
+  .thead:hover{background:var(--panel)}
+  .thead .ic{width:24px;height:24px;border-radius:5px;background:var(--line2);object-fit:contain;flex:none}
+  .thead .nm{flex:1;min-width:0;font-size:12.5px;font-weight:650;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .thead .cnt{
+    font-size:10px;font-weight:700;padding:1px 6px;border-radius:9px;flex:none;
+    background:var(--accent-soft);color:var(--accent);
+  }
+  .thead .car{
+    font-size:9px;color:var(--ink3);flex:none;transition:transform .15s;
+    width:12px;text-align:center;
+  }
+  .tcard.closed .car{transform:rotate(-90deg)}
+  .tmeta{
+    padding:0 9px 6px 41px;font-size:10px;color:var(--ink3);line-height:1.5;
+    display:flex;gap:5px;flex-wrap:wrap;
+  }
+  .tmeta .mm{color:var(--warn);font-weight:700}
+  .tmeta .tagx{
+    background:var(--line2);border-radius:4px;padding:0 4px;
+  }
+
+  /* ── 次要学说网格:自适应多列,默认全展开 ── */
+  .subs{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));
+    gap:5px;padding:8px 9px 9px;border-top:1px solid var(--line2);
+  }
+  .tcard.closed .subs{display:none}
+  .sub{
+    display:flex;align-items:center;gap:6px;cursor:pointer;
+    background:var(--panel);border:1px solid var(--line2);border-radius:6px;
+    padding:5px 7px;transition:border-color .12s,box-shadow .12s;min-width:0;
+  }
+  .sub:hover{border-color:#aeb6c2;box-shadow:var(--shadow)}
+  .sub.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+  .sub .ic{width:20px;height:20px;border-radius:4px;background:var(--line2);object-fit:contain;flex:none}
+  .sub .tx{flex:1;min-width:0}
+  .sub .nm{font-size:11.5px;font-weight:600;line-height:1.25;
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .sub .rw{font-size:9px;color:var(--ink3);flex:none;text-align:right;line-height:1.2}
+  .sub.multi{border-left:3px solid var(--warn)}
+  .sub.ownm{border-left:3px solid var(--accent)}
+  /* ★ 悬停浮层:细节文字不再挤在版面上 */
+  .sub[data-tip]:hover::after{
+    content:attr(data-tip);position:absolute;z-index:40;
+    left:var(--tx,50%);transform:translateX(-50%);
+    bottom:calc(100% + 6px);
+    width:max-content;max-width:290px;white-space:pre-line;
+    background:var(--ink);color:var(--panel);
+    font-size:11px;line-height:1.55;font-weight:400;text-align:left;
+    padding:7px 9px;border-radius:6px;pointer-events:none;
+    box-shadow:0 6px 20px rgba(0,0,0,.28);
+  }
+  .sub{position:relative}
+
+  .mini{font-size:10px;padding:0 5px;border-radius:8px;background:var(--line2);color:var(--ink2);white-space:nowrap}
+  .mini.xp{background:var(--accent-soft);color:var(--accent);font-weight:600}
+  .mini.ms{background:var(--warn-soft);color:var(--warn);font-weight:600}
+  .mini.dlc{background:var(--danger-soft);color:var(--danger)}
+  .mini.shared{background:var(--accent-soft);color:var(--accent);font-weight:600}
+
+  /* ── 诊断面板 ── */
+  .iss{padding:5px 10px;font-size:11px;border-bottom:1px solid var(--line2);cursor:pointer}
+  .iss:hover{background:var(--panel-2)}
+  .iss .k{font-weight:600}
+  .iss .d{color:var(--ink2);font-size:10.5px;line-height:1.4}
+  .iss.ok .k{color:var(--ok)}
+
+  #insp .kv{display:flex;gap:6px;padding:1px 0;align-items:baseline}
+  #insp .kv b{flex:none;width:76px;font-weight:600;color:var(--ink2)}
+  #insp .kv span{word-break:break-all;flex:1;min-width:0}
+  #insp h4{margin:10px 0 4px;font-size:12px;color:var(--ink2);border-bottom:1px solid var(--line2);padding-bottom:3px}
+  #insp .tagr{
+    display:inline-block;margin:1px 3px 1px 0;padding:0 6px;border-radius:8px;
+    background:var(--line2);color:var(--ink2);font-size:10.5px;
+  }
+  #insp .eff{
+    display:flex;gap:6px;padding:1px 0;font-size:11px;border-bottom:1px dotted var(--line2);
+  }
+  #insp .eff b{flex:none;font-weight:600;color:var(--accent-2);min-width:118px;word-break:break-all}
+  #insp .eff i{font-style:normal;color:var(--ink);flex:1;word-break:break-all;text-align:right}
+  /* ★ 检查器里的"同轨其它候选"——直接点过去,不用回列表找 */
+  #insp .sib{
+    display:flex;align-items:center;gap:6px;padding:3px 6px;margin-bottom:3px;
+    background:var(--panel-2);border:1px solid var(--line2);border-radius:5px;
+    cursor:pointer;font-size:11px;
+  }
+  #insp .sib:hover{border-color:#aeb6c2}
+  #insp .sib.on{border-color:var(--accent);background:var(--accent-soft)}
+  #insp .sib .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .hint{color:var(--ink3);font-size:11px;line-height:1.6;padding:6px 11px}
+</style>
+</head>
+<body>
+<header>
+  <div id="nav"></div>
+</header>
+<div class="subbar">
+  <h1>学说系统 <small id="statChip">—</small></h1>
+  <div class="tgroup">
+    <input type="text" id="q" placeholder="搜索学说 / 轨道 / 效果">
+    <!-- UI_SLIM_V1:下拉类折叠,搜索框常驻 -->
+    <div class="tgroup" data-collapse>
+    <select id="folderSel"><option value="">全部页签</option></select>
+    </div>
+  </div>
+  <div class="tgroup" data-collapse>
+    <label class="chk" title="只显示带 has_dlc 的(DLC 专属学说,如特种部队)"><input type="checkbox" id="onlyDlc"> 仅 DLC 专属</label>
+    <label class="chk" title="一次显示所有轨道(关掉则每类只显示第一个轨道)"><input type="checkbox" id="oneTrack"> 每类只看首个轨道</label>
+  </div>
+  <span class="spacer"></span>
+  <span id="srcSum" style="font-weight:400;color:var(--ink3);font-size:11px"></span>
+  <div id="langbar"></div>
+</div>
+<main>
+  <aside id="left" data-sizer="left" data-sizer-def="230">
+    <div class="sizer-bar" title="拖动调宽 · 双击复位 · 双击侧栏折叠"></div>
+    <div class="pane-title">页签 <span class="spacer"></span><span id="fCount" style="font-weight:400"></span></div>
+    <div class="pane-body" id="fList"></div>
+    <div class="pane-title" style="border-top:1px solid var(--line)">诊断 <span class="spacer"></span><span id="iCount" style="font-weight:400"></span></div>
+    <div class="pane-body" id="issList" style="max-height:34%"></div>
+  </aside>
+  <div id="stage">
+    <div id="tree"></div>
+  </div>
+  <aside id="right" data-no-i18n data-sizer="right" data-sizer-def="330">
+    <div class="sizer-bar" title="拖动调宽 · 双击复位 · 双击侧栏折叠"></div>
+    <div class="pane-title">检查器</div>
+    <div class="pane-body">
+      <div id="insp"><div class="hint">点选一个主要学说 / 轨道 / 次要学说查看效果明细</div></div>
+    </div>
+  </aside>
+</main>
+<div id="toast"></div>
+<script src="/i18n.js"></script>
+<script src="/i18n-dict.js"></script>
+<script src="/progress.js"></script>
+<script src="/loadgate.js"></script>
+<script type="module">
+  import { mountNav } from '/nav.js'
+  mountNav('#nav')
+</script>
+<script src="/sizer.js"></script>
+<script src="/toolbar.js"></script>
+<script src="/locclient.js"></script>
+<script src="/tex.js"></script>
+<!-- ctx.js / keys.js:右键菜单(定位源码/复制 id)+ F1 速查表,须在 doctrines.js 之前 -->
+<script src="/ctx.js"></script>
+<script src="/keymap.js"></script>
+<script src="/keys.js"></script>
+<!-- OWNERSHIP_V1:统一归属徽标 -->
+<script src="/ownchip.js"></script>
+<script src="/doctrines.js"></script>
+<!-- ★ FULLSCREEN_V1:全站全屏。必须在 nav.js 之前?否 —— nav.js 轮询等它,
+     放哪都行;统一放页面脚本区末尾,好维护。 -->
+<script src="/fullscreen.js"></script>
+</body>
+</html>

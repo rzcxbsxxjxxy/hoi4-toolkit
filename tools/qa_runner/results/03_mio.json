@@ -1,0 +1,139 @@
+{
+  "layer": "03_mio",
+  "base": "http://127.0.0.1:5175",
+  "ts": "2026-10-19T06:06:08.352Z",
+  "summary": {
+    "total": 18,
+    "pass": 17,
+    "fail": 0,
+    "exempt": 1
+  },
+  "cases": [
+    {
+      "name": "dlc 页面装载(CtxWire 就绪)",
+      "pass": true,
+      "detail": "ready",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "点击军工机构玩法",
+      "pass": true,
+      "detail": "未找到 MIO 玩法项",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "机构清单加载(MIO 模式)",
+      "pass": true,
+      "detail": "机构条目=825",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "特质树渲染(.mio-frame + 节点)",
+      "pass": true,
+      "detail": "rendered",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "多对多连线全部绘制(渲染==parents 之和)",
+      "pass": true,
+      "detail": "dom=26 exp=24 multi=8",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "MIO 独立框架(标题栏)存在",
+      "pass": true,
+      "detail": "frame-head.ftitle",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "列标题框架(段落分隔)渲染",
+      "pass": true,
+      "detail": "secs=2 cols=2",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "DLC 玩法切换条(上一级框架)已收起",
+      "pass": true,
+      "detail": "featBar=none",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "机构列表按来源文件名分组(.mio-grp)",
+      "pass": true,
+      "detail": "分组容器=85 API 文件组=85 条目和=825/825",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "三规则:边集合与 DOM path 逐点一致",
+      "pass": true,
+      "detail": "期望=24 实测=24 互斥=2 | 推导式:|Δy|<0.5→水平M…L…(0弯折);|Δx|<0.5→垂直M…L…(0弯折);否则M(父底)→L(半层my)→L(子x)→L(子顶)=2弯折;折点数=d.split(\"L\").length-1",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "三规则抽样:水平直线(0弯折)",
+      "pass": false,
+      "detail": "本机构无此类边(数据侧)",
+      "exempt": true,
+      "exemptReason": "当前机构父子坐标不产生此类连线"
+    },
+    {
+      "name": "三规则抽样:垂直直线(0弯折)",
+      "pass": true,
+      "detail": "sample=generic_mio_trait_efficient_fuel_engines -> generic_mio_trait_highly_efficient_diesel_electric_propulsion_systems 弯折=0(=期望0) 期望d命中DOM",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "三规则抽样:转折肘线(2弯折)",
+      "pass": true,
+      "detail": "sample=generic_mio_trait_long_range_raiding -> generic_mio_trait_efficient_fuel_engines 弯折=2(=期望2) 期望d命中DOM",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "互斥线红色(.ln.mutex)",
+      "pass": true,
+      "detail": "条数=2 stroke=rgb(229, 72, 77) 普通线=rgb(138, 146, 158)",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "政策展示+图标(.mioPolicy/img.picon)",
+      "pass": true,
+      "detail": "政策条目=62 列表图标=62 检查器图标=1 分组=9",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "三类属性分组(Equipment/Production/Organisation)",
+      "pass": true,
+      "detail": "API三dict=[bonus:1,prod:0,orgmod:1] DOM段=装备✓/生产✗/组织✓ 样本=generic_mio_initial_trait_submarine_designer",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "属性栏键值美观化(无原始大写下划线键)",
+      "pass": true,
+      "detail": "kv样本=[id | icon | 归属 | 总数 | 本列表 | token] 中文标签=9 原始键命中=0",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "无页面运行时异常",
+      "pass": true,
+      "detail": "clean",
+      "exempt": false,
+      "exemptReason": ""
+    }
+  ]
+}

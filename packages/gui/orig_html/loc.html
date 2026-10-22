@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>本地化 · HOI4 工作台</title>
+<link rel="stylesheet" href="/theme.css">
+<style>
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0}
+  body{font:13px/1.5 "Segoe UI","Microsoft YaHei",system-ui,sans-serif;color:var(--ink);background:var(--bg);display:flex;flex-direction:column;overflow:hidden}
+  header{display:flex;align-items:center;gap:8px;padding:7px 12px;background:var(--panel);border-bottom:1px solid var(--line);flex:none;flex-wrap:wrap}
+  header h1{font-size:14px;margin:0;font-weight:600;white-space:nowrap}
+  header h1 small{font-weight:400;color:var(--ink3);margin-left:6px}
+  .spacer{flex:1}
+  select,input[type=text],button{font:inherit;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:4px 7px}
+  input[type=text]{width:200px}
+  button{cursor:pointer;white-space:nowrap}
+  button:hover{background:#f2f4f7}
+  button.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+
+  .bar{display:flex;align-items:center;gap:6px;padding:6px 12px;background:var(--panel);border-bottom:1px solid var(--line);flex:none;flex-wrap:wrap}
+  .bar .lb{font-size:12px;color:var(--ink2)}
+  .langs{display:flex;gap:4px;flex-wrap:wrap}
+  .langbtn{font-size:12px;padding:3px 8px;border:1px solid var(--line);border-radius:11px;background:#fff;cursor:pointer;white-space:nowrap}
+  .langbtn.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);font-weight:600}
+  .langbtn i{font-style:normal;color:var(--ink3);font-size:11px}
+  .langbtn.on i{color:var(--accent)}
+  #fchip{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;padding:2px 4px 2px 8px;
+    border:1px solid var(--accent);border-radius:11px;background:var(--accent-soft);color:var(--accent);max-width:46vw}
+  #fchip b{font-family:ui-monospace,Consolas,monospace;font-weight:400;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  #fchip button{border:0;background:transparent;color:inherit;cursor:pointer;padding:0 5px;font-size:12px;line-height:1}
+
+  .stat{padding:5px 12px;font-size:11.5px;color:var(--ink2);background:var(--panel);border-bottom:1px solid var(--line2);flex:none;display:flex;gap:14px;flex-wrap:wrap}
+  .stat b{color:var(--ink)}
+  .stat .warn{color:var(--warn)}
+
+  main{flex:1;overflow:auto;min-height:0}
+  table{border-collapse:collapse;width:100%;font-size:12.5px}
+  th,td{border-bottom:1px solid var(--line2);padding:5px 8px;vertical-align:top;text-align:left}
+  th{position:sticky;top:0;background:var(--panel);z-index:2;font-size:12px;color:var(--ink2);font-weight:600}
+  td.k{font-family:ui-monospace,Consolas,monospace;font-size:11.5px;color:var(--ink);white-space:nowrap;max-width:280px;overflow:hidden;text-overflow:ellipsis}
+  td.v{white-space:pre-wrap;word-break:break-word;cursor:text}
+  td.v:hover{background:var(--accent-soft)}
+  td.v.miss{color:var(--danger);font-style:italic}
+  td.v.ro{cursor:default;color:var(--ink2)}
+  td.v.ro:hover{background:none}
+  /* ★ RIGHTCLICK_V2 选中态:键盘导航(j/k换行、h/l 换语言列)要看得见落点 */
+  td.v.cursel{background:var(--accent-soft);box-shadow:inset 2px 0 0 var(--accent)}
+  tr.sel td.k{background:var(--accent-soft);color:var(--accent);font-weight:600}
+  .src{display:inline-block;padding:0 5px;border-radius:8px;font-size:10px;line-height:15px;background:var(--line2);color:var(--ink3)}
+  .src.ovr{background:var(--warn-soft);color:var(--warn);font-weight:600}
+  .src.new{background:var(--ok-soft);color:var(--ok);font-weight:600}
+  textarea{width:100%;min-height:48px;font:inherit;color:var(--ink);background:#fff;border:1px solid var(--accent);border-radius:var(--r);padding:4px 6px;resize:vertical}
+  .edact{display:flex;gap:5px;margin-top:4px}
+  .edact button{padding:2px 9px;font-size:11.5px}
+  .edact button.pri{background:var(--accent);border-color:var(--accent);color:#fff}
+
+  #wrap{flex:1;display:flex;min-height:0}
+  #ftree{width:300px;flex:none;min-height:0;overflow:auto;background:var(--panel);border-right:1px solid var(--line);padding:4px 6px;font-size:12px;line-height:1.6}
+  #ftree .fl{font-weight:600;margin:5px 0 2px;color:var(--accent);cursor:pointer;user-select:none}
+  #ftree .fl i{font-style:normal;font-weight:400;color:var(--ink3);font-size:11px}
+  #ftree .fl i.miss{color:var(--danger)}
+  #ftree .fd{color:var(--ink2);margin:1px 0;padding-left:6px;cursor:pointer;user-select:none}
+  #ftree .ff{display:flex;gap:4px;align-items:baseline;padding:1px 0 1px 12px;cursor:pointer;border-radius:3px}
+  #ftree .ff:hover{background:var(--accent-soft)}
+  #ftree .ff.on{background:var(--accent-soft);color:var(--accent);font-weight:600}
+  #ftree .ff .n{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:ui-monospace,Consolas,monospace;font-size:11.5px}
+  #ftree .ff .e{color:var(--ink3);font-size:11px}
+  .pager{display:flex;gap:10px;align-items:center;justify-content:center;padding:10px 0;position:sticky;bottom:0;background:var(--panel);border-top:1px solid var(--line2)}
+  .pager .pgmid{font-size:12px;color:var(--ink2)}
+  .pager button[disabled]{opacity:.5;cursor:default}
+  .empty{color:var(--ink3);text-align:center;padding:40px 10px}
+  #toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:#1d2129;color:#fff;padding:7px 15px;border-radius:6px;font-size:13px;opacity:0;transition:opacity .18s;pointer-events:none;z-index:99;max-width:70vw}
+  #toast.on{opacity:1}
+  #toast.bad{background:var(--danger)}
+  .spin{display:inline-block;width:12px;height:12px;border:2px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:sp .7s linear infinite}
+  @keyframes sp{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<header>
+  <div id="nav"></div>
+</header>
+<div class="subbar">
+  <h1>本地化<small>多语言并列 · 缺失译文检测 · 直接改写</small></h1>
+  <span class="spacer"></span>
+</div>
+
+<div class="bar">
+  <span class="lb">语言</span>
+  <div class="langs" id="langs"></div>
+  <span class="spacer"></span>
+  <input type="text" id="q" placeholder="搜索 key 或译文…">
+  <select id="status">
+    <option value="all">全部</option>
+    <option value="missing">缺译文</option>
+    <option value="translated">已齐全</option>
+  </select>
+  <select id="src"><option value="">全部来源</option></select>
+  <!-- 文件过滤只由右键菜单产生,UI 没有输入框 —— 必须给出可见出口 -->
+  <span id="fchip" style="display:none"></span>
+  <select id="pageSize" title="每页条数"><option value="100">100/页</option><option value="200" selected>200/页</option><option value="500">500/页</option></select>
+  <button id="mode" title="在「按 key 全表」与「按文件递归浏览」间切换">按文件浏览</button>
+  <button id="export" title="导出当前筛选下缺失译文的 yaml(值为英文参照原文,据此翻译为各语言)">导出缺译文 yml</button>
+  <button id="reload">刷新</button>
+  <button id="rebuild" title="强制重建索引">重建索引</button>
+</div>
+
+<div class="stat" id="stat"></div>
+
+<div id="wrap">
+  <aside id="ftree" style="display:none"></aside>
+  <main><div id="body"></div></main>
+</div>
+<div id="toast"></div>
+
+<!-- ★ RIGHTCLICK_V2:全站右键菜单 + 快捷键接线。
+     ⚠ 顺序有依赖:ctx.js 先(菜单本体),keymap.js 必须在 keys.js 之前
+     (keys.js boot 时要读目录),ctxwire.js 最后(它只是接线骨架)。 -->
+<!-- ★ i18n 必须最先加载:页面脚本在解析期就调用翻译函数,
+     i18n.js 若排在它们之后,翻译函数会是 undefined → ReferenceError。 -->
+<script src="/i18n.js"></script>
+<script src="/i18n-dict.js"></script>
+<script src="/ctx.js"></script>
+<script src="/keymap.js"></script>
+<script src="/keys.js"></script>
+<script src="/ctxwire.js"></script>
+<script src="/locclient.js"></script>
+<script src="/loc.js"></script>
+
+<script src="/progress.js"></script>
+<script type="module">
+  import { mountNav } from '/nav.js'
+  mountNav('#nav')
+</script>
+<!-- ★ FULLSCREEN_V1:全站全屏。必须在 nav.js 之前?否 —— nav.js 轮询等它,
+     放哪都行;统一放页面脚本区末尾,好维护。 -->
+<script src="/fullscreen.js"></script>
+</body>
+</html>

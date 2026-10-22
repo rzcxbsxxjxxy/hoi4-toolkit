@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>设置 · HOI4 GUI 工作台</title>
+<link rel="stylesheet" href="/theme.css">
+<style>
+  /* 通用色板由 theme.css 提供,本页不再重复定义 */
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0}
+  body{
+    font:13px/1.5 "Segoe UI","Microsoft YaHei",system-ui,sans-serif;
+    color:var(--ink); background:var(--bg);
+    display:flex; flex-direction:column; overflow:hidden;
+  }
+  header{
+    display:flex; align-items:center; gap:10px; padding:9px 14px;
+    background:var(--panel); border-bottom:1px solid var(--line); flex:none;
+  }
+  header h1{font-size:15px;margin:0;font-weight:600}
+  header h1 small{font-weight:400;color:var(--ink3);margin-left:6px}
+  .spacer{flex:1}
+  button,select,input[type=text],input[type=number]{
+    font:inherit; color:var(--ink); background:#fff;
+    border:1px solid var(--line); border-radius:5px; padding:4px 8px;
+  }
+  input[type=text]{width:100%}
+  button{cursor:pointer;white-space:nowrap}
+  button:hover{background:#f2f4f7}
+  button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+  button.primary:hover{background:#25589a}
+  button.danger{color:var(--danger);border-color:#eccaca}
+  button.danger:hover{background:var(--danger-soft)}
+  button:disabled{opacity:.45;cursor:not-allowed}
+  button.link{border:none;background:none;color:var(--accent);padding:2px 4px}
+  button.link:hover{background:var(--accent-soft)}
+  a.back{font-size:12px;color:var(--accent);text-decoration:none}
+  a.back:hover{text-decoration:underline}
+
+  main{flex:1;display:block;overflow:auto;min-height:0;padding:16px}
+  .wrap{max-width:1000px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+  .card{
+    background:var(--panel); border:1px solid var(--line);
+    border-radius:8px; overflow:hidden;
+  }
+  .card > .hd{
+    display:flex; align-items:center; gap:8px; padding:9px 13px;
+    background:#fafbfc; border-bottom:1px solid var(--line2);
+  }
+  .card > .hd b{font-size:13.5px}
+  .card > .hd .hint{font-size:11.5px;color:var(--ink3);font-weight:400}
+  .card > .bd{padding:13px}
+  .sec-note{font-size:11.5px;color:var(--ink3);margin:0 0 10px;line-height:1.6}
+
+  .field{display:flex;align-items:center;gap:8px;margin-bottom:9px}
+  .field > label{width:104px;flex:none;font-size:12px;color:var(--ink2)}
+  .field > .grow{flex:1;min-width:0}
+
+  /* 模组行 */
+  .mods{display:flex;flex-direction:column;gap:7px;margin-bottom:11px}
+  .mod{
+    display:flex; align-items:flex-start; gap:9px;
+    border:1px solid var(--line); border-radius:6px; padding:8px 10px; background:#fff;
+  }
+  .mod.bad{border-color:#eecaca;background:#fffafa}
+  .mod.off{opacity:.62;background:#fafbfc;border-style:dashed}
+  .mod.off .mp{text-decoration:line-through}
+  .mod .mi{flex:1;min-width:0}
+  .mod .mt{font-size:12.5px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .mod .mp{font-size:11px;color:var(--ink3);word-break:break-all;margin-top:3px;font-family:ui-monospace,Consolas,monospace}
+  .mod .acts{display:flex;gap:5px;flex:none}
+  .modsum{
+    display:flex;align-items:center;gap:7px;flex-wrap:wrap;
+    font-size:11.5px;color:var(--ink2);padding:6px 2px 0;
+  }
+  .modsum button{
+    font-size:11px;padding:2px 9px;cursor:pointer;
+    border:1px solid var(--line);background:#fff;border-radius:5px;color:var(--ink2);
+  }
+  .modsum button:hover{border-color:var(--accent);color:var(--accent)}
+
+  /* 模组启用开关 —— 开启时绿色,关闭时灰色 */
+  .sw{display:flex;align-items:center;gap:6px;flex:none;cursor:pointer;padding-top:1px;user-select:none}
+  .sw input{position:absolute;opacity:0;width:0;height:0}
+  .sw .track{
+    width:32px;height:18px;border-radius:9px;background:var(--line);
+    position:relative;transition:background .14s;flex:none;
+  }
+  .sw .track::after{
+    content:'';position:absolute;left:2px;top:2px;width:14px;height:14px;
+    border-radius:50%;background:#fff;transition:transform .14s;
+    box-shadow:0 1px 2px rgba(0,0,0,.2);
+  }
+  .sw input:checked + .track{background:var(--ok)}
+  .sw input:checked + .track::after{transform:translateX(14px)}
+  .sw input:focus-visible + .track{box-shadow:0 0 0 2px var(--accent-soft)}
+  .sw .lbl{font-size:11px;color:var(--ink3);white-space:nowrap;min-width:30px}
+  .sw input:checked ~ .lbl{color:var(--ok)}
+  .tag{
+    display:inline-block;font-size:10.5px;line-height:1.6;padding:0 6px;
+    border-radius:9px;background:var(--line2);color:var(--ink2);white-space:nowrap;
+  }
+  .tag.ok{background:var(--ok-soft);color:var(--ok)}
+  .tag.warn{background:var(--warn-soft);color:var(--warn)}
+  .tag.bad{background:var(--danger-soft);color:var(--danger)}
+  .tag.mod{background:var(--accent-soft);color:var(--accent)}
+  .tag.off{background:var(--line2);color:var(--ink3)}
+
+  /* 创意工坊选择面板 */
+  .panel{
+    border:1px solid var(--line);border-radius:6px;
+    max-height:330px;overflow:auto;background:#fcfdfe;
+  }
+  .panel .empty,.empty{padding:14px;color:var(--ink3);font-size:12px;text-align:center}
+  .wrow{
+    display:flex;align-items:center;gap:8px;padding:5px 10px;
+    border-bottom:1px solid var(--line2);cursor:pointer;
+  }
+  .wrow:hover{background:var(--accent-soft)}
+  .wrow .wn{font-size:12.5px;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .wrow .wg{font-size:11px;color:var(--ink3);flex:none;font-family:ui-monospace,Consolas,monospace}
+  .wrow.on{background:var(--accent-soft);box-shadow:inset 3px 0 0 var(--accent)}
+
+  .empty{
+    padding:16px;text-align:center;color:var(--ink3);font-size:12px;
+    border:1px dashed var(--line);border-radius:6px;background:#fcfdfe;
+  }
+
+  /* 显示选项 */
+  .opts{display:grid;grid-template-columns:1fr 1fr;gap:9px 20px}
+  .opt{display:flex;align-items:center;gap:7px}
+  .opt label{font-size:12px;color:var(--ink2);cursor:pointer}
+  .opt input[type=number]{width:66px}
+  .opt .u{font-size:11px;color:var(--ink3)}
+
+  .status{
+    font-size:12px;padding:7px 10px;border-radius:6px;margin-bottom:10px;display:none;
+  }
+  .status.on{display:block}
+  .status.ok{background:var(--ok-soft);color:var(--ok)}
+  .status.warn{background:var(--warn-soft);color:var(--warn)}
+  .status.bad{background:var(--danger-soft);color:var(--danger)}
+
+  footer{
+    flex:none;display:flex;align-items:center;gap:9px;padding:9px 14px;
+    background:var(--panel); border-top:1px solid var(--line);
+  }
+  #toast{
+    position:fixed;left:50%;bottom:24px;transform:translateX(-50%);
+    background:#22262c;color:#fff;padding:8px 16px;border-radius:6px;font-size:13px;
+    opacity:0;transition:opacity .18s;pointer-events:none;z-index:99;max-width:70vw;
+  }
+  #toast.on{opacity:1}
+  #toast.err{background:var(--danger)}
+  /* ── 外观选择器 ── */
+  .themes{display:flex;gap:8px;flex-wrap:wrap}
+  .thm{
+    border:1px solid var(--line);border-radius:7px;padding:6px 10px;cursor:pointer;
+    background:#fff;min-width:96px;
+  }
+  .thm:hover{border-color:var(--accent)}
+  .thm.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+  .thm .n{font-size:12.5px;font-weight:600}
+  .thm .d{font-size:10.5px;color:var(--ink3);margin-top:1px}
+  .thm .sw{display:flex;gap:3px;margin-top:5px}
+  .thm .sw i{width:16px;height:10px;border-radius:2px;border:1px solid rgba(0,0,0,.12)}
+  .swatches{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+  .swc{width:26px;height:26px;border-radius:50%;cursor:pointer;border:2px solid transparent;padding:0}
+  .swc.on{border-color:var(--ink2);box-shadow:0 0 0 2px var(--accent-soft)}
+  /* 分段开关(界面密度二选一) */
+  .seg{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+  .segbtn{
+    font:inherit;font-size:12px;padding:4px 14px;background:var(--panel);
+    color:var(--ink2);border:0;cursor:pointer;border-right:1px solid var(--line);
+  }
+  .segbtn:last-child{border-right:0}
+  .segbtn:hover{background:var(--line2)}
+  .segbtn.on{background:var(--accent);color:#fff;font-weight:600}
+  .icons{display:flex;gap:7px;flex-wrap:wrap}
+  .ic{width:38px;height:38px;border-radius:8px;cursor:pointer;border:2px solid transparent;background:none;padding:0}
+  .ic img{width:32px;height:32px;display:block;margin:0 auto}
+  .ic.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+  .preview{
+    display:flex;align-items:center;gap:8px;padding:9px 11px;border:1px solid var(--line);
+    border-radius:7px;background:var(--bg);
+  }
+  /* 本地图片控件 */
+  .imgrow{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .imgrow input[type=file]{font-size:11px;max-width:240px;padding:3px 6px}
+  .imgthumb{width:48px;height:32px;border-radius:5px;border:1px solid var(--line);
+    background-size:cover;background-position:center;flex:none}
+  .imgthumb.hide{display:none}
+  .imgrow .set{color:var(--ok);font-size:11px}
+  .imgrow .set.hide, .imgrow .clr.hide{display:none}
+  /* ── GLASS_TUNE:壁纸调节条 ── */
+  .tune{display:flex;align-items:center;gap:9px;padding:3px 0}
+  .tune .tk{width:76px;flex:none;font-size:12px;color:var(--ink2)}
+  .tune input[type=range]{flex:1;min-width:120px;accent-color:var(--accent)}
+  .tune .tv{width:66px;flex:none;text-align:right;font-size:11px;color:var(--ink3);font-variant-numeric:tabular-nums}
+  .tunefoot{display:flex;align-items:center;gap:10px;margin-top:4px}
+  .tunefoot .hint{flex:1;min-width:0}
+  /* 没选壁纸时整块置灰且不可操作 —— 调了也看不出效果,只会让人以为坏了 */
+  #tuneRow.off .tune, #tuneRow.off .tunefoot{opacity:.45;pointer-events:none}
+
+  .spin{display:inline-block;width:12px;height:12px;border:2px solid var(--line);
+    border-top-color:var(--accent);border-radius:50%;animation:sp .7s linear infinite}
+  @keyframes sp{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<header>
+  <h1>设置<small>游戏目录 · 模组文件夹 · 显示选项</small></h1>
+  <span class="spacer"></span>
+  <div id="nav"></div>
+</header>
+
+<main>
+  <div class="wrap">
+
+    <!-- 基础游戏目录 -->
+    <section class="card">
+      <div class="hd"><b>基础游戏目录</b><span class="hint">所有 sprite / .gfx 都以它为基准,必须指向 HoI4 安装根目录</span></div>
+      <div class="bd">
+        <div class="field">
+          <label for="base">安装路径</label>
+          <div class="grow"><input type="text" id="base" placeholder="C:/Program Files (x86)/Steam/steamapps/common/Hearts of Iron IV"></div>
+          <button id="detectBtn">自动检测</button>
+        </div>
+        <div class="status" id="baseStat"></div>
+        <div id="candBox"></div>
+      </div>
+    </section>
+
+    <!-- 模组文件夹 -->
+    <section class="card">
+      <div class="hd">
+        <b>模组文件夹</b>
+        <span class="hint">目录下有 .mod 文件即视为模组;关闭的模组保留配置但不参与界面索引与渲染(点「保存并应用」后生效)。创意工坊路径形如 steamapps/workshop/content/394360/&lt;ID&gt;</span>
+        <div class="spacer"></div>
+        <button id="scanWsBtn">扫描创意工坊</button>
+      </div>
+      <div class="bd">
+        <p class="sec-note">
+          模组按顺序叠加,后面的覆盖前面的。左列的“已改界面”显示该模组内 <code>.gui</code> 文件数量 ——
+          纯数据模组(只改 common/ localisation/)会是 0,属正常。
+        </p>
+        <div class="status" id="modStat"></div>
+        <div class="mods" id="modList"></div>
+
+        <div class="field" style="margin-top:4px">
+          <label for="manual">手动添加</label>
+          <div class="grow"><input type="text" id="manual" placeholder="粘贴模组文件夹路径…"></div>
+          <button id="manualBtn">探测并添加</button>
+        </div>
+
+        <div id="wsBox" style="display:none;margin-top:10px">
+          <div class="panel" id="wsList"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 外观:主题 / 强调色 / 图标 -->
+    <section class="card">
+      <div class="hd"><b>外观</b><span class="hint">背景主题、强调色与工作台图标 · 立即预览,点「保存并应用」持久化</span></div>
+      <div class="bd">
+        <div class="field">
+          <label>背景主题</label>
+          <div class="grow"><div class="themes" id="themePick"></div></div>
+        </div>
+        <div class="field">
+          <label>本地背景图</label>
+          <div class="grow">
+            <div class="imgrow" id="bgRow">
+              <input type="file" id="bgFile" accept="image/*">
+              <span class="imgthumb hide" id="bgThumb"></span>
+              <span class="set hide" id="bgSet">已使用本地背景</span>
+              <button class="link clr hide" id="bgClear">清除</button>
+              <span class="hint">用本地图片作全站背景,此时大部分面板自动半透明</span>
+            </div>
+          </div>
+        </div>
+        <!-- GLASS_TUNE:壁纸半透明调节条。没选背景图时整块置灰并禁用 ——
+             没壁纸时调这些没有意义,反而会让人以为坏了。-->
+        <div class="field" id="tuneRow">
+          <label>壁纸效果</label>
+          <div class="grow" id="tuneBox">
+            <div class="tune">
+              <span class="tk">面板不透明</span>
+              <input type="range" id="tGlass" min="30" max="75" step="1">
+              <span class="tv" id="tGlassV">主题默认</span>
+            </div>
+            <div class="tune">
+              <span class="tk">壁纸压暗</span>
+              <input type="range" id="tDim" min="0" max="80" step="1">
+              <span class="tv" id="tDimV">0%</span>
+            </div>
+            <div class="tune">
+              <span class="tk">壁纸模糊</span>
+              <input type="range" id="tBlur" min="0" max="24" step="1">
+              <span class="tv" id="tBlurV">0px</span>
+            </div>
+            <div class="tunefoot">
+              <span class="hint">面板越透明,壁纸越明显但文字越难读;深色壁纸建议同时压暗一点</span>
+              <button class="link" id="tReset">恢复默认</button>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <label>强调色</label>
+          <div class="grow"><div class="swatches" id="accentPick"></div></div>
+        </div>
+        <!-- UI_SLIM_V1:默认紧凑。觉得挤就切宽松,两套值只在 theme-vars.css 一处 -->
+        <div class="field">
+          <label>界面密度</label>
+          <div class="grow">
+            <div class="seg" id="densityPick"></div>
+            <span class="hint">紧凑 = 控件与列表行更薄,一屏能看更多内容</span>
+          </div>
+        </div>
+        <div class="field">
+          <label>工作台图标</label>
+          <div class="grow"><div class="icons" id="iconPick"></div></div>
+        </div>
+        <div class="field">
+          <label>本地图标图</label>
+          <div class="grow">
+            <div class="imgrow" id="icRow">
+              <input type="file" id="icFile" accept="image/*">
+              <span class="imgthumb hide" id="icThumb"></span>
+              <span class="set hide" id="icSet">已使用本地图标</span>
+              <button class="link clr hide" id="icClear">清除</button>
+              <span class="hint">用本地图片作工作台图标(同时是浏览器标签页图标)</span>
+            </div>
+          </div>
+        </div>
+        <div class="field" style="margin-top:6px">
+          <label>预览</label>
+          <div class="grow">
+            <div class="preview" id="apPreview">
+              <span class="app-icon" id="apIcon"></span>
+              <b>HOI4 工作台</b>
+              <span class="tag mod">模组</span>
+              <span class="tag ok">已就绪</span>
+              <button class="primary" style="padding:2px 10px">示例按钮</button>
+            </div>
+          </div>
+        </div>
+        <p class="sec-note" style="margin:8px 0 0">
+          图标同时用作浏览器标签页图标(favicon)。设置存在本机浏览器里,换浏览器/清缓存会回到默认。
+        </p>
+      </div>
+    </section>
+
+    <!-- 显示选项 -->
+    <section class="card">
+      <div class="hd"><b>显示选项</b><span class="hint">影响界面设计器 / 各类可视化页面的默认状态</span></div>
+      <div class="bd">
+        <div class="opts">
+          <div class="opt">
+            <input type="checkbox" id="d_showTex">
+            <label for="d_showTex">默认显示贴图</label>
+          </div>
+          <div class="opt">
+            <input type="checkbox" id="d_showNames">
+            <label for="d_showNames">默认显示元素名称</label>
+          </div>
+          <div class="opt">
+            <input type="checkbox" id="d_snap">
+            <label for="d_snap">拖拽吸附网格</label>
+            <input type="number" id="d_grid" min="1" max="100" step="1" style="width:60px">
+            <span class="u">px</span>
+          </div>
+          <div class="opt">
+            <label for="d_zoom" style="margin-right:2px">默认缩放</label>
+            <input type="number" id="d_zoom" min="0.1" max="4" step="0.05" style="width:66px">
+            <span class="u">×</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- IDE 自动补全范围 -->
+    <section class="card">
+      <div class="hd"><b>IDE 自动补全范围</b><span class="hint">决定编辑器自动补全的候选来源,可单独开关 · 存于本机浏览器</span></div>
+      <div class="bd">
+        <div class="opts" id="compScopeBox"></div>
+        <p class="sec-note" style="margin:8px 0 0">
+          官方文档 = 引擎内置的 effect / trigger / scope 关键字;common = 各单位 / 国策 / idea 等数据定义;
+          scripted_effects / scripted_triggers = common 目录下自定义的效应与触发器。补全时每条都会标注出处。
+        </p>
+      </div>
+    </section>
+
+    <!-- 快捷键自定义(KEYMAP_V1) -->
+    <section class="card" id="keymap">
+      <div class="hd"><b>快捷键</b><span class="hint">点击键位后直接按下新组合键即可改绑 · 存于本机浏览器</span></div>
+      <div class="bd">
+        <div id="keymapTop" class="km-top"></div>
+        <div id="keymapBox"></div>
+        <p class="sec-note" style="margin:10px 0 0">
+          改动<b>立即生效</b>,但只影响本页与各业务页的下次加载(快捷键在页面加载时注册)。
+          <b>斜杠 <kbd>/</kbd></b> 和 <b>Ctrl+F</b> 这类无修饰键会与浏览器/输入法有冲突,
+          若改完发现打不出,可用该项右侧的「清除」禁用它。
+        </p>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <button class="primary" id="saveBtn">保存并应用</button>
+  <button id="reloadBtn">重新载入</button>
+  <button id="resetBtn" class="danger">清空模组列表</button>
+  <div class="spacer"></div>
+  <span class="hint" id="verChip" style="font-size:11.5px;color:var(--ink3)"></span>
+</footer>
+
+<div id="toast"></div>
+<script src="/keymap.js"></script>
+<script src="/keys.js"></script>
+<script src="/settings.js"></script>
+<script src="/i18n.js"></script>
+<script src="/i18n-dict.js"></script>
+<script src="/progress.js"></script>
+<script type="module">
+  import { mountNav } from '/nav.js'
+  mountNav('#nav')
+</script>
+<!-- ★ FULLSCREEN_V1:全站全屏。必须在 nav.js 之前?否 —— nav.js 轮询等它,
+     放哪都行;统一放页面脚本区末尾,好维护。 -->
+<script src="/fullscreen.js"></script>
+</body>
+</html>

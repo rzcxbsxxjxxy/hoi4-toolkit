@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>HOI4 内容生成</title>
+<link rel="stylesheet" href="/theme.css">
+<style>
+  /* 变量全部来自 theme.css,这里不再重复定义 */
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0}
+  body{
+    font:13px/1.5 "Segoe UI","Microsoft YaHei",system-ui,sans-serif;
+    color:var(--ink); background:var(--bg);
+    display:flex; flex-direction:column; overflow:hidden;
+  }
+  header{
+    display:flex; align-items:center; gap:8px; padding:7px 12px;
+    background:var(--panel); border-bottom:1px solid var(--line); flex:none;
+  }
+  header h1{font-size:14px;margin:0;font-weight:600}
+  header h1 small{font-weight:400;color:var(--ink3);margin-left:6px}
+  .spacer{flex:1}
+  select,input[type=text],input[type=number],button{
+    font:inherit; color:var(--ink); background:#fff;
+    border:1px solid var(--line); border-radius:5px; padding:4px 7px;
+  }
+  input[type=text],input[type=number]{width:100%}
+  button{cursor:pointer}
+  button:hover{background:#f2f4f7}
+  button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+  button.primary:hover{background:#25589a}
+  button.ghost{background:#fff}
+  .chip{
+    display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:11px;
+    background:var(--line2);color:var(--ink2);font-size:12px;
+  }
+  .chip.bad{background:var(--danger-soft);color:var(--danger)}
+  .chip.good{background:var(--ok-soft);color:var(--ok)}
+  main{flex:1;display:flex;min-height:0}
+  aside{background:var(--panel);flex:none;display:flex;flex-direction:column;min-height:0}
+  #left{width:340px;border-right:1px solid var(--line);overflow:auto}
+  #right{flex:1;display:flex;flex-direction:column;min-width:0;background:var(--canvas)}
+  .sec{padding:12px 14px;border-bottom:1px solid var(--line2)}
+  .sec h3{margin:0 0 9px;font-size:13px;color:var(--ink2);display:flex;align-items:center;gap:6px}
+  .field{margin-bottom:8px}
+  .field label{display:block;font-size:12px;color:var(--ink2);margin-bottom:3px}
+  .field label .opt{color:var(--ink3);font-weight:400}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .row{display:flex;gap:8px;align-items:center}
+  .btns{display:flex;gap:8px;margin-top:4px}
+  .btns button{flex:1}
+  /* ── GEN_STATS_V1:分组标题 / 帮助气泡 / 脚本框 / 真实键提示 ── */
+  .grp{
+    margin:14px 0 7px;padding:0 0 4px;border-bottom:1px dashed var(--line2);
+    font-size:11px;color:var(--ink3);letter-spacing:.4px;
+  }
+  .grp:first-child{margin-top:0}
+  .q{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:13px;height:13px;border-radius:50%;background:var(--line2);
+    color:var(--ink3);font-size:9px;cursor:help;margin-left:5px;
+    vertical-align:middle;user-select:none;
+  }
+  .q:hover{background:var(--accent);color:#fff}
+  .blkname{
+    font:11px ui-monospace,Consolas,monospace;color:var(--accent);
+    background:var(--accent-soft);padding:0 4px;border-radius:3px;margin-left:4px;
+  }
+  .field.script textarea{
+    width:100%;font:11.5px/1.5 ui-monospace,Consolas,monospace;
+    color:var(--ink);background:#fff;border:1px solid var(--line);
+    border-radius:5px;padding:5px 7px;resize:vertical;min-height:40px;
+  }
+  .field.script textarea:focus{outline:none;border-color:var(--accent)}
+  .keyhint{margin-top:4px}
+  .khToggle{
+    font:11px inherit;color:var(--accent);background:none;border:none;
+    padding:1px 0;cursor:pointer;
+  }
+  .khToggle:hover{text-decoration:underline}
+  .khToggle::before{content:'▸ ';display:inline-block;transition:transform .15s}
+  .khToggle.open::before{content:'▾ '}
+  .khList{display:none;flex-wrap:wrap;gap:4px;margin-top:5px;max-height:150px;overflow:auto}
+  .khList.show{display:flex}
+  .kh{
+    font:11px ui-monospace,Consolas,monospace;color:var(--ink2);
+    background:var(--line2);border:1px solid transparent;border-radius:3px;
+    padding:1px 5px;cursor:pointer;
+  }
+  .kh:hover{background:var(--accent-soft);color:var(--accent);border-color:var(--accent)}
+  #errBox{display:none;margin:0 14px 10px;padding:9px 11px;border-radius:6px;background:var(--danger-soft);border:1px solid #f0c0c0;font-size:12px;color:#8a2020;max-height:38vh;overflow:auto}
+  #errBox.show{display:block}
+  #errBox .e{margin-top:5px;padding-top:5px;border-top:1px solid rgba(0,0,0,.07)}
+  #errBox .e:first-of-type{border-top:none;margin-top:0;padding-top:0}
+  #errBox .ew{font-weight:600}
+  #errBox .ep{color:#a06060;font:11px ui-monospace,Consolas,monospace}
+  #warnBox .w{margin-top:3px}
+  #statLine{font-size:11px;color:var(--ink3);margin-top:6px;line-height:1.5}
+  #statLine b{color:var(--ink2)}
+  #pathHint{font:11px ui-monospace,Consolas,monospace;color:var(--ink3);margin-top:6px;word-break:break-all}
+  textarea{font-family:inherit}
+  #warnBox{display:none;margin:0 14px 10px;padding:9px 11px;border-radius:6px;background:var(--warn-soft);border:1px solid #f0e0b8;font-size:12px;color:#7a5a14}
+  #warnBox.show{display:block}
+  #warnBox b{color:var(--danger)}
+  #files{overflow:auto;flex:1;display:flex;flex-direction:column}
+  .filetab{
+    display:flex;align-items:center;gap:8px;padding:7px 14px;border-bottom:1px solid var(--line2);
+    cursor:pointer;font-size:12px;flex:none;
+  }
+  .filetab:hover{background:#f2f4f7}
+  .filetab.on{background:var(--accent-soft);color:var(--accent);font-weight:600}
+  .filetab .p{word-break:break-all}
+  .filetab .copy{margin-left:auto;color:var(--accent);font-size:11px;flex:none}
+  #contentWrap{flex:none;border-top:1px solid var(--line);display:flex;flex-direction:column;max-height:55%}
+  #contentHead{display:flex;align-items:center;gap:8px;padding:6px 14px;border-bottom:1px solid var(--line2);background:#fafbfc;font-size:12px}
+  #content{margin:0;padding:10px 14px;overflow:auto;font:11.5px/1.55 ui-monospace,Consolas,monospace;white-space:pre;color:#262b33;background:#fff}
+  #empty{margin:auto;color:var(--ink3);text-align:center;padding:40px}
+  .hint{font-size:11px;color:var(--ink3);margin-top:2px}
+  #toast{
+    position:fixed;left:50%;bottom:26px;transform:translateX(-50%);
+    background:#1d2129;color:#fff;padding:7px 15px;border-radius:6px;font-size:13px;
+    opacity:0;transition:opacity .18s;pointer-events:none;z-index:99;max-width:70vw;
+  }
+  #toast.on{opacity:1}
+  #toast.bad{background:var(--danger)}
+</style>
+</head>
+<body>
+<header>
+  <h1>内容生成 <small>按原版真实字段校验</small></h1>
+  <span class="spacer"></span>
+  <div id="langbar"></div>
+  <div id="nav"></div>
+</header>
+<main>
+  <aside id="left" data-sizer="left" data-sizer-def="320">
+    <div class="sizer-bar" title="拖动调宽 · 双击复位 · 双击侧栏折叠"></div>
+    <div class="sec">
+      <h3>生成类型</h3>
+      <div class="field">
+        <label>内容种类</label>
+        <select id="kindSel"></select>
+        <div id="pathHint"></div>
+      </div>
+      <div class="field">
+        <label>目标模组 <span class="opt">(写入位置)</span></label>
+        <select id="targetSel"></select>
+        <div class="hint" id="targetHint">选一个可写模组,生成后可直接落盘。</div>
+      </div>
+      <div class="grid2">
+        <div class="field">
+          <label>模组名 <span class="opt">(mod)</span></label>
+          <input type="text" id="mod" value="my_mod">
+        </div>
+        <div class="field">
+          <label>语言 <span class="opt">(lang)</span></label>
+          <input type="text" id="lang" value="l_english">
+        </div>
+      </div>
+      <div id="statLine">正在载入真实字段数据…</div>
+    </div>
+    <div class="sec">
+      <h3>字段</h3>
+      <div id="fields"></div>
+    </div>
+    <div class="sec">
+      <div class="btns">
+        <button id="genBtn" class="primary">生成</button>
+        <button id="sampleBtn" class="ghost">填示例</button>
+        <button id="clearBtn" class="ghost">清空</button>
+      </div>
+      <div class="btns" style="margin-top:8px">
+        <button id="saveBtn" class="primary">保存到模组</button>
+      </div>
+      <div class="hint" id="saveHint">先「生成」预览,确认无误后写入目标模组(已存在的文件会自动备份为 .bak)。</div>
+    </div>
+  </aside>
+  <section id="right">
+    <div id="errBox"></div>
+    <div id="warnBox"></div>
+    <div id="files"></div>
+    <div id="contentWrap" style="display:none">
+      <div id="contentHead"><span id="contentPath" style="word-break:break-all"></span><span class="spacer"></span><button id="copyBtn" class="ghost" style="padding:2px 8px">复制</button></div>
+      <pre id="content"></pre>
+    </div>
+    <div id="empty">在左侧选择类型并填写字段,点击「生成」即可预览产物。生成后会按<b>原版真实字段</b>做语义校验 —— 键名、层级、枚举取值全对着游戏数据核过。</div>
+  </section>
+</main>
+<div id="toast"></div>
+<script src="/sizer.js"></script>
+<script src="/target.js"></script>
+<script src="/locclient.js"></script>
+<!-- ★ RIGHTCLICK_V2:全站右键菜单 + 快捷键接线。
+     ⚠ 顺序有依赖:ctx.js 先(菜单本体),keymap.js 必须在 keys.js 之前
+     (keys.js boot 时要读目录),ctxwire.js 最后(它只是接线骨架)。 -->
+<script src="/ctx.js"></script>
+<script src="/keymap.js"></script>
+<script src="/keys.js"></script>
+<script src="/ctxwire.js"></script>
+<script src="/create.js"></script>
+<script src="/i18n.js"></script>
+<script src="/i18n-dict.js"></script>
+<script src="/progress.js"></script>
+<script type="module">
+  import { mountNav } from '/nav.js'
+  mountNav('#nav')
+</script>
+<!-- ★ FULLSCREEN_V1:全站全屏。必须在 nav.js 之前?否 —— nav.js 轮询等它,
+     放哪都行;统一放页面脚本区末尾,好维护。 -->
+<script src="/fullscreen.js"></script>
+</body>
+</html>

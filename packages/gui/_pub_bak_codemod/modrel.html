@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>HOI4 模组关系</title>
+<link rel="stylesheet" href="/theme.css">
+<style>
+  main{display:flex;flex-direction:column;gap:10px;padding:12px;overflow:auto}
+  .cards{display:flex;gap:8px;flex-wrap:wrap}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-card);padding:8px 11px;min-width:150px}
+  .card .k{font-size:11px;color:var(--ink3)}
+  .card .v{font-size:19px;font-weight:600;color:var(--ink)}
+  .card.bad .v{color:#e07070}
+  .card.warn .v{color:#d8a94a}
+  h2{font-size:13px;color:var(--ink2);margin:6px 0 2px}
+  .hint{font-size:11px;color:var(--ink3);line-height:1.7}
+  table{width:100%;border-collapse:collapse;font-size:12px}
+  th,td{text-align:left;padding:5px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--ink3);font-weight:600;font-size:11px}
+  td.mono,code{font-family:ui-monospace,Consolas,monospace;font-size:11px}
+  .pill{display:inline-block;font-size:10px;padding:1px 6px;border-radius:9px;border:1px solid var(--line);color:var(--ink3);margin-right:3px}
+  .pill.bad{border-color:#e07070;color:#e07070}
+  .pill.warn{border-color:#d8a94a;color:#d8a94a}
+  .pill.ok{border-color:#5aa870;color:#5aa870}
+  .rp{color:var(--ink3);font-size:10px;line-height:1.6;max-height:4.7em;overflow:auto}
+  .node{border:1px solid var(--line);border-radius:var(--r-card);padding:6px 9px;margin-bottom:6px;background:var(--panel)}
+  .node.err{border-color:#e07070}
+  .deps{margin:4px 0 0 14px;padding-left:10px;border-left:2px solid var(--line);font-size:11px;line-height:1.8}
+  .ok{color:#5aa870}
+</style>
+</head>
+<body>
+<header>
+  <h1>模组关系 <small id="chip">—</small></h1>
+  <span class="spacer"></span>
+  <div id="nav"></div>
+</header>
+<main>
+  <div class="hint" id="intro">读取 <code>/api/modmeta</code>…</div>
+  <div class="cards" id="cards"></div>
+  <h2>载入顺序（拓扑序：被依赖的在前）</h2>
+  <div id="order" class="hint">—</div>
+  <h2>依赖关系</h2>
+  <div id="graph"></div>
+  <h2>replace_path 缺口</h2>
+  <div class="hint">模组声明 <code>replace_path</code> 相当于<strong>替换该文件夹全部内容</strong>；声明了却没提供的文件，在游戏里就是不存在。</div>
+  <div id="audit"></div>
+  <h2>各模组的 replace_path / dependencies</h2>
+  <div id="table"></div>
+</main>
+<div id="toast"></div>
+<script src="/i18n.js"></script>
+<script src="/i18n-dict.js"></script>
+<script src="/progress.js"></script>
+<script type="module">
+  import { mountNav } from '/nav.js'
+  mountNav('#nav')
+</script>
+<!-- ★ 同 worldmap.html:appearance.js 是 ESM,只能被 nav.js import,不能用经典脚本标签加载。 -->
+<script src="/fullscreen.js"></script>
+<script src="/modrel.js"></script>
+</body>
+</html>

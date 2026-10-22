@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>HOI4 工具链</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { width:100%; height:100%; }
+  /* ★ BOOT_WHITE(2026-10-22):初始化加载页主题色改为白色。
+     旧版是深色(#0f131a + 浅色字),与用户要求的白色主题相反。
+     文字改深灰,进度环底色改浅灰,保证白底上清晰可见。 */
+  body {
+    background:#ffffff; color:#1f2328;
+    font-family:"Microsoft YaHei UI","Microsoft YaHei",system-ui,sans-serif;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:22px; user-select:none; overflow:hidden;
+  }
+  .ring { width:64px; height:64px; border-radius:50%; border:4px solid rgba(0,0,0,0.10); border-top-color:#2f6feb; animation:spin 0.9s linear infinite; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  .logo { font-size:20px; font-weight:600; letter-spacing:2px; color:#111418; }
+  .sub { font-size:13px; color:#57606a; }
+  .dots::after { content:""; display:inline-block; width:1em; text-align:left; animation:dots 1.4s steps(4,end) infinite; }
+  @keyframes dots { 0%{content:""} 25%{content:"."} 50%{content:".."} 75%{content:"..."} 100%{content:""} }
+</style>
+</head>
+<body>
+  <div class="ring"></div>
+  <div class="logo">HOI4 工具链</div>
+  <div class="sub">正在初始化<span class="dots"></span></div>
+</body>
+</html>

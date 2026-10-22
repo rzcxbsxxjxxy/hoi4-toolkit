@@ -1,0 +1,993 @@
+{
+  "layer": "02_render_bu",
+  "base": "http://127.0.0.1:5175",
+  "ts": 1792387404,
+  "summary": {
+    "total": 140,
+    "pass": 140,
+    "fail": 0,
+    "exempt": 0
+  },
+  "cases": [
+    {
+      "name": "index 导航",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/; header/#nav存在=True; shell顶部导航(工作台/内容/界面/文档/工具/英文)常驻渲染; 外壳shell;顶栏导航常驻;可见iframe /home 实载1104字符,iframe池5个子页均加载",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "index 主容器渲染",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/; 可见文本长=40(顶部壳)+iframe子页1104字符",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "index 无白屏",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/; 文本长=40, 按钮=17, 输入=2, 下拉=1, canvas=0; 视口有实际渲染内容",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "index 控件可达",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/; 按钮=17, 输入=2, 下拉=1; 主交互控件样本可见可达(全屏/内容/语言/页签等)",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "index 无键残留",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/; UI导航/按钮/标题均为中文美化; 外壳shell;顶栏导航常驻;可见iframe /home 实载1104字符,iframe池5个子页均加载",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "focus 导航",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/focus; header/#nav存在=True; shell顶部导航(工作台/内容/界面/文档/工具/英文)常驻渲染; 国策树67树;含缩放控件 −/+/适应",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "focus 主容器渲染",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/focus; 可见文本长=4358; 阈值>200",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "focus 无白屏",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/focus; 文本长=4358, 按钮=23, 输入=18, 下拉=4, canvas=0; 视口有实际渲染内容",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "focus 控件可达",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/focus; 按钮=23, 输入=18, 下拉=4; 主交互控件样本可见可达(全屏/内容/语言/页签等)",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "focus 无键残留",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/focus; UI导航/按钮/标题均为中文美化; 国策树67树;含缩放控件 −/+/适应",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "tech 导航",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/tech; header/#nav存在=True; shell顶部导航(工作台/内容/界面/文档/工具/英文)常驻渲染; 556科技/16分组/133领域;分类页签与过滤按钮密集",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "tech 主容器渲染",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/tech; 可见文本长=10859; 阈值>200",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "tech 无白屏",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/tech; 文本长=10859, 按钮=348, 输入=13, 下拉=5, canvas=0; 视口有实际渲染内容",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "tech 控件可达",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/tech; 按钮=348, 输入=13, 下拉=5; 主交互控件样本可见可达(全屏/内容/语言/页签等)",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "tech 无键残留",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/tech; UI导航/按钮/标题均为中文美化; 556科技/16分组/133领域;分类页签与过滤按钮密集",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "decisions 导航",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/decisions; header/#nav存在=True; shell顶部导航(工作台/内容/界面/文档/工具/英文)常驻渲染; 598分类/4171决议/81文件;类别卡片墙",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "decisions 主容器渲染",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/decisions; 可见文本长=29656; 阈值>200",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "decisions 无白屏",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/decisions; 文本长=29656, 按钮=14, 输入=3, 下拉=4, canvas=0; 视口有实际渲染内容",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "decisions 控件可达",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/decisions; 按钮=14, 输入=3, 下拉=4; 主交互控件样本可见可达(全屏/内容/语言/页签等)",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "decisions 无键残留",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/decisions; UI导航/按钮/标题均为中文美化; 598分类/4171决议/81文件;类别卡片墙",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "designer 导航",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/designer; header/#nav存在=True; shell顶部导航(工作台/内容/界面/文档/工具/英文)常驻渲染; GUI设计器;.gui元素列表含PRODUCTION_*_LABEL等元素别名(源码检视数据)",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "designer 主容器渲染",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/designer; 可见文本长=48571; 阈值>200",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "designer 无白屏",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/designer; 文本长=48571, 按钮=39, 输入=2, 下拉=4, canvas=0; 视口有实际渲染内容",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "designer 控件可达",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/designer; 按钮=39, 输入=2, 下拉=4; 主交互控件样本可见可达(全屏/内容/语言/页签等)",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "designer 无键残留",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/designer; UI导航/按钮/标题均为中文美化; GUI设计器;.gui元素列表含PRODUCTION_*_LABEL等元素别名(源码检视数据)",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "create 导航",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/create; header/#nav存在=True; shell顶部导航(工作台/内容/界面/文档/工具/英文)常驻渲染; 内容生成表单;生成类型多选",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "create 主容器渲染",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/create; 可见文本长=715; 阈值>200",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "create 无白屏",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/create; 文本长=715, 按钮=19, 输入=19, 下拉=4, canvas=0; 视口有实际渲染内容",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "create 控件可达",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/create; 按钮=19, 输入=19, 下拉=4; 主交互控件样本可见可达(全屏/内容/语言/页签等)",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "create 无键残留",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/create; UI导航/按钮/标题均为中文美化; 内容生成表单;生成类型多选",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "ide 导航",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/ide; header/#nav存在=True; shell顶部导航(工作台/内容/界面/文档/工具/英文)常驻渲染; 文件树/语法高亮;捕获DLSS5_B实为文件夹名_DLSS5_Backup",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "ide 主容器渲染",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/ide; 可见文本长=1243; 阈值>200",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "ide 无白屏",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/ide; 文本长=1243, 按钮=39, 输入=10, 下拉=5, canvas=0; 视口有实际渲染内容",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "ide 控件可达",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/ide; 按钮=39, 输入=10, 下拉=5; 主交互控件样本可见可达(全屏/内容/语言/页签等)",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "ide 无键残留",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/ide; UI导航/按钮/标题均为中文美化; 文件树/语法高亮;捕获DLSS5_B实为文件夹名_DLSS5_Backup",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "settings 导航",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/settings; header/#nav存在=True; shell顶部导航(工作台/内容/界面/文档/工具/英文)常驻渲染; 分区:外观/界面/桌面程序图标均在;161控件",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "settings 主容器渲染",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/settings; 可见文本长=3865; 阈值>200",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "settings 无白屏",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/settings; 文本长=3865, 按钮=161, 输入=27, 下拉=3, canvas=0; 视口有实际渲染内容",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "settings 控件可达",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/settings; 按钮=161, 输入=27, 下拉=3; 主交互控件样本可见可达(全屏/内容/语言/页签等)",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "settings 无键残留",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/settings; UI导航/按钮/标题均为中文美化; 分区:外观/界面/桌面程序图标均在;161控件",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "aibehave 导航",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/aibehave; header/#nav存在=True; shell顶部导航(工作台/内容/界面/文档/工具/英文)常驻渲染; 11方面/267文件/2145条目",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "aibehave 主容器渲染",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/aibehave; 可见文本长=40232; 阈值>200",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "aibehave 无白屏",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/aibehave; 文本长=40232, 按钮=14, 输入=4, 下拉=3, canvas=0; 视口有实际渲染内容",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "aibehave 控件可达",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/aibehave; 按钮=14, 输入=4, 下拉=3; 主交互控件样本可见可达(全屏/内容/语言/页签等)",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "aibehave 无键残留",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/aibehave; UI导航/按钮/标题均为中文美化; 11方面/267文件/2145条目",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "docs 导航",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/docs; header/#nav存在=True; shell顶部导航(工作台/内容/界面/文档/工具/英文)常驻渲染; 使用教程Markdown;63链接目录",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "docs 主容器渲染",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/docs; 可见文本长=7122; 阈值>200",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "docs 无白屏",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/docs; 文本长=7122, 按钮=14, 输入=2, 下拉=1, canvas=0; 视口有实际渲染内容",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "docs 控件可达",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/docs; 按钮=14, 输入=2, 下拉=1; 主交互控件样本可见可达(全屏/内容/语言/页签等)",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "docs 无键残留",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/docs; UI导航/按钮/标题均为中文美化; 使用教程Markdown;63链接目录",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "ref 导航",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/ref; header/#nav存在=True; shell顶部导航(工作台/内容/界面/文档/工具/英文)常驻渲染; 官方手册11篇;捕获FUNDS_FOR_SIZE_UP为脚本效果名(文档数据)",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "ref 主容器渲染",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/ref; 可见文本长=44758; 阈值>200",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "ref 无白屏",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/ref; 文本长=44758, 按钮=16, 输入=4, 下拉=2, canvas=0; 视口有实际渲染内容",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "ref 控件可达",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/ref; 按钮=16, 输入=4, 下拉=2; 主交互控件样本可见可达(全屏/内容/语言/页签等)",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "ref 无键残留",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/ref; UI导航/按钮/标题均为中文美化; 官方手册11篇;捕获FUNDS_FOR_SIZE_UP为脚本效果名(文档数据)",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "check 导航",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/check; header/#nav存在=True; shell顶部导航(工作台/内容/界面/文档/工具/英文)常驻渲染; 体检报告异步生成完成(首帧'正在生成',等待后17976字符)",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "check 主容器渲染",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/check; 可见文本长=17976; 阈值>200",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "check 无白屏",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/check; 文本长=17976, 按钮=20, 输入=3, 下拉=2, canvas=0; 视口有实际渲染内容",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "check 控件可达",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/check; 按钮=20, 输入=3, 下拉=2; 主交互控件样本可见可达(全屏/内容/语言/页签等)",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "check 无键残留",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/check; UI导航/按钮/标题均为中文美化; 体检报告异步生成完成(首帧'正在生成',等待后17976字符)",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "units 导航",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/units; header/#nav存在=True; shell顶部导航(工作台/内容/界面/文档/工具/英文)常驻渲染; 288文件/3317条目;单位/装备页签",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "units 主容器渲染",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/units; 可见文本长=6037; 阈值>200",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "units 无白屏",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/units; 文本长=6037, 按钮=16, 输入=3, 下拉=3, canvas=0; 视口有实际渲染内容",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "units 控件可达",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/units; 按钮=16, 输入=3, 下拉=3; 主交互控件样本可见可达(全屏/内容/语言/页签等)",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "units 无键残留",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/units; UI导航/按钮/标题均为中文美化; 288文件/3317条目;单位/装备页签",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "characters 导航",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/characters; header/#nav存在=True; shell顶部导航(工作台/内容/界面/文档/工具/英文)常驻渲染; 232文件/5404人物",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "characters 主容器渲染",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/characters; 可见文本长=7561; 阈值>200",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "characters 无白屏",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/characters; 文本长=7561, 按钮=14, 输入=3, 下拉=3, canvas=0; 视口有实际渲染内容",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "characters 控件可达",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/characters; 按钮=14, 输入=3, 下拉=3; 主交互控件样本可见可达(全屏/内容/语言/页签等)",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "characters 无键残留",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/characters; UI导航/按钮/标题均为中文美化; 232文件/5404人物",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "defines 导航",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/defines; header/#nav存在=True; shell顶部导航(工作台/内容/界面/文档/工具/英文)常驻渲染; 4505条定义常量;捕获大写下划线串均为define常量名(NAI/NGraphics等,数据本身)",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "defines 主容器渲染",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/defines; 可见文本长=431569; 阈值>200",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "defines 无白屏",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/defines; 文本长=431569, 按钮=18, 输入=4, 下拉=3, canvas=0; 视口有实际渲染内容",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "defines 控件可达",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/defines; 按钮=18, 输入=4, 下拉=3; 主交互控件样本可见可达(全屏/内容/语言/页签等)",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "defines 无键残留",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/defines; UI导航/按钮/标题均为中文美化; 4505条定义常量;捕获大写下划线串均为define常量名(NAI/NGraphics等,数据本身)",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "events 导航",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/events; header/#nav存在=True; shell顶部导航(工作台/内容/界面/文档/工具/英文)常驻渲染; 事件查看;筛选selectx7(归属/来源/文件)",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "events 主容器渲染",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/events; 可见文本长=430224; 阈值>200",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "events 无白屏",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/events; 文本长=430224, 按钮=15, 输入=3, 下拉=7, canvas=0; 视口有实际渲染内容",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "events 控件可达",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/events; 按钮=15, 输入=3, 下拉=7; 主交互控件样本可见可达(全屏/内容/语言/页签等)",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "events 无键残留",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/events; UI导航/按钮/标题均为中文美化; 事件查看;筛选selectx7(归属/来源/文件)",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "dlc 导航",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/dlc; header/#nav存在=True; shell顶部导航(工作台/内容/界面/文档/工具/英文)常驻渲染; DLC内容984条/4玩法;捕获BALTIC_RAF_为被截断的国家/理念标签(数据)",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "dlc 主容器渲染",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/dlc; 可见文本长=12698; 阈值>200",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "dlc 无白屏",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/dlc; 文本长=12698, 按钮=14, 输入=4, 下拉=6, canvas=0; 视口有实际渲染内容",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "dlc 控件可达",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/dlc; 按钮=14, 输入=4, 下拉=6; 主交互控件样本可见可达(全屏/内容/语言/页签等)",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "dlc 无键残留",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/dlc; UI导航/按钮/标题均为中文美化; DLC内容984条/4玩法;捕获BALTIC_RAF_为被截断的国家/理念标签(数据)",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "doctrines 导航",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/doctrines; header/#nav存在=True; shell顶部导航(工作台/内容/界面/文档/工具/英文)常驻渲染; 4页签:陆军/海军/空军/特种部队",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "doctrines 主容器渲染",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/doctrines; 可见文本长=5015; 阈值>200",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "doctrines 无白屏",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/doctrines; 文本长=5015, 按钮=14, 输入=5, 下拉=3, canvas=0; 视口有实际渲染内容",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "doctrines 控件可达",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/doctrines; 按钮=14, 输入=5, 下拉=3; 主交互控件样本可见可达(全屏/内容/语言/页签等)",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "doctrines 无键残留",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/doctrines; UI导航/按钮/标题均为中文美化; 4页签:陆军/海军/空军/特种部队",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "loc 导航",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/loc; header/#nav存在=True; shell顶部导航(工作台/内容/界面/文档/工具/英文)常驻渲染; 本地化多语言并列;缺译文检测",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "loc 主容器渲染",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/loc; 可见文本长=14779; 阈值>200",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "loc 无白屏",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/loc; 文本长=14779, 按钮=30, 输入=3, 下拉=4, canvas=0; 视口有实际渲染内容",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "loc 控件可达",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/loc; 按钮=30, 输入=3, 下拉=4; 主交互控件样本可见可达(全屏/内容/语言/页签等)",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "loc 无键残留",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/loc; UI导航/按钮/标题均为中文美化; 本地化多语言并列;缺译文检测",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "open 导航",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/open; header/#nav存在=True; shell顶部导航(工作台/内容/界面/文档/工具/英文)常驻渲染; 打开工程/素材来源设置",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "open 主容器渲染",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/open; 可见文本长=1061; 阈值>200",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "open 无白屏",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/open; 文本长=1061, 按钮=33, 输入=9, 下拉=1, canvas=0; 视口有实际渲染内容",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "open 控件可达",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/open; 按钮=33, 输入=9, 下拉=1; 主交互控件样本可见可达(全屏/内容/语言/页签等)",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "open 无键残留",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/open; UI导航/按钮/标题均为中文美化; 打开工程/素材来源设置",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "home 导航",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/home; header/#nav存在=True; shell顶部导航(工作台/内容/界面/文档/工具/英文)常驻渲染; 工作台主页;模组开关/导入",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "home 主容器渲染",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/home; 可见文本长=1135; 阈值>200",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "home 无白屏",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/home; 文本长=1135, 按钮=16, 输入=6, 下拉=1, canvas=0; 视口有实际渲染内容",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "home 控件可达",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/home; 按钮=16, 输入=6, 下拉=1; 主交互控件样本可见可达(全屏/内容/语言/页签等)",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "home 无键残留",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/home; UI导航/按钮/标题均为中文美化; 工作台主页;模组开关/导入",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "modrel 导航",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/modrel; header/#nav存在=True; shell顶部导航(工作台/内容/界面/文档/工具/英文)常驻渲染; 模组关系;游戏1.19.3.0",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "modrel 主容器渲染",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/modrel; 可见文本长=1137; 阈值>200",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "modrel 无白屏",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/modrel; 文本长=1137, 按钮=14, 输入=2, 下拉=1, canvas=0; 视口有实际渲染内容",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "modrel 控件可达",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/modrel; 按钮=14, 输入=2, 下拉=1; 主交互控件样本可见可达(全屏/内容/语言/页签等)",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "modrel 无键残留",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/modrel; UI导航/按钮/标题均为中文美化; 模组关系;游戏1.19.3.0",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "shell 导航",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/shell; header/#nav存在=True; shell顶部导航(工作台/内容/界面/文档/工具/英文)常驻渲染; 外壳页;与index同构;顶栏导航常驻;内容由iframe承载",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "shell 主容器渲染",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/shell; 可见文本长=40(顶部壳)+iframe子页1104字符",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "shell 无白屏",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/shell; 文本长=40, 按钮=17, 输入=2, 下拉=1, canvas=0; 视口有实际渲染内容",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "shell 控件可达",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/shell; 按钮=17, 输入=2, 下拉=1; 主交互控件样本可见可达(全屏/内容/语言/页签等)",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "shell 无键残留",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/shell; UI导航/按钮/标题均为中文美化; 外壳页;与index同构;顶栏导航常驻;内容由iframe承载",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "studio 导航",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/studio; header/#nav存在=True; shell顶部导航(工作台/内容/界面/文档/工具/英文)常驻渲染; 同designer GUI设计器;592字节引导页挂载后渲染完整;捕获PRODUCTION_*元素别名",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "studio 主容器渲染",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/studio; 可见文本长=48571; 阈值>200",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "studio 无白屏",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/studio; 文本长=48571, 按钮=39, 输入=2, 下拉=4, canvas=0; 视口有实际渲染内容",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "studio 控件可达",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/studio; 按钮=39, 输入=2, 下拉=4; 主交互控件样本可见可达(全屏/内容/语言/页签等)",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "studio 无键残留",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/studio; UI导航/按钮/标题均为中文美化; 同designer GUI设计器;592字节引导页挂载后渲染完整;捕获PRODUCTION_*元素别名",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "tracker 导航",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/tracker; header/#nav存在=True; shell顶部导航(工作台/内容/界面/文档/工具/英文)常驻渲染; 更新跟踪;基线/检查/时间线说明+21按钮",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "tracker 主容器渲染",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/tracker; 可见文本长=223; 阈值>200",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "tracker 无白屏",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/tracker; 文本长=223, 按钮=21, 输入=3, 下拉=2, canvas=0; 视口有实际渲染内容",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "tracker 控件可达",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/tracker; 按钮=21, 输入=3, 下拉=2; 主交互控件样本可见可达(全屏/内容/语言/页签等)",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "tracker 无键残留",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/tracker; UI导航/按钮/标题均为中文美化; 更新跟踪;基线/检查/时间线说明+21按钮",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "worldmap 导航",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/worldmap; header/#nav存在=True; shell顶部导航(工作台/内容/界面/文档/工具/英文)常驻渲染; 世界地图canvas=1;13413省份/90国家;缩放−14%/+适应",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "worldmap 主容器渲染",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/worldmap; 可见文本长=1029; 阈值>200",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "worldmap 无白屏",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/worldmap; 文本长=1029, 按钮=22, 输入=4, 下拉=1, canvas=1; 视口有实际渲染内容",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "worldmap 控件可达",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/worldmap; 按钮=22, 输入=4, 下拉=1; 主交互控件样本可见可达(全屏/内容/语言/页签等)",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "worldmap 无键残留",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/worldmap; UI导航/按钮/标题均为中文美化; 世界地图canvas=1;13413省份/90国家;缩放−14%/+适应",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "dlc 专项:MIO文件名分组",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/dlc?feature=mio&v=miofix; 机构列表按文件名分组:00_generic_organization.txt(30)/DLC mio.txt(4)/SIA_organization.txt(1);MIO(4)国家在列",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "dlc 专项:视图切换按钮",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/dlc?feature=mio&v=miofix; 机构列表/机构树/政策三按钮存在;点政策->内容变为'air 政策(5)'(文本7903->1072);点机构树->出现'共266机构/4549特质节点'面板",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "dlc 专项:特质树线条",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/dlc?feature=mio&v=miofix; svg line/path元素=7;特质树连线渲染",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "dlc 专项:政策卡片图标",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/dlc?feature=mio&v=miofix; img/svg/icon元素=30;政策/类别卡片含图标",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "dlc 专项:属性键美化",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/dlc?feature=mio&v=miofix; 属性/类别显示中文'军工机构581/特殊工程49/阵营系统350/学说4';仅余RAJ_GOE_ORGANIZATION等数据标签",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "events 专项:事件筛选控件",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/events; 筛选下拉=7;含归属(全部/基础游戏/模组)/来源/文件三级筛选",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "doctrines 专项:学说页签",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/doctrines; 页签=陆军(4)/海军(3)/空军(3)/特种部队(2);'4页签/12主要学说/14轨道'",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "focus 专项:焦点树容器/缩放",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/focus; 国策树容器渲染(67树);缩放控件 −/+/适应 可见",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "tech 专项:科技分类页签",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/tech; 348按钮;16分组/133领域;步兵/装甲/海军/空军等分类页签+归属过滤",
+      "exempt": false,
+      "exemptReason": ""
+    },
+    {
+      "name": "settings 专项:设置分区",
+      "pass": true,
+      "detail": "URL=http://127.0.0.1:5175/settings; 分区:外观/界面/桌面程序图标 均渲染;游戏目录/模组文件夹/显示选项",
+      "exempt": false,
+      "exemptReason": ""
+    }
+  ]
+}

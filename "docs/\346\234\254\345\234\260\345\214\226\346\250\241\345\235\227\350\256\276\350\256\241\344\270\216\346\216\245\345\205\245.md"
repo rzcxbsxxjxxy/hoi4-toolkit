@@ -1,0 +1,105 @@
+# 本地化模块 · 设计与接入
+
+> 本工作台的本地化能力被收敛为一个独立模块，其他功能（国策树、科技树、军工机构、决议、事件、人物……）统一接入它，便于管理。
+> 模块 = **引擎解析器** + **服务端索引/查询/改写** + **前端统一客户端**，三层各司其职。
+
+---
+
+## 一、模块全景
+
+| 层 | 文件 | 职责 |
+|----|------|------|
+| 引擎 | packages/engine/src/loc.ts | 解析单个 .yml：UTF-8 BOM 检测、语言头（l_english: / l_simp_chinese:）、KEY: 与 KEY:0/KEY:1 多行条目、"" 转义 |
+| 服务端 | packages/gui/src/locsrv.ts | 构建 LocIndex（按语言分桶、多行合并、覆盖链、replace_path 卸载判定、BOM/错误统计）；查询（lookupKeys 显示名、lookupPair 双语配对）；改写（saveLocValue 按行号定点、appendLocEntry 追加） |
+| 服务端 API | packages/gui/src/server.ts | /api/loc/text|stats|search|files|file|key|save|append|pair |
+| 前端 | packages/gui/public/locclient.js | 全局 Loc 统一客户端：加载、缓存、防并发、按语言/双语查询、自动挂语言选择器 |
+
+### 数据流
+
+游戏目录 + 各模组 localisation/<语言>/*.yml
+  -> 引擎 loc.ts 逐文件解析（BOM / 语言头 / 多行 / 转义）
+  -> locsrv.ts 流式构建 LocIndex（worker 解析 + 主线程合并，按 ROOTS 覆盖链后者覆盖前者）
+  -> /api/loc/* 下发
+  -> locclient.js 缓存 + 查询（Loc.text 显示名 / Loc.pair 英中对照）
+  -> 各功能页面
+
+---
+
+## 二、双语配对（本次新增，核心）
+
+「读取游戏里的**英文 + 中文**、一次拿到」是本地化管理的关键能力。
+旧逻辑 lookupKeys 走**语言链**（指定语言 -> 英文 -> 其余，缺了回退），一次只给一种语言，适合显示名；但**看不出某 key 的中文是否存在、来自哪个文件**。
+
+新增 lookupPair（严格按语言取，**不回退**，能真实暴露缺译文）：
+
+### 服务端
+
+GET  /api/loc/pair?keys=a,b,c
+POST /api/loc/pair   body: { keys: [...] }
+
+返回：
+
+{ "ready": true, "pairs": { "CHN_harbin_aircraft_industry_group_organization": { "en": { "text": "Harbin Aircraft Industry Group", "lang": "l_english", "file": "localisation/english/xxx l_english.yml", "line": 122, "rootIdx": 4 }, "zh": { "text": "哈尔滨飞机工业集团", "lang": "l_simp_chinese", "file": "localisation/simp_chinese/xxx l_simp_chinese.yml", "line": 121, "rootIdx": 4 }, "missing": [] } } }
+
+- en / zh：命中为对象（文本 + 来源 + 行号 + 所属 root），缺失为 null
+- missing：列出该 key 在哪些语言缺失（l_english / l_simp_chinese）
+- rootIdx 对应来源清单（/api/mods 或服务端 ROOTS 顺序）
+
+### 前端
+
+Loc.pair(['CHN_harbin_aircraft_industry_group_organization', 'GER_division_template_name_0'])
+  .then(pairs => {
+    pairs['CHN_harbin_aircraft_industry_group_organization'].zh.text   // 哈尔滨飞机工业集团
+    pairs['GER_division_template_name_0'].missing                      // ['l_english','l_simp_chinese']
+  })
+
+内置去重、批量（<=3000 key）、失败抛错。
+
+---
+
+## 三、语言链与覆盖规则（全站一致）
+
+1. **语言链**（lookupKeys / /api/loc/text?lang=）：优先调用方指定语言 -> 英文 -> 其余按条目数降序。英文是唯一覆盖全部 key 的语言，因此默认英文；只有 key 在英文缺失时才回落。适合「显示名」。
+2. **覆盖链**：按来源 ROOTS 顺序，**后者覆盖前者**。模组改了同一个 key，生效的是模组那份（byLang 内同 key 同 index 后者覆盖）。
+3. **replace_path**：高优先级来源声明卸载的路径，其下文件**不加载**（游戏规则，isUnloadedByLaterReplacePath）。
+4. 语言名在索引里带 l_ 前头（就是 yml 语言头）；前端 langLabel 统一转成中文显示名（英文 / 简体中文 / ...）。
+
+---
+
+## 四、其他功能如何接入（统一走 Loc 客户端）
+
+| 场景 | 服务端 | 前端 | 说明 |
+|------|--------|------|------|
+| 显示名（id -> 文本，语言链回退） | /api/loc/text?keys=...&lang=... | Loc.text(keys, lang) / Loc.fill(elems, keys) | 列表、树节点、检查器的主显示 |
+| **英中对照 / 本地化管理** | /api/loc/pair?keys=... | Loc.pair(keys) | 一次拿英中 + 来源 + 缺失 |
+| 浏览/搜索 | /api/loc/search、/api/loc/files、/api/loc/file | Loc.load | 本地化浏览页 |
+| 某 key 全语言 | /api/loc/key?key=... | - | 调试/审查 |
+| 改写单个值 | POST /api/loc/save | - | 按行号定点、保 BOM/行尾，仅可写来源 |
+| 追加新 key | POST /api/loc/append | - | 写进指定语言文件末尾 |
+
+> 接入最小模板：页面在数据就绪后对 id 集合调一次 Loc.fill（或 Loc.text）即可显示本地化名；需要英中对照时改调 Loc.pair，无需关心解析与覆盖细节。
+
+---
+
+## 五、端点清单
+
+| 端点 | 方法 | 参数 | 用途 |
+|------|------|------|------|
+| /api/loc/text | GET/POST | keys、lang | 显示名（语言链） |
+| /api/loc/pair | GET/POST | keys | **英中配对（新增）** |
+| /api/loc/stats | GET | rebuild、ref | 索引统计、按参照语言算缺失 |
+| /api/loc/search | GET | q、lang、limit | 全文搜索 key/文本 |
+| /api/loc/files | GET | - | 文件清单 |
+| /api/loc/file | GET | file、rootIdx | 单文件内容 |
+| /api/loc/key | GET | key | 某 key 全语言原文 |
+| /api/loc/save | POST | rootIdx/file/key/line/index/value | 改写单个值 |
+| /api/loc/append | POST | rootIdx/file/key/value | 追加新 key |
+
+---
+
+## 六、注意事项
+
+- **改引擎/服务端必须重建 bundle**：npm run build:server（esbuild -> server.mjs / worker-entry.mjs）再重启后端才生效；只改前端强刷即可。
+- 索引构建为**流式**（worker 解析 + 主线程合并，3252 个 yml / 184 万条目实测），构建期间 /api/loc/* 返回 ready:false，前端会自动等待。
+- 文件必须 UTF-8 **BOM**，改写不能丢 BOM，否则游戏读不到该语言。
+- localisation/<语言>/languages.yml 是**配置文本**（声明语言），不是翻译，索引已跳过。

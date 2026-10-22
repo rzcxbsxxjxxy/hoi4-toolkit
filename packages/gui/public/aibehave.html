@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>HOI4 AI 行为</title>
+<link rel="stylesheet" href="/theme.css">
+<style>
+  :root{ --canvas:#e9ebef }
+  #left{width:250px;border-right:1px solid var(--line)}
+  #right{width:320px;border-left:1px solid var(--line)}
+  #stage{flex:1;position:relative;overflow:auto;background:var(--canvas);min-width:0;padding:14px}
+  /* 文件卡:一卡一文件,卡内再列该文件的条目 —— 用户要的"逐个文件归纳" */
+  #fileList{display:flex;flex-direction:column;gap:10px;align-content:start}
+  .fcard{
+    background:#fff;border:1px solid var(--line);border-radius:var(--r-card);
+    padding:10px 12px;display:flex;flex-direction:column;gap:7px;
+    transition:border-color .12s,box-shadow .12s;
+  }
+  .fcard:hover{border-color:#aeb6c2}
+  .fcard.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+  /* 模组来源的文件:左侧一条绿边 */
+  .fcard.frommod{border-left:3px solid var(--ok)}
+  /* ★ OWNERSHIP_V1:被模组同名文件整份替换后,原版这份已失效(默认不列出) */
+  .fcard.stale{opacity:.5;border-left:3px solid var(--danger)}
+  .fcard.stale .fn{text-decoration:line-through}
+  .echip.stale{opacity:.45;text-decoration:line-through}
+  .fcard .fh{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+  .fcard .fn{font-size:12.5px;font-weight:600;word-break:break-all;line-height:1.35;cursor:pointer}
+  .fcard .fn:hover{color:var(--accent);text-decoration:underline}
+  .fcard .fm{font-size:10.5px;color:var(--ink3);display:flex;gap:10px;flex-wrap:wrap}
+  .fcard .fe{display:flex;flex-wrap:wrap;gap:4px}
+  .fcard .empty-note{font-size:11px;color:var(--ink3);font-style:italic}
+  .echip{
+    font-size:10.5px;padding:2px 7px;border-radius:9px;background:var(--line2);
+    color:var(--ink2);cursor:pointer;max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  }
+  .echip:hover{background:var(--accent-soft);color:var(--accent)}
+  .echip.on{background:var(--accent);color:#fff}
+  .echip .ct{opacity:.65;margin-left:3px}
+  .mini{font-size:10px;padding:1px 6px;border-radius:9px;background:var(--line2);color:var(--ink2)}
+  .mini.m{background:var(--ok-soft);color:var(--ok);font-weight:600}
+  .mini.ovr{background:var(--warn-soft);color:var(--warn);font-weight:600}
+  .mini.new{background:#eaf1fb;color:var(--accent);font-weight:600}
+  .mini.k{background:#f3ecfb;color:#7c5cbf}
+  /* 字段画像:横向条形,一眼看出"这个方面通常写什么" */
+  .prof{display:flex;flex-direction:column;gap:3px;margin-top:4px}
+  .prof .row{display:flex;align-items:center;gap:6px;font-size:11px}
+  .prof .row b{font-weight:500;color:var(--ink2);min-width:96px;word-break:break-all}
+  .prof .row i{flex:1;height:6px;background:var(--line2);border-radius:3px;overflow:hidden;display:block}
+  .prof .row i>u{display:block;height:100%;background:var(--accent);opacity:.75}
+  .prof .row s{text-decoration:none;color:var(--ink3);min-width:46px;text-align:right;font-size:10px}
+  /* 左侧方面条目 */
+  #aspList .item{display:flex;align-items:center;gap:6px}
+  #aspList .item .src{}
+  #aspList .item .tag{}
+  #stage .sum{color:var(--ink3);font-size:11px;padding:0 0 10px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+  #stage .sum i.mk{width:9px;height:9px;border-radius:2px;display:inline-block}
+  .sec-t{font-size:11px;color:var(--ink3);font-weight:600;margin:10px 0 4px;letter-spacing:.03em}
+  .desc{font-size:11.5px;color:var(--ink2);line-height:1.6;background:var(--line2);border-radius:8px;padding:8px 10px}
+  /* 显示详情按钮 */
+  .dbtn{margin:2px 0 8px;padding:4px 10px;font-size:12px;border:1px solid var(--line2);border-radius:7px;background:var(--card);color:var(--ink);cursor:pointer}
+  .dbtn:hover{border-color:var(--accent);color:var(--accent)}
+  /* 嵌套子字段缩进 */
+  .kv.sub{padding-left:12px}
+  .kv.sub b{color:var(--ink3);min-width:120px}
+  /* 脚本块完整原文(allowed / enable / abort / ai_strategy …) */
+  .kv.blk{flex-direction:column;align-items:stretch;gap:3px;margin:4px 0}
+  #insp pre.raw{
+    margin:0 0 6px;padding:6px 8px;font:11px/1.5 ui-monospace,Consolas,monospace;
+    white-space:pre-wrap;word-break:break-word;color:var(--ink);
+    background:var(--line2);border:1px solid var(--line);border-radius:7px;
+    max-height:180px;overflow:auto;
+  }
+  .wk{font-size:11px;color:var(--ink3);background:var(--line2);border-left:2px solid var(--accent);padding:4px 8px;margin:2px 0 6px;border-radius:4px;line-height:1.5}
+  .wk-card{border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin:6px 0;background:var(--card)}
+  .wk-cat{display:inline-block;font-size:10px;padding:1px 7px;border-radius:9px;background:var(--line2);color:var(--ink2);margin-right:6px}
+  .wk-card b{font-size:12px;color:var(--ink)}
+  .wk-desc{font-size:11.5px;color:var(--ink2);line-height:1.6;margin:4px 0}
+  .wk-params{font-size:10.5px;color:var(--ink3);line-height:1.6;margin:2px 0}
+  .wk-note{font-size:10.5px;color:var(--warn);line-height:1.5;margin:2px 0}
+  details.wiki-d{margin:8px 0;border:1px solid var(--line);border-radius:8px;padding:6px 10px;background:var(--card)}
+  details.wiki-d summary{cursor:pointer;font-size:11.5px;font-weight:600;color:var(--ink2)}
+</style>
+</head>
+<body>
+<header>
+  <div id="nav"></div>
+</header>
+<div class="subbar">
+  <h1>AI 行为 <small id="statChip">—</small></h1>
+  <div class="tgroup">
+    <input type="text" id="q" placeholder="搜索文件 / 条目 / 字段">
+    <div class="tgroup" data-collapse>
+      <select id="aspSel"><option value="">全部方面</option></select>
+      <select id="srcSel" title="按来源筛选"></select>
+      <label id="shadowWrap" title="模组整份替换了原版同名文件时,原版那份在游戏里已失效 —— 默认不列出" style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--ink3);white-space:nowrap">
+        <input type="checkbox" id="shadowChk"> 含已失效旧版本
+      </label>
+    </div>
+  </div>
+  <span class="spacer"></span>
+  <span id="srcSum" style="font-weight:400;color:var(--ink3);font-size:11px"></span>
+</div>
+<main>
+  <aside id="left" data-sizer="left" data-sizer-def="260">
+    <div class="sizer-bar" title="拖动调宽 · 双击复位 · 双击侧栏折叠"></div>
+    <div class="pane-title">方面 <span class="spacer"></span><span id="aspCount" style="font-weight:400"></span></div>
+    <div class="pane-body" id="aspList"></div>
+  </aside>
+  <div id="stage">
+    <div class="sum" id="fileSum"></div>
+    <div id="fileList"></div>
+  </div>
+  <aside id="right" data-no-i18n data-sizer="right" data-sizer-def="330">
+    <div class="sizer-bar" title="拖动调宽 · 双击复位 · 双击侧栏折叠"></div>
+    <div class="pane-title">属性</div>
+    <div class="pane-body">
+      <div id="insp"><div style="color:var(--ink3);padding:6px 11px">选中一个方面 / 文件 / 条目</div></div>
+    </div>
+  </aside>
+</main>
+<div id="toast"></div>
+<script src="/bundles/aibehave.bundle.js?v=mvjll3h6"></script>
+<script src="/i18n-dict.js"></script>
+
+
+<script type="module">
+  import { mountNav } from '/nav.js'
+  mountNav('#nav')
+</script>
+
+
+
+<!-- ★ 右键菜单 + 快捷键三件套,顺序有依赖:ctx → keymap → keys → ctxwire -->
+
+
+
+
+<!-- OWNERSHIP_V1:统一的「原版 / 模组改写 / 模组新增」徽标,须在页面脚本之前 -->
+
+
+
+</body>
+</html>

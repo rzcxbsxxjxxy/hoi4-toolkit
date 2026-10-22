@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>HOI4 DLC 内容</title>
+<link rel="stylesheet" href="/theme.css">
+<style>
+  :root{ --canvas:#e9ebef }
+  #left{width:236px;border-right:1px solid var(--line)}
+  #right{width:320px;border-left:1px solid var(--line)}
+  #stage{flex:1;position:relative;overflow:auto;background:var(--canvas);min-width:0;padding:14px}
+
+  /* ── DLC 玩法切换条 ── */
+  .featbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+  .feat{
+    flex:1;min-width:170px;background:var(--panel);border:1px solid var(--line);
+    border-radius:var(--r-card);padding:10px 12px;cursor:pointer;
+    transition:border-color .12s,box-shadow .12s;position:relative;overflow:hidden;
+  }
+  .feat:hover{border-color:#aeb6c2;box-shadow:var(--shadow)}
+  .feat.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+  .feat .fn{font-size:13.5px;font-weight:650;display:flex;align-items:center;gap:7px}
+  .feat .fd{font-size:11px;color:var(--ink3);margin-top:3px}
+  .feat .fc{font-size:11px;color:var(--accent-2);margin-top:5px;font-weight:600}
+  .feat .ftag{
+    position:absolute;right:0;top:0;font-size:9.5px;padding:2px 7px;
+    border-radius:0 var(--r-card) 0 var(--r-card);background:var(--line2);color:var(--ink3);
+  }
+  .feat.dlc .ftag{background:var(--warn-soft);color:var(--warn);font-weight:600}
+
+  /* ── 分组 ── */
+  .grp{margin-bottom:16px}
+  .grp-h{
+    display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink2);
+    font-weight:600;margin:0 0 7px;padding-bottom:4px;border-bottom:1px solid var(--line);
+  }
+  .grp-h .n{font-weight:400;color:var(--ink3);font-size:11px}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(186px,1fr));gap:9px}
+  /* ══ 军工机构链状特质树(MIO_TREE_UI)══
+     刻意做成"科技树/国策树"那种节点+连线的样子 ——
+     军工机构在游戏里就是网格图,卡片墙看不出特质分布与解锁链。 */
+  /* ══ 军工机构链状特质树:独立框架(MIO_TREE_FRAME)══
+     不再混在 DLC 卡片墙里,自成一块带标题栏的面板;列标题(tree_header_text)
+     画成竖向分隔的【框架/段落】,继承的 generic 节点圈出"上一级框架"边界。 */
+  .mio-frame{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--canvas)}
+  .mio-frame-head{display:flex;align-items:center;gap:10px;padding:8px 12px;
+    border-bottom:1px solid var(--line);background:var(--panel);flex:none}
+  .mio-frame-head .mio-ficon{width:26px;height:26px;object-fit:contain;background:var(--line2);
+    border-radius:6px;flex:none}
+  .mio-frame-head .mio-ftitle{font-size:14px;font-weight:700}
+  .mio-frame-head .mio-fmeta{font-size:11.5px;color:var(--ink3)}
+  .mio-frame-head .mio-legend{margin-left:auto;display:flex;align-items:center;gap:6px;
+    font-size:11px;color:var(--ink2)}
+  .mio-frame-head .mio-legend .ln{display:inline-block;width:22px;height:0;
+    border-top:2px solid var(--ink3);vertical-align:middle}
+  .mio-frame-head .mio-legend .ln.any{border-top-style:dashed}
+  .mio-view{flex:1;position:relative;overflow:auto;background:
+    linear-gradient(0deg,rgba(0,0,0,.02),rgba(0,0,0,.02)),
+    repeating-linear-gradient(0deg,var(--line2) 0 1px,transparent 1px 96px),
+    repeating-linear-gradient(90deg,var(--line2) 0 1px,transparent 1px 96px)}
+  .mio-inner{position:relative;transform-origin:0 0}
+  /* 列标题=本机构自己的框架/段落:竖向分隔 + 顶部标签 */
+  .mio-secs{position:absolute;left:0;top:0;pointer-events:none;z-index:1}
+  .mio-sec{position:absolute;top:0;bottom:0;width:0;border-left:2px dashed var(--line);opacity:.7}
+  .mio-sec-lab{position:absolute;top:6px;left:5px;font-size:11px;font-weight:700;
+    color:var(--accent-2);background:var(--panel);border:1px solid var(--line);
+    border-radius:7px;padding:2px 9px;white-space:nowrap;box-shadow:var(--shadow)}
+  /* 继承层(上一级 generic 框架)示意:仅当 inherited 节点局部聚集时画边界 */
+  .mio-genzone{position:absolute;z-index:1;border:1.5px dashed var(--warn);
+    border-radius:10px;background:rgba(255,170,0,.05);pointer-events:none}
+  .mio-genzone-cap{position:absolute;top:-10px;left:10px;font-size:10px;font-weight:600;
+    color:var(--warn);background:var(--panel);border:1px solid var(--warn-soft);
+    border-radius:7px;padding:1px 8px;white-space:nowrap}
+  .mio-links{position:absolute;left:0;top:0;z-index:2;pointer-events:none;overflow:visible}
+  .mio-links .ln{stroke:var(--ink3);stroke-width:2;opacity:.6;fill:none}
+  .mio-links .ln.any{stroke-dasharray:5 4;opacity:.45}
+  .mio-links .ln:hover{stroke:var(--accent);stroke-width:3;opacity:1}
+  .mio-n{position:absolute;z-index:3;box-sizing:border-box;
+    background:var(--card);border:1.5px solid var(--line);border-radius:9px;
+    padding:5px;display:flex;flex-direction:column;align-items:center;gap:2px;
+    cursor:pointer;overflow:hidden;transition:box-shadow .12s,border-color .12s}
+  .mio-n:hover{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+  .mio-n.on{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+  .mio-n img{width:34px;height:34px;object-fit:contain;flex:none}
+  .mio-n .ph{width:34px;height:34px;display:flex;align-items:center;justify-content:center;
+    color:var(--ink3);font-size:19px;flex:none}
+  .mio-n .tt{font-size:10px;line-height:1.15;text-align:center;color:var(--ink);
+    max-width:100%;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;word-break:break-all}
+  .mio-n .bs{display:flex;flex-wrap:wrap;gap:2px;justify-content:center}
+  .mio-n .bv{font-size:8.5px;padding:0 3px;border-radius:3px;line-height:1.5;
+    background:var(--ok-soft);color:var(--ok);white-space:nowrap}
+  .mio-n .bv.neg{background:var(--danger-soft);color:var(--danger)}
+  /* 继承自 generic 底盘:虚线边,一眼区分"不是本国加的" */
+  .mio-n.inh{border-style:dashed;background:var(--inset)}
+  .mio-n.inh .tt{color:var(--ink2)}
+  /* 特殊底色(通用底盘里给 special_trait_background) */
+  .mio-n.sp{box-shadow:inset 0 0 0 2px var(--warn-soft)}
+  /* DLC 门控:右上角小圆点 */
+  .mio-n.dlc::after{content:"";position:absolute;right:3px;top:3px;width:6px;height:6px;
+    border-radius:50%;background:var(--warn);box-shadow:0 0 0 1.5px var(--card)}
+  /* 右栏检查器的连线说明块 */
+  .lnk{margin:4px 0;padding:5px 7px;border-radius:6px;background:var(--inset);
+    border-left:2.5px solid var(--ink3);font-size:11px;line-height:1.5}
+  .lnk.all{border-left-color:var(--accent)}
+  .lnk.any{border-left-color:var(--warn);border-left-style:dashed}
+  .lnk b{display:block;font-size:10.5px;color:var(--ink2);font-weight:600;margin-bottom:2px}
+  .lnk code{background:var(--panel);border:1px solid var(--line);border-radius:3px;
+    padding:0 3px;font-size:10px;display:inline-block;margin:1px 2px 0 0}
+  .card{
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--r-card);
+    padding:9px 10px;cursor:pointer;display:flex;flex-direction:column;gap:5px;
+    transition:border-color .12s,box-shadow .12s;
+  }
+  .card:hover{border-color:#aeb6c2;box-shadow:var(--shadow)}
+  .card.on{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+  .card .top{display:flex;align-items:center;gap:8px}
+  .card .ic{width:30px;height:30px;border-radius:6px;background:var(--line2);object-fit:contain;flex:none}
+  .card .ic.ph{display:flex;align-items:center;justify-content:center;color:var(--ink3);font-size:14px}
+  .card .nm{font-size:11.5px;font-weight:600;word-break:break-all;line-height:1.35;flex:1;min-width:0}
+  .card .id{font-size:10px;color:var(--ink3);word-break:break-all;line-height:1.3}
+  .card .mt{display:flex;flex-wrap:wrap;gap:3px}
+  .mini{font-size:10px;padding:0 5px;border-radius:8px;background:var(--line2);color:var(--ink2);white-space:nowrap}
+  .mini.dlc{background:var(--warn-soft);color:var(--warn)}
+  .mini.m{background:var(--ok-soft);color:var(--ok)}
+  .mini.g{background:var(--accent-soft);color:var(--accent)}
+  .card.modnew{box-shadow:inset 3px 0 0 var(--ok)}
+  .card.ovr{box-shadow:inset 3px 0 0 var(--warn)}
+
+  /* ── 已安装 DLC 清单 ── */
+  #dlcList{padding:4px 0}
+  .drow{
+    padding:4px 10px;font-size:11.5px;display:flex;align-items:center;gap:7px;cursor:default;
+    border-left:3px solid transparent;
+  }
+  .drow.hit{border-left-color:var(--accent);background:var(--accent-soft)}
+  .drow .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .drow .ct{color:var(--ink3);font-size:10.5px;font-variant-numeric:tabular-nums}
+  .drow .cat{font-size:9.5px;color:var(--ink3);background:var(--line2);border-radius:7px;padding:0 5px}
+
+  #insp .kv{display:flex;gap:6px;padding:1px 0;align-items:baseline}
+  #insp .kv b{flex:none;width:74px;font-weight:600;color:var(--ink2)}
+  #insp .kv span{word-break:break-all;flex:1;min-width:0}
+  #insp h4{margin:9px 0 4px;font-size:12px;color:var(--ink2);border-bottom:1px solid var(--line2);padding-bottom:3px}
+  #insp .tagr{
+    display:inline-block;margin:1px 3px 1px 0;padding:0 6px;border-radius:8px;
+    background:var(--line2);color:var(--ink2);font-size:10.5px;
+  }
+  #insp .warnrow{color:var(--warn);font-size:11.5px}
+  #sum{padding:0 0 10px;color:var(--ink3);font-size:11.5px;display:flex;gap:14px;flex-wrap:wrap}
+</style>
+</head>
+<body>
+<header>
+  <h1>DLC 内容 <small id="statChip">—</small></h1>
+  <div class="tgroup">
+    <input type="text" id="q" placeholder="搜索 id / 本地化键">
+    <!-- UI_SLIM_V1:下拉类折叠,搜索框常驻 -->
+    <div class="tgroup" data-collapse>
+    <select id="dlcSel" title="按 DLC 筛选(依据条目自身的 has_dlc)"><option value="">全部 DLC</option></select>
+    <select id="srcSel" title="按来源筛选"><option value="">全部来源</option></select>
+    <!-- 军工机构专用(MIO_FILTER_V1):按来源模组 / 国家 tag 筛选机构清单 -->
+    <select id="mioRootSel" title="按所属模组筛选机构" style="display:none"><option value="">全部模组</option></select>
+    <select id="mioTagSel" title="按国家 tag 筛选机构(取自机构文件名前缀)" style="display:none"><option value="">全部国家</option></select>
+    </div>
+  </div>
+  <div class="tgroup" data-collapse>
+    <label class="chk" title="只显示条目自身声明了 has_dlc 的(DLC 专属内容)"><input type="checkbox" id="onlyDlc"> 仅 DLC 专属</label>
+  </div>
+  <span class="spacer"></span>
+  <span id="srcSum" style="font-weight:400;color:var(--ink3);font-size:11px"></span>
+  <div id="langbar"></div>
+  <div id="nav"></div>
+</header>
+<main>
+  <aside id="left" data-sizer="left" data-sizer-def="300">
+    <div class="sizer-bar" title="拖动调宽 · 双击复位 · 双击侧栏折叠"></div>
+    <div class="pane-title">玩法 <span class="spacer"></span><span id="featCount" style="font-weight:400"></span></div>
+    <div class="pane-body" id="featList"></div>
+    <div class="pane-title" style="border-top:1px solid var(--line)"><span id="dlcTitle">已安装 DLC</span> <span class="spacer"></span><span id="dlcCount" style="font-weight:400"></span></div>
+    <div class="pane-body" id="dlcList" style="max-height:38%"></div>
+  </aside>
+  <div id="stage">
+    <div id="sum"></div>
+    <div class="featbar" id="featBar"></div>
+    <div id="groups"></div>
+  </div>
+  <aside id="right" data-no-i18n data-sizer="right" data-sizer-def="340">
+    <div class="sizer-bar" title="拖动调宽 · 双击复位 · 双击侧栏折叠"></div>
+    <div class="pane-title">检查器</div>
+    <div class="pane-body">
+      <div id="insp"><div style="color:var(--ink3);padding:6px 11px">点选一条内容</div></div>
+    </div>
+  </aside>
+</main>
+<div id="toast"></div>
+<script src="/i18n.js"></script>
+<script src="/i18n-dict.js"></script>
+<script src="/progress.js"></script>
+<script type="module">
+  import { mountNav } from '/nav.js'
+  mountNav('#nav')
+</script>
+<script src="/sizer.js"></script>
+<script src="/toolbar.js"></script>
+<script src="/edgepath.js"></script>
+<script src="/locclient.js"></script>
+<script src="/incr.js"></script>
+<script src="/tex.js"></script>
+<!-- ★ RIGHTCLICK_V2:全站右键菜单 + 快捷键接线。
+     ⚠ 顺序有依赖:ctx.js 先(菜单本体),keymap.js 必须在 keys.js 之前
+     (keys.js boot 时要读目录),ctxwire.js 最后(它只是接线骨架)。 -->
+<script src="/ctx.js"></script>
+<script src="/keymap.js"></script>
+<script src="/keys.js"></script>
+<script src="/ctxwire.js"></script>
+<!-- OWNERSHIP_V1:统一归属徽标 -->
+<script src="/ownchip.js"></script>
+<script src="/dlc.js"></script>
+<!-- ★ FULLSCREEN_V1:全站全屏。必须在 nav.js 之前?否 —— nav.js 轮询等它,
+     放哪都行;统一放页面脚本区末尾,好维护。 -->
+<script src="/fullscreen.js"></script>
+</body>
+</html>

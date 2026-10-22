@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>界面设计器 · HOI4 GUI 工作台</title>
+<link rel="stylesheet" href="/theme.css">
+<style>
+  /* 本页沿用自己这套偏蓝的配色(--accent2/--sel/--bad/--good 是 designer.js 依赖的),
+   * theme.css 只补通用骨架与导航组件;同名变量由本页覆盖,写在后面所以生效。 */
+  :root{
+    --bg:#eef1f5; --panel:#fff; --line:#e2e6ec; --ink:#1f2733; --ink2:#5b6675; --ink3:#8b95a5;
+    --accent:#2f6df0; --accent2:#1f5bd0; --sel:#ffe9a8; --bad:#e0584f; --good:#2fae66; --warn:#f0a93a;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{display:flex;flex-direction:column;font:13px/1.4 system-ui,"Segoe UI",sans-serif;color:var(--ink);background:var(--bg)}
+  header{display:flex;gap:8px;align-items:center;padding:8px 12px;background:var(--panel);border-bottom:1px solid var(--line);flex-wrap:wrap}
+  header h1{font-size:14px;margin:0 8px 0 0;font-weight:600}
+  header small{color:var(--ink3);font-weight:400;margin-left:6px}
+  header .spacer{flex:1}
+  button{font:inherit;border:1px solid var(--line);background:#f7f9fc;color:var(--ink);border-radius:5px;padding:4px 10px;cursor:pointer}
+  button:hover{border-color:var(--accent);color:var(--accent)}
+  button:disabled{opacity:.5;cursor:default}
+  button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+  button.primary:hover{background:var(--accent2);color:#fff}
+  button.danger{color:var(--bad);border-color:#f0c4c0}
+  button.danger:hover{background:var(--bad);color:#fff;border-color:var(--bad)}
+  select,input[type=text],input[type=number]{font:inherit;border:1px solid var(--line);border-radius:4px;padding:3px 6px;background:#fff;color:var(--ink)}
+  main{display:grid;grid-template-columns:172px 236px 1fr 304px;flex:1;min-height:0}
+  aside{background:var(--panel);overflow:auto;border-right:1px solid var(--line);display:flex;flex-direction:column}
+  .props{background:var(--panel);border-left:1px solid var(--line);overflow:auto}
+  .pane-h{font-size:11px;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:.04em;padding:8px 10px 4px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--panel);z-index:2}
+  #canvasWrap{position:relative;overflow:auto;background:#e7ebf0}
+  #stage{position:relative;transform-origin:0 0}
+  /* 屏幕参考框:根窗口的父级(仅普通屏幕窗口) */
+  .screen{position:absolute;left:0;top:0;width:1920px;height:1080px;border:1px dashed #93a4bb;background:rgba(255,255,255,.4);pointer-events:none;z-index:0}
+  .screen-cap{position:absolute;top:2px;left:5px;font-size:10px;color:#8b98a8;white-space:nowrap}
+  /* ★ 国策内嵌组件的槽位参考框(inlay_window.position,国策树坐标系)。
+     刻意用【醒目描边】区别于屏幕框 —— 它不是屏幕,别让人误读成 1920×1080。 */
+  .slot{position:absolute;border:2px dashed #c07a20;background:rgba(255,200,120,.10);pointer-events:none;z-index:0;box-sizing:border-box}
+  .slot-cap{position:absolute;padding:3px 7px;border-radius:4px;background:#c07a20;color:#fff;font-size:11px;white-space:nowrap;z-index:1;pointer-events:none;line-height:1.5}
+  .slot-cap{left:0;top:0;transform:translateY(-100%)}
+  /* 内嵌组件模式下画布底色偏暖,提示"这不是屏幕" */
+  #stage.inlay{background:
+    repeating-linear-gradient(45deg,rgba(192,122,32,.045) 0 12px,transparent 12px 24px),
+    repeating-linear-gradient(-45deg,rgba(192,122,32,.045) 0 12px,transparent 12px 24px)}
+  /* toolbox */
+  .tool{display:block;width:calc(100% - 12px);margin:6px;text-align:left;font-size:12px}
+  .tool small{display:block;color:var(--ink3);font-size:10px}
+  /* tree */
+  .tree-row{display:flex;align-items:center;gap:6px;padding:2px 8px;cursor:pointer;white-space:nowrap;font-size:12px}
+  .tree-row:hover{background:#f0f4fa}
+  .tree-row.on{background:#e3edfd;color:var(--accent2)}
+  .tree-row .dot{width:7px;height:7px;border-radius:50%;background:#b9c4d2;flex:none}
+  .tree-row .dot.bad{background:var(--bad)}
+  .tree-row .nm{overflow:hidden;text-overflow:ellipsis}
+  .tree-row .ty{margin-left:auto;color:var(--ink3);font-size:10px;flex:none}
+  /* canvas node */
+  .node{position:absolute;border:1px solid #9bb0c9;background:rgba(255,255,255,.66);font-size:11px;overflow:visible;border-radius:2px}
+  .node.sel{border-color:var(--accent);box-shadow:0 0 0 2px rgba(47,109,240,.4);z-index:5}
+  .node.hover{border-color:var(--warn)}
+  .node.bad{border-color:var(--bad);border-style:dashed}
+  .node .cap{position:absolute;top:-15px;left:0;font-size:10px;color:var(--ink2);white-space:nowrap;pointer-events:none;background:rgba(255,255,255,.75);padding:0 2px;border-radius:2px}
+  .node .h{position:absolute;right:-1px;bottom:-1px;width:11px;height:11px;background:var(--accent);cursor:nwse-resize;border-radius:2px 0 2px 0;opacity:.7}
+  .node .txt{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;text-shadow:0 1px 2px #000;overflow:hidden;pointer-events:none}
+  /* ★ LOC_TEXT:游戏文本层。.txt 是 loc-key 标注(nomask 下隐藏);.gametext 是解析后的真实文本,
+     属于游戏 UI 本体,#stage.nomask 下保留显示。白字粗体+黑描边,贴在节点 (offX,offY) 处。 */
+  .node .gametext{position:absolute;left:0;top:0;font-family:"Segoe UI",system-ui,sans-serif;font-weight:700;color:#fff;text-shadow:0 1px 2px #000,0 0 3px #000;line-height:1.15;white-space:nowrap;pointer-events:none;z-index:4}
+  /* MARGIN_WRAP_MU:子元素父级坐标系 = 绘制尺寸扣 margin;offX 不含 margin 平移,需容器整体平移(margin.left, margin.top) */
+  .node-margin{position:absolute;left:0;top:0}
+  /* F5: corneredTile 九宫格背景层(在 .node 内,选中/悬停描边仍保留在 .node 上) */
+  .node .bg9{position:absolute;inset:0;pointer-events:none;z-index:0;border-radius:2px}
+  .node > *{z-index:1}
+  /* F4: 贴图来源归属徽标(原版=灰 / 模组=橙 / DLC=蓝) */
+  .chip.src-van{background:#eef2f7;color:#5b6675;border-color:var(--line)}
+  .chip.src-mod{background:#fff1e0;color:#b06a00;border-color:#f3d0a0}
+  .chip.src-dlc{background:#e3edfd;color:#1f5bd0;border-color:#bcd2f5}
+  /* F3: 树折叠箭头占位(无子节点的行对齐用) */
+  .tree-row .tglsp{width:10px;flex:none}
+  /* properties */
+  .prop{display:grid;grid-template-columns:96px 1fr;gap:4px 8px;padding:5px 10px;align-items:center}
+  .prop label{color:var(--ink2);font-size:11px}
+  .prop input,.prop select{width:100%}
+  .prop.group{font-size:11px;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:.04em;padding-top:10px}
+  .prop.note{grid-template-columns:1fr;color:var(--ink3);font-size:11px}
+  .flag{display:inline-block;margin:2px 10px;padding:2px 8px;border-radius:4px;font-size:11px;background:#fff5e6;color:#a05a00;border:1px solid #f3d9a8}
+  .flag.err{background:#fdecea;color:var(--bad);border-color:#f3bcb7}
+  .empty{padding:14px 10px;color:var(--ink3);font-size:12px}
+  /* toast / diff */
+  #toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#22303f;color:#fff;padding:8px 16px;border-radius:8px;opacity:0;pointer-events:none;transition:.25s;z-index:50;max-width:70%}
+  #toast.on{opacity:.96}
+  #toast.err{background:#c0392b}
+  #diffBox{position:fixed;right:18px;bottom:18px;width:min(560px,70vw);max-height:60vh;overflow:auto;background:#1b2430;color:#d7e1ee;font:12px/1.5 ui-monospace,Consolas,monospace;padding:12px;border-radius:8px;display:none;white-space:pre;z-index:40;box-shadow:0 8px 30px rgba(0,0,0,.4)}
+  #diffBox .add{color:#7ee0a6}
+  #diffBox .del{color:#ff8b80}
+  .chip{display:inline-block;background:#eef2f7;border:1px solid var(--line);border-radius:20px;padding:1px 9px;font-size:11px;color:var(--ink2)}
+  .chip.hot{background:#fff1e6;color:#a05a00;border-color:#f3d9a8}
+  .chip.bad{background:#fdecea;color:var(--bad);border-color:#f3bcb7}
+  /* ★ 去除遮罩(#stage.nomask):隐去名称标注/文本/拖拽柄/参考框等叠加层,只留图形与贴图。
+     纯视觉隐藏——选中/拖拽/右键照常可用;选中反馈由元素树(.tree-row.on)与属性网格承担。 */
+  #stage.nomask .cap,
+  #stage.nomask .txt,
+  #stage.nomask .h,
+  #stage.nomask .slot,
+  #stage.nomask .screen,
+  #stage.nomask .slot-cap,
+  #stage.nomask .screen-cap{display:none}
+  /* nomask 下隐去选中光晕/描边,但 .node 本体元素框保留 */
+  #stage.nomask .node.sel{border-color:#9bb0c9;box-shadow:none}
+</style>
+</head>
+<body>
+<header>
+  <div id="nav"></div>
+</header>
+<div class="subbar">
+  <h1>界面设计器<small>Elements · 所见即所得</small></h1>
+  <div class="tgroup">
+    <select id="rootSel" title="模组/游戏根目录"></select>
+    <select id="fileSel" title=".gui 文件"></select>
+    <button id="reloadBtn" title="重新载入">↻</button>
+  </div>
+  <span class="spacer"></span>
+  <div class="tgroup">
+    <span id="statChip" class="chip"></span>
+    <span id="changeCount" class="chip">0</span>
+  </div>
+  <div class="tgroup">
+    <button id="zoomOut" class="icon" title="缩小">−</button>
+    <span id="zoomVal">100%</span>
+    <button id="zoomIn" class="icon" title="放大">＋</button>
+    <button id="fitBtn">适应</button>
+    <button id="texBtn" title="贴图开关">贴图</button>
+    <button id="maskBtn" title="去除遮罩(只看纯图形)">遮罩</button>
+  </div>
+  <div class="tgroup">
+    <button id="previewBtn">预览差异</button>
+    <button id="discardBtn">撤销全部</button>
+    <button id="saveBtn" class="primary">保存</button>
+  </div>
+  <span class="spacer"></span>
+  <div id="langbar"></div>
+</div>
+<main>
+  <!-- 工具箱 -->
+  <aside id="toolbox" data-sizer="left" data-sizer-def="230">
+    <div class="sizer-bar" title="拖动调宽 · 双击复位 · 双击侧栏折叠"></div>
+    <div class="pane-h">工具箱 · Toolbox</div>
+    <div id="toolList"></div>
+  </aside>
+  <!-- 可视化树 -->
+  <aside id="treePane" data-sizer="right" data-sizer-def="300">
+    <div class="sizer-bar" title="拖动调宽 · 双击复位 · 双击侧栏折叠"></div>
+    <div class="pane-h">元素树 · Visual Tree</div>
+    <div id="tree"></div>
+  </aside>
+  <!-- 画布 -->
+  <div id="canvasWrap">
+    <div id="stage"></div>
+  </div>
+  <!-- 属性网格 -->
+  <div class="props" id="propsPane">
+    <div class="pane-h">属性 · Properties</div>
+    <div id="props"></div>
+  </div>
+</main>
+<div id="toast"></div>
+<div id="diffBox"></div>
+<!-- ★ i18n 必须最先加载:页面脚本(ctxwire.js 等)在解析期就调用翻译函数,
+     若 i18n.js 在它们之后,tr 会是 undefined → ReferenceError(整段功能静默失效)。 -->
+<script src="/i18n.js"></script>
+<script src="/i18n-dict.js"></script>
+<script src="/sizer.js"></script>
+<script src="/locclient.js"></script>
+<!-- ★ RIGHTCLICK_V2:全站右键菜单 + 快捷键接线。
+     ⚠ 顺序有依赖:ctx.js 先(菜单本体),keymap.js 必须在 keys.js 之前
+     (keys.js boot 时要读目录),ctxwire.js 最后(它只是接线骨架)。 -->
+<script src="/ctx.js"></script>
+<script src="/keymap.js"></script>
+<script src="/keys.js"></script>
+<script src="/ctxwire.js"></script>
+<script src="/designer.js"></script>
+<script src="/progress.js"></script>
+<script type="module">
+  import { mountNav } from '/nav.js'
+  mountNav('#nav')
+</script>
+<!-- ★ FULLSCREEN_V1:全站全屏。必须在 nav.js 之前?否 —— nav.js 轮询等它,
+     放哪都行;统一放页面脚本区末尾,好维护。 -->
+<script src="/fullscreen.js"></script>
+</body>
+</html>

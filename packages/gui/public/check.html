@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>HOI4 模组体检</title>
+<!-- ★ 2026-10-05 改引 theme-vars.css(纯变量层),不再引 theme.css。
+     本页布局是 header + main 纵向滚动流,而 theme.css 的 body 是
+     `display:flex; flex-direction:column; overflow:hidden` 的应用骨架,
+     引整份会把内容压进一屏不滚动。但变量层必须跟设置里的主题一致,
+     否则换浅色/暖砂时全站都变、只有本页还是黑的(用户报的"格格不入")。
+     变量在 theme-vars.css,骨架归本页 —— 各司其职,且都跟随设置。 -->
+<link rel="stylesheet" href="/theme-vars.css">
+<style>
+  * { box-sizing: border-box; }
+  /* color-scheme / --bg / --ink 等全部由 theme-vars.css 按 data-theme 提供 */
+  body {
+    margin: 0; font-family: -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif;
+    background: var(--bg); color: var(--ink);
+  }
+  /* ★ 2026-10-05:position+z-index 缺一不可 ——
+   *   header 不建层叠上下文时,navpop 的 z-index 只跟同级元素比,
+   *   本页的 .mask 遮罩(80)会把下拉压住。层级预算见 theme-vars.css。 */
+  header {
+    padding: 16px 22px; background: var(--panel);
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: center; gap: 14px;
+    position: relative; z-index: var(--z-header);
+  }
+  header h1 { font-size: 17px; margin: 0; font-weight: 600; }
+  header a { color: var(--accent); text-decoration: none; font-size: 13px; }
+  #status { font-size: 13px; color: var(--ink2); }
+  main { padding: 18px 22px; max-width: 1100px; }
+  .cards { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
+  .card {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 10px; padding: 14px 18px; min-width: 130px;
+  }
+  .card .n { font-size: 26px; font-weight: 700; }
+  .card .l { font-size: 12px; color: var(--ink2); margin-top: 2px; }
+  .card.err .n { color: var(--danger); }
+  .card.warn .n { color: var(--warn); }
+  .card.ok .n { color: var(--ok); }
+
+  /* 顶部导航由 nav.js 注入,样式复用 theme-vars.css 之外的骨架段。
+   * 这里只补本页需要的尺寸微调,配色全走变量(见 theme.css 同名段)。 */
+  .navlinks { display: flex; align-items: center; gap: 2px; flex-wrap: wrap }
+  .navlinks a {
+    font-size: 12px; text-decoration: none; padding: 3px 7px;
+    border-radius: var(--r); white-space: nowrap; color: var(--ink2);
+  }
+  .navlinks a:hover { background: var(--line2); color: var(--ink) }
+  .navlinks a.cur { background: var(--accent-soft); color: var(--accent); font-weight: 600 }
+  /* 工作台入口(带应用图标) */
+  .navhome {
+    display: inline-flex; align-items: center; gap: 5px; font-weight: 600;
+    color: var(--ink) !important; padding-right: 9px !important; margin-right: 3px;
+    border-right: 1px solid var(--line2); border-radius: 0 !important;
+  }
+  .navhome:hover { background: var(--line2) }
+  /* 分组下拉(2026-10-05 顶栏改造;配色已随主题变量,不再硬编码) */
+  .navgrp { position: relative }
+  .navgrp > summary {
+    list-style: none; cursor: pointer; user-select: none;
+    font-size: 12px; color: var(--ink2);
+    padding: 3px 8px; border-radius: var(--r); white-space: nowrap;
+    display: inline-flex; align-items: center; gap: 4px;
+  }
+  .navgrp > summary::-webkit-details-marker { display: none }
+  .navgrp > summary::after {
+    content: ""; width: 0; height: 0; margin-left: 1px;
+    border-left: 3.5px solid transparent; border-right: 3.5px solid transparent;
+    border-top: 4px solid currentColor; opacity: .55;
+  }
+  .navgrp > summary:hover { background: var(--line2); color: var(--ink) }
+  .navgrp.on > summary { color: var(--accent); font-weight: 600 }
+  .navgrp[open] > summary { background: var(--accent-soft); color: var(--accent) }
+  .navgrp .curdot {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--accent); display: inline-block;
+  }
+  /* ★ FULLSCREEN_V1:本页不引 theme.css(自带布局),fsbtn 样式本地补一份。
+     变量来自 theme-vars.css,跟随设置中的主题。 */
+  .fsbtn{
+    font:inherit;font-size:12px;cursor:pointer;color:var(--ink2);
+    background:var(--raise);border:1px solid var(--line2);border-radius:var(--r);
+    padding:3px 8px;margin-right:3px;white-space:nowrap;
+  }
+  .fsbtn:hover{background:var(--line2);color:var(--ink);border-color:var(--accent)}
+  body.in-fullscreen .fsbtn{color:var(--accent);border-color:var(--accent);background:var(--accent-soft)}
+  :root[data-bg="image"] .fsbtn{background:var(--glass-raise);backdrop-filter:blur(10px)}
+  .navpop {
+    position: absolute; right: 0; top: calc(100% + 5px); z-index: var(--z-pop);
+    background: var(--raise); border: 1px solid var(--line);
+    border-radius: var(--r-card); box-shadow: var(--shadow);
+    padding: 4px; min-width: 208px; overflow: visible;
+  }
+  .navpop a {
+    display: flex; flex-direction: column; gap: 1px;
+    padding: 5px 9px; border-radius: var(--r); line-height: 1.3;
+  }
+  .navpop a b { font-size: 12.5px; font-weight: 600; color: var(--ink) }
+  .navpop a span { font-size: 10.5px; color: var(--ink3) }
+  .navpop a:hover { background: var(--accent-soft) }
+  .navpop a:hover span { color: var(--ink2) }
+  .navpop a.cur { background: var(--accent-soft); box-shadow: inset 2px 0 0 var(--accent) }
+  .navpop a.cur b { color: var(--accent) }
+
+  /* ── 跟随主背景(设置页选了本地图片后生效)──
+   * 铺图由 theme-vars.css 的 `[data-bg="image"] body` 统一负责,
+   * 这里只把本页的面板(卡片 / section)切成毛玻璃。
+   * 底色用 var(--glass) —— 浅色主题下自动变白玻璃,不用再分两段。 */
+  :root[data-bg="image"] .card,
+  :root[data-bg="image"] section {
+    background: var(--glass) !important;
+    backdrop-filter: blur(10px) saturate(1.1);
+    -webkit-backdrop-filter: blur(10px) saturate(1.1);
+  }
+
+  section {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 10px; padding: 14px 16px; margin-bottom: 14px;
+  }
+  section h2 {
+    font-size: 14px; margin: 0 0 10px; color: var(--ink);
+    display: flex; justify-content: space-between;
+  }
+  section h2 .cnt { color: var(--ink2); font-weight: 400; }
+  /* ★ 折叠分区(details.sec 与原 section 同规格) */
+  details.sec {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 10px; padding: 14px 16px; margin-bottom: 14px;
+  }
+  details.sec > summary {
+    font-size: 14px; margin: 0 0 10px; color: var(--ink);
+    cursor: pointer; list-style: none;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  details.sec > summary::-webkit-details-marker { display: none; }
+  details.sec > summary::before { content: "▸"; color: var(--ink3); margin-right: 6px; font-size: 12px; }
+  details.sec[open] > summary::before { content: "▾"; }
+  .sec .cnt { color: var(--ink2); font-weight: 400; }
+  .sec .help {
+    font-size: 11.5px; color: var(--ink2); line-height: 1.6;
+    background: var(--accent-soft); border-radius: 8px;
+    padding: 7px 10px; margin-bottom: 10px;
+  }
+  button.vsc {
+    font: inherit; font-size: 11px; cursor: pointer; white-space: nowrap;
+    color: var(--accent); background: var(--accent-soft);
+    border: 1px solid var(--line); border-radius: 6px; padding: 1px 7px; margin-left: 4px;
+  }
+  button.vsc:hover { filter: brightness(1.15); }
+  .sec .row p { margin: 6px 0; line-height: 1.6; }
+  table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  th, td {
+    text-align: left; padding: 5px 8px;
+    border-bottom: 1px solid var(--line2); vertical-align: top;
+  }
+  th { color: var(--ink2); font-weight: 500; }
+  td.mono, code { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; font-size: 12px; }
+  code { background: var(--inset); border-radius: 4px; padding: 1px 4px; }
+  .tag { display: inline-block; padding: 1px 7px; border-radius: 6px; font-size: 11px; }
+  .tag.bad  { background: var(--danger-soft); color: var(--danger); }
+  .tag.hint { background: var(--warn-soft);   color: var(--warn); }
+  .tag.ok   { background: var(--ok-soft);     color: var(--ok); }
+  .muted { color: var(--ink3); }
+  .row { max-height: 320px; overflow: auto; }
+  a.file { color: var(--accent); text-decoration: none; }
+  a.file:hover { text-decoration: underline; }
+
+  /* ══════════════════════════════════════════════════════════════
+   * ★ MOD_SCOPE_V1 · 体检目标条
+   *
+   * 放在 header 下方独立一块,不挤 status —— 目标选择是个需要看清的
+   * 控件(下拉 + 路径 + 手动输入 + 目录浏览器),挤在一行里会碎。
+   * ══════════════════════════════════════════════════════════════ */
+  .tbar {
+    padding: 10px 22px; background: var(--panel);
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: center; gap: 9px; flex-wrap: wrap;
+  }
+  .tbar .lbl { font-size: 12px; color: var(--ink2); flex: none; }
+  .tbar select, .tbar input {
+    background: var(--panel-2); color: var(--ink);
+    border: 1px solid var(--line); border-radius: var(--r);
+    padding: 5px 8px; font-size: 12.5px; font-family: inherit;
+  }
+  .tbar select { min-width: 230px; max-width: 380px; }
+  .tbar input { flex: 1; min-width: 190px; font-family: ui-monospace, Consolas, monospace; font-size: 11.5px; }
+  .tbar button {
+    background: var(--panel-2); color: var(--ink);
+    border: 1px solid var(--line); border-radius: var(--r);
+    padding: 5px 11px; font-size: 12.5px; cursor: pointer; font-family: inherit;
+    white-space: nowrap;
+  }
+  .tbar button:hover { background: var(--line2); border-color: var(--accent) }
+  .tbar button.primary { background: var(--accent); color: #fff; border-color: var(--accent) }
+  .tbar button.primary:hover { filter: brightness(1.08) }
+  .tbar button:disabled { opacity: .5; cursor: not-allowed }
+  .tbar .grow { flex: 1 }
+  .tbar .hint { font-size: 11.5px; color: var(--ink3); }
+  .tbar .err { font-size: 11.5px; color: var(--danger); }
+  /* 目标元信息(读自 .mod) */
+  .tmeta {
+    width: 100%; display: flex; gap: 7px; flex-wrap: wrap;
+    font-size: 11px; color: var(--ink2); padding-top: 2px;
+  }
+  .tmeta .pill {
+    background: var(--panel-2); border: 1px solid var(--line);
+    border-radius: 999px; padding: 1px 9px;
+  }
+  .tmeta .pill.ok  { color: var(--ok);     border-color: color-mix(in srgb, var(--ok) 40%, transparent) }
+  .tmeta .pill.bad { color: var(--danger); border-color: color-mix(in srgb, var(--danger) 40%, transparent) }
+  .tmeta .pill.muted { color: var(--ink3) }
+
+  /* 目录选择器(复用 open.html 的形态) */
+  .mask{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:80}
+  .mask.show{display:flex}
+  .picker{
+    width:620px;max-width:94vw;height:60vh;background:var(--raise);
+    border:1px solid var(--line);border-radius:12px;
+    display:flex;flex-direction:column;overflow:hidden;
+  }
+  .picker header{
+    display:flex;align-items:center;gap:8px;padding:10px 12px;
+    border-bottom:1px solid var(--line);background:var(--inset);
+  }
+  .picker header .ttl{font-size:13px;font-weight:600;flex:1}
+  .picker .crumb{
+    font-family:ui-monospace,Consolas,monospace;font-size:11px;color:var(--ink2);
+    background:var(--panel);border:1px solid var(--line);border-radius:7px;
+    padding:6px 9px;margin:10px 12px 0;word-break:break-all;
+  }
+  .picker .list{
+    flex:1;overflow:auto;margin:10px 12px;
+    border:1px solid var(--line);border-radius:8px;background:var(--panel);
+  }
+  .d{
+    display:flex;align-items:center;gap:8px;padding:7px 10px;
+    border-bottom:1px solid var(--line2);cursor:pointer;font-size:12px;
+  }
+  .d:last-child{border-bottom:0}
+  .d:hover{background:var(--line2)}
+  .d .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .d .v{font-size:10.5px;padding:1px 6px;border-radius:5px;flex:none}
+  .d .v.modf{background:var(--ok-soft);color:var(--ok)}
+  .d .v.exe{background:var(--accent-soft);color:var(--accent)}
+  .picker footer{
+    display:flex;align-items:center;gap:8px;padding:9px 12px;
+    border-top:1px solid var(--line);background:var(--inset);
+  }
+  .picker footer .sel{
+    flex:1;min-width:0;font-family:ui-monospace,Consolas,monospace;
+    font-size:11px;color:var(--ink2);
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  }
+  .picker button {
+    background:var(--panel-2);color:var(--ink);border:1px solid var(--line);
+    border-radius:var(--r);padding:4px 10px;font-size:12px;cursor:pointer;
+    font-family:inherit;white-space:nowrap;
+  }
+  .picker button:hover{background:var(--line2)}
+  .picker button.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+</style>
+</head>
+<body>
+<header>
+  <div id="nav"></div>
+</header>
+<div class="subbar">
+  <h1>HOI4 模组体检</h1>
+  <span id="status">初始化…</span>
+  <span style="flex:1"></span>
+</div>
+
+<!-- ★ MOD_SCOPE_V1:体检目标选择。只查某一个模组时,vanilla 与其它模组仍作为
+     判定上下文参与(否则模组引用原版图标会全判悬空),但只报这个模组的问题。 -->
+<div class="tbar" id="tbar">
+  <span class="lbl">体检范围</span>
+  <select id="tSel" title="选择要体检的模组"><option value="">全部来源(vanilla + 已挂载模组)</option></select>
+  <button id="tBrowse" title="浏览本机文件夹选一个模组目录">浏览…</button>
+  <input id="tPath" placeholder="或直接粘贴模组目录绝对路径" spellcheck="false" />
+  <button id="tApply" class="primary">体检此模组</button>
+  <button id="tClear" title="恢复成全量体检">全量</button>
+  <span class="grow"></span>
+  <span class="err" id="tErr"></span>
+  <div class="tmeta" id="tMeta"></div>
+</div>
+
+<main>
+  <div class="cards" id="cards"></div>
+  <div id="sections"></div>
+</main>
+
+<!-- 目录选择器 -->
+<div class="mask" id="mask">
+  <div class="picker">
+    <header><span class="ttl">选择模组文件夹</span><button id="pkClose">关闭</button></header>
+    <div class="crumb" id="pkPath"></div>
+    <div class="list" id="pkList"></div>
+    <footer>
+      <span class="sel" id="pkSel"></span>
+      <button id="pkUp">↑ 上级</button>
+      <button id="pkOk" class="primary">选择此目录</button>
+    </footer>
+  </div>
+</div>
+<!-- ★ i18n 必须最先加载:页面脚本在解析期就调用翻译函数,
+     i18n.js 若排在它们之后,翻译函数会是 undefined → ReferenceError。 -->
+<script src="/bundles/check.bundle.js?v=mvjll3h6"></script>
+<script src="/i18n-dict.js"></script>
+
+
+
+<script type="module">
+  import { mountNav } from '/nav.js'
+  /* 不再传 {dark:true}:配色已全部走 theme-vars.css 的主题变量,
+   * 传 dark 只会给 <div id="nav"> 加一个已无对应样式的 .on-dark 类。 */
+  mountNav('#nav')
+</script>
+<!-- ★ FULLSCREEN_V1:全站全屏。必须在 nav.js 之前?否 —— nav.js 轮询等它,
+     放哪都行;统一放页面脚本区末尾,好维护。 -->
+
+
+</body>
+</html>

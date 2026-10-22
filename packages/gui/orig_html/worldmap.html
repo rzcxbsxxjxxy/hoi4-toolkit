@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>HOI4 世界地图</title>
+<link rel="stylesheet" href="/theme.css">
+<style>
+  :root{ --canvas:#11151c }
+  #stage{flex:1;position:relative;overflow:hidden;background:var(--canvas);min-width:0}
+  #map{position:absolute;inset:0;width:100%;height:100%;display:block;cursor:grab}
+  #map.grab{cursor:grabbing}
+  .overlay{position:absolute;background:rgba(255,255,255,.93);border:1px solid var(--line);border-radius:var(--r-card);padding:4px 9px;font-size:11px;color:var(--ink2)}
+  #hud{left:10px;bottom:10px;font-size:12px;pointer-events:none;max-width:60%}
+  #zoombox{right:10px;top:10px;display:flex;gap:4px;align-items:center;padding:3px}
+  #zoombox button{padding:2px 8px}
+  #zl{font-size:12px;color:var(--ink2);min-width:38px;text-align:center}
+  #legend{left:10px;top:10px;max-width:190px;max-height:52%;overflow:auto;padding:6px 9px}
+  #legend h4{margin:2px 0 4px;font-size:11px;color:var(--ink3)}
+  #legend .ow{display:flex;align-items:center;gap:6px;font-size:11px;padding:1px 2px;cursor:default}
+  #legend .ow i{width:11px;height:11px;border-radius:2px;flex:none;border:1px solid rgba(0,0,0,.2)}
+  #legend .ow span{font-size:11px}
+  /* ★ 来源分组(原版定义 / 模组覆盖 / 模组新增)+ 未配色标灰 */
+  #legend .lgrp{display:flex;justify-content:space-between;align-items:baseline;margin:6px 0 2px;padding:2px 3px;border-top:1px solid var(--line);font-size:11px;color:var(--ink2)}
+  #legend .lgrp:first-child{border-top:0;margin-top:0}
+  #legend .lgrp span{font-size:10px;color:var(--ink3)}
+  #legend .ow.flat span{color:var(--ink3)}
+  #legend .ow.flat i{outline:1px dashed var(--warn);outline-offset:-1px}
+  #tip{position:absolute;pointer-events:none;background:rgba(20,24,32,.92);color:#fff;border-radius:6px;padding:5px 8px;font-size:11px;line-height:1.5;display:none;z-index:5;max-width:220px}
+  #tip b{color:#ffd479}
+  #modebar{display:flex;gap:4px}
+  #modebar button.on{outline:2px solid var(--accent)}
+  /* 来源徽标:让用户一眼看出这张图是谁的。
+     ⚠ 定位教训(两次都撞了):这层浮窗有 4 个 —— 图例(左上 52%)、
+       缩放框(右上)、诊断抽屉(右下)、HUD(左下)。来源条最初放 left+bottom,
+       先与图例重叠,居中后又在诊断抽屉展开时压住它。
+       现在:来源条固定在 HUD 正上方(左下角一条窄带),宽度收窄且自身可滚动,
+       抽屉限制高度并靠右,两者在垂直方向分层,互不覆盖。*/
+  #srcbar{position:absolute;left:10px;bottom:40px;width:min(340px,38%);max-height:26vh;overflow:auto;padding:5px 8px;font-size:11px}
+  #srcbar .sn{display:flex;gap:6px;align-items:baseline;padding:1px 0}
+  #srcbar .sn b{font-weight:600}
+  #srcbar .tag{font-size:10px;padding:0 5px;border-radius:8px;border:1px solid var(--line);color:var(--ink3)}
+  #srcbar .tag.own{color:var(--accent);border-color:var(--accent)}
+  /* 诊断抽屉 */
+  #diag{position:absolute;right:10px;bottom:40px;max-width:min(460px,52%);max-height:34vh;overflow:auto;padding:7px 10px;display:none}
+  #diag.on{display:block}
+  #diag h4{margin:1px 0 5px;font-size:11px;color:var(--ink3);display:flex;gap:6px;align-items:center}
+  #diag .it{padding:3px 0;border-top:1px solid var(--line);font-size:11px;line-height:1.5}
+  #diag .it:first-of-type{border-top:none}
+  #diag .it .k{font-size:10px;padding:0 5px;border-radius:8px;margin-right:5px}
+  #diag .it.error .k{background:rgba(220,80,80,.18);color:#e07070}
+  #diag .it.warn .k{background:rgba(230,170,60,.18);color:#d8a94a}
+  #diag .rs{font-size:10px;color:var(--ink3);margin-top:6px;line-height:1.6}
+  #diag .rs code{background:rgba(127,127,127,.15);padding:0 3px;border-radius:3px}
+  #toggleDiag{font-size:11px}
+  #toggleDiag.on{outline:2px solid var(--accent)}
+  /* ── DLC 面板(DLC_TOGGLE,2026-10-07)──
+     ⚠ 位置必须避开三处:图例(左上 max-height:52%)、诊断抽屉(右下)、
+       来源条(底部居中窄带)。放左上角图例**下方** —— 那块在低缩放下是空的。*/
+  #dlcbar{position:absolute;left:10px;top:calc(10px + 52vh);max-width:min(300px,34%);max-height:30vh;overflow:auto;padding:6px 9px;font-size:11px;display:none}
+  #dlcbar.on{display:block}
+  #dlcbar .dh{display:flex;gap:6px;align-items:baseline;margin-bottom:4px}
+  #dlcbar .dh2{margin-top:6px;padding-top:4px;border-top:1px solid var(--line);font-size:10px;color:var(--ink3)}
+  #dlcbar .dr{display:flex;gap:5px;align-items:baseline;padding:2px 0;cursor:pointer}
+  #dlcbar .dr .rs{flex:1;min-width:0}
+  #dlcbar .gr{display:flex;gap:5px;align-items:baseline;padding:2px 0;color:var(--ink3)}
+  #dlcbar .gr.on{color:var(--ink2)}
+  #dlcbar .gl{width:14px;flex:none;text-align:center}
+  #dlcbar .rs{font-size:10px;color:var(--ink3)}
+  #toggleDlc{font-size:11px}
+  #toggleDlc.on{outline:2px solid var(--accent)}
+  /* ── 战略区域面板(#srbar):右侧,缩放框下方、诊断抽屉上方,可折叠 ── */
+  #srbar{position:absolute;right:10px;top:calc(10px + 46px);width:min(320px,36%);max-height:56vh;overflow:auto;padding:6px 9px;font-size:11px;display:none}
+  #srbar.on{display:block}
+  #srbar .srh{display:flex;gap:6px;align-items:baseline;margin-bottom:4px}
+  #srbar .srh .rs{font-size:10px;color:var(--ink3)}
+  #srbar #srSearch{width:100%;box-sizing:border-box;margin-bottom:5px;padding:2px 5px;font-size:11px}
+  #srbar .srlist{max-height:20vh;overflow:auto;border-top:1px solid var(--line)}
+  #srbar .sri{padding:2px 3px;border-bottom:1px solid var(--line);cursor:pointer;font-size:11px}
+  #srbar .sri:hover{background:rgba(127,127,127,.12)}
+  #srbar .sri.on{outline:1px solid var(--accent)}
+  #srbar .sri .rs{font-size:10px;color:var(--ink3)}
+  #srbar .tag{font-size:10px;padding:0 5px;border-radius:8px;border:1px solid var(--line);color:var(--ink3);margin:0 3px}
+  #srbar .tag.sr-override{color:#d8a94a;border-color:#d8a94a}
+  #srbar .tag.sr-new{color:#7fbf7f;border-color:#7fbf7f}
+  #srbar .srdetail{margin-top:5px}
+  #srbar .srdh{font-size:11px;margin-bottom:3px}
+  #srbar .srl{display:flex;gap:5px;padding:1px 0;font-size:11px;line-height:1.5}
+  #srbar .srl .k{flex:none;width:96px;font-size:10px;color:var(--ink3)}
+  #srbar .srl .v{flex:1;min-width:0;word-break:break-all}
+  #srbar .srwh{margin:5px 0 2px;font-size:10px;color:var(--ink3);border-top:1px solid var(--line);padding-top:3px}
+  #srbar .srper{padding:3px 0;border-bottom:1px dotted var(--line)}
+  /* ── 悬停框里的 state 属性块 ── */
+  #tip{max-width:300px}
+  #tip .sdb{margin-top:4px;padding-top:4px;border-top:1px solid rgba(255,255,255,.18)}
+  #tip .sdh{font-size:10px;opacity:.7;margin-bottom:2px}
+  #tip .sdb .k{display:inline-block;width:62px;font-size:10px;opacity:.7}
+  #tip .sdb .v{font-size:11px}
+  #tip .lk{color:#e8a04a}
+  #tip .un{color:#7fbf7f}
+</style>
+</head>
+<body>
+<header>
+  <div id="nav"></div>
+</header>
+<div class="subbar">
+  <h1>世界地图 <small id="statChip">—</small></h1>
+  <div class="tgroup">
+    <div id="modebar">
+      <button id="mBase" class="on">底图</button>
+      <button id="mOwner">归属着色</button>
+    </div>
+    <label class="bx"><input type="checkbox" id="cDots" checked> 省份点</label>
+    <button id="toggleDiag">诊断</button>
+    <button id="toggleDlc">DLC</button>
+    <button id="toggleSr">战略区域</button>
+  </div>
+  <span class="spacer"></span>
+</div>
+<main>
+  <div id="stage">
+    <canvas id="map"></canvas>
+    <div id="zoombox" class="overlay">
+      <button id="zo">−</button><span id="zl">100%</span><button id="zi">+</button>
+      <button id="fit">适应</button>
+    </div>
+    <div id="legend" class="overlay"><h4>归属国家</h4><div id="legendBody">构建中…</div></div>
+    <div id="srcbar" class="overlay">来源加载中…</div>
+    <div id="dlcbar" class="overlay">扫描 DLC 中…</div>
+    <div id="srbar" class="overlay">战略区域加载中…</div>
+    <div id="diag" class="overlay"><h4>地图诊断 <span id="diagCount"></span></h4><div id="diagBody"></div></div>
+    <div id="hud" class="overlay">—</div>
+    <div id="tip"></div>
+  </div>
+</main>
+<div id="toast"></div>
+<script src="/i18n.js"></script>
+<script src="/i18n-dict.js"></script>
+<script src="/progress.js"></script>
+<script type="module">
+  import { mountNav } from '/nav.js'
+  mountNav('#nav')
+</script>
+<!-- ★ 不要用经典 <script src> 加载 appearance.js:它是 ESM(含 export),
+     经典脚本加载会直接抛 "Unexpected token 'export'"。nav.js 已 import 它。 -->
+<script src="/fullscreen.js"></script>
+<script src="/worldmap.js"></script>
+<script src="/ctx.js"></script>
+</body>
+</html>

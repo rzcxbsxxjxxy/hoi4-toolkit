@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>HOI4 工具链 启动中</title>
+<style>
+  html, body { height: 100%; margin: 0 }
+  body {
+    background: #ffffff;               /* ★ BOOT_WHITE:窗口已改为不透明白底,页面同步白底 */
+    display: flex; align-items: center; justify-content: center;
+    font-family: -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif;
+    -webkit-user-select: none; user-select: none;
+  }
+  .card {
+    width: 440px; padding: 30px 34px 26px; border-radius: 16px;
+    background: #ffffff;                /* 白色主题 */
+    border: 1px solid rgba(0, 0, 0, .08);
+    box-shadow: 0 18px 60px rgba(0, 0, 0, .18);
+    color: #1f2328; text-align: center;
+  }
+  .logo { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 16px }
+  .logo .badge {
+    font-weight: 800; letter-spacing: .08em; color: #ffffff;
+    background: #2f6feb; border: 1px solid rgba(47, 111, 235, .4);
+    border-radius: 8px; padding: 6px 12px; font-size: 15px;
+  }
+  .logo .name { font-size: 18px; font-weight: 700; letter-spacing: .04em; color: #111418 }
+  .ring {
+    width: 46px; height: 46px; border-radius: 50%; margin: 4px auto 12px;
+    border: 4px solid rgba(0, 0, 0, .1); border-top-color: #2f6feb;
+    animation: spin .9s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg) } }
+  .bar { width: 100%; height: 6px; border-radius: 4px; background: rgba(0,0,0,.08); margin: 14px auto 10px; overflow: hidden }
+  .bar.unk .bar-fill { animation: barindet 1.2s ease-in-out infinite }
+  @keyframes barindet { 0% { transform: translateX(-100%) } 100% { transform: translateX(250%) } }
+  .bar-fill { height: 100%; width: 0%; border-radius: 4px; background: linear-gradient(90deg, #2f6feb, #3b82f6); transition: width .25s ease }
+  .stage { font-size: 12px; color: #2f6feb; letter-spacing: .03em; min-height: 16px; margin-bottom: 6px; font-weight: 600 }
+  .msg { font-size: 13px; color: #57606a; letter-spacing: .03em; min-height: 18px; margin-bottom: 4px }
+  .card.hide { opacity: 0; transition: opacity .35s ease }
+</style>
+</head>
+<body>
+  <div class="card" id="card">
+    <div class="logo"><span class="badge">HOI4</span><span class="name">工具链</span></div>
+    <div class="ring"></div>
+    <div class="bar" id="bar"><div class="bar-fill" id="barfill"></div></div>
+    <div class="stage" id="stage"></div>
+    <div class="msg" id="msg">正在启动后端…</div>
+  </div>
+<script>
+  const msg = document.getElementById('msg')
+  const stageEl = document.getElementById('stage')
+  const card = document.getElementById('card')
+  // 自跑计时:主进程忙于构建索引(可能无 IPC 进度)时,也显示等待时间,避免"看起来没响应"
+  let received = false
+  const t0 = Date.now()
+  setInterval(() => {
+    if (received) return
+    const sec = Math.floor((Date.now() - t0) / 1000)
+    msg.textContent = '正在初始化索引，已等待 ' + sec + ' 秒…'
+  }, 1000)
+  // 部分 phase 名做中文化润色(其余已是中文)
+  const PHASE = { MusicIndex: '音乐索引' }
+  function set(d) {
+    received = true
+    // 阶段 i/N:名称(BOOT_STAGE_V2 新字段;无该字段时这行留空)
+    if (d.stageCount && d.stageCount > 0) {
+      const pct = (d.stageTotal > 0 && d.stageDone != null) ? ' ' + Math.round((d.stageDone / d.stageTotal) * 100) + '%' : ''
+      stageEl.textContent = '阶段 ' + (d.stageIndex + 1) + '/' + d.stageCount + '：' + (d.stageName || '') + pct
+    } else {
+      stageEl.textContent = ''
+    }
+    // 进度条:有 stage 进度则填充百分比,否则做不确定动画
+    const bar = document.getElementById('bar'); const fill = document.getElementById('barfill')
+    if (d.stageTotal > 0 && d.stageDone != null) {
+      bar.classList.remove('unk')
+      fill.style.width = Math.round((d.stageDone / d.stageTotal) * 100) + '%'
+    } else {
+      bar.classList.add('unk')
+      fill.style.width = '40%'
+    }
+    // 当前正在构建的子任务(旧字段 phase,兼容旧后端)
+    if (d.phase) msg.textContent = '正在构建：' + (PHASE[d.phase] || d.phase) + '…'
+  }
+  const api = window.electronAPI
+  if (api && api.onSplashProgress) api.onSplashProgress(set)
+  if (api && api.onSplashDone) api.onSplashDone(() => {
+    card.classList.add('hide')
+    setTimeout(() => { try { window.close() } catch (e) {} }, 360)
+  })
+</script>
+</body>
+</html>

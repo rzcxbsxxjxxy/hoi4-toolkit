@@ -1,0 +1,9 @@
+{
+  "name": "@hoi4/cli",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "hoi4kit 命令行入口",
+  "bin": {
+    "hoi4kit": "./src/hoi4kit.ts"
+  }
+}

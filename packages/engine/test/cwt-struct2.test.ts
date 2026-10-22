@@ -1,0 +1,15 @@
+import { getRules } from '../src/cwt-check.ts'
+const R = getRules()
+console.log('structs:', R.structs.size)
+console.log([...R.structs.keys()].join(', '))
+const nf = R.structs.get('focus_tree')
+console.log('\nfocus_tree 直接键:', nf?.entries.map(e=>e.key).join(', '))
+const f = R.structs.get('focus')
+console.log('\nfocus 直接键(前25):', f?.entries.slice(0,25).map(e=>e.key).join(', '))
+// icon 的定义
+const ic = R.structs.get('icon')
+console.log('\nicon 定义:', JSON.stringify(ic?.entries.map(e=>({k:e.key,s:e.spec}))))
+const av = nf?.entries.find(e=>e.key==='available')
+console.log('\nfocus_tree.available spec:', JSON.stringify(av?.spec))
+const cost = f?.entries.find(e=>e.key==='cost')
+console.log('focus.cost spec:', JSON.stringify(cost?.spec), 'dirs:', JSON.stringify(cost?.directives.map(d=>d.key+'='+d.value)))

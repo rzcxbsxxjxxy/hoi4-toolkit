@@ -1,0 +1,508 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HOI4 工作台</title>
+<link rel="stylesheet" href="/theme.css">
+<style>
+  /* ══════════════════════════════════════════════════════════════
+   * 工作台主页 · 2026-10-09 现代化改版
+   *
+   * 只动样式、不动结构与类名(home.js 依赖的 id/class 一律保留),
+   * 视觉提升集中在:工程条渐变强调、分区标题圆点、卡片/步骤的
+   * 圆角与悬浮阴影、统计数字用强调色。所有色值走 theme-vars.css
+   * 变量(含壁纸玻璃模式),不引入任何硬编码色。
+   * ══════════════════════════════════════════════════════════════ */
+
+  main{ display:block; overflow:auto }
+  .wrap{ max-width:1280px; margin:0 auto; padding:26px 32px 52px }
+
+  /* ── 工程条:渐变强调 + 轻阴影 ── */
+  .projbar{
+    display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+    padding:13px 16px;margin-bottom:22px;
+    background:var(--panel);border:1px solid var(--line);border-radius:12px;
+    box-shadow:var(--shadow);
+    background-image:linear-gradient(180deg,var(--accent-soft),transparent 48%);
+  }
+  .projbar .lb{
+    font-size:11px;font-weight:600;letter-spacing:.06em;color:var(--ink3);
+    flex:none;
+  }
+  .projbar .nm{
+    font-size:13.5px;font-weight:650;color:var(--accent);
+    max-width:340px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  }
+  .projbar .nm.none{color:var(--danger)}
+  .projbar .pa{
+    font-size:10.5px;color:var(--ink3);font-family:Consolas,monospace;
+    max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  }
+  .projbar .cnt{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:11.5px;color:var(--ink3);flex:none}
+  .projbar .cnt b{color:var(--ink2);font-weight:600}
+  .projbar button{
+    font:inherit;font-size:11.5px;padding:4px 12px;border:1px solid var(--line);
+    border-radius:999px;background:var(--panel);color:var(--ink2);cursor:pointer;
+    transition:background .12s,border-color .12s,color .12s;
+  }
+  .projbar button:hover{background:var(--line2);color:var(--ink);border-color:var(--line)}
+  .projbar button.acc{
+    background:var(--accent);border-color:var(--accent);color:#fff;
+    box-shadow:0 4px 12px rgba(43,108,176,.28);
+  }
+  .projbar button.acc:hover{filter:brightness(1.12);color:#fff;box-shadow:0 6px 16px rgba(43,108,176,.36)}
+  /* 壁纸模式:theme.css 把所有 button 变成 --glass-ctrl(半透明白),
+     这个 .acc 用白字会看不清;用 --accent-glass 恢复蓝色强调 */
+  :root[data-bg="image"] .projbar button.acc{
+    background: var(--accent-glass) !important;
+    border-color: var(--accent-glass);
+    color:#fff;
+  }
+
+  /* ── 分区标题:圆点装饰 ── */
+  .sect{margin-bottom:28px}
+  .sect-h{
+    display:flex;align-items:center;gap:9px;margin-bottom:13px;
+    padding-bottom:8px;border-bottom:1px solid var(--line2);
+  }
+  .sect-h::before{
+    content:"";width:4px;height:17px;border-radius:2px;flex:none;
+    background:linear-gradient(180deg,var(--accent),color-mix(in srgb,var(--accent) 30%,transparent));
+  }
+  .sect-h h2{margin:0;font-size:14px;font-weight:650;letter-spacing:.01em}
+  .sect-h .c{font-size:11px;color:var(--ink3)}
+  .sect-h .more{
+    margin-left:auto;font-size:11.5px;color:var(--accent);text-decoration:none;
+    padding:3px 10px;border:1px solid color-mix(in srgb,var(--accent) 40%,transparent);
+    border-radius:999px;transition:background .12s;
+  }
+  .sect-h .more:hover{background:var(--accent-soft);text-decoration:none}
+  .modapply-btn{
+    margin-left:auto;flex:none;font-size:12px;font-weight:600;
+    padding:5px 14px;border:1px solid var(--line);border-radius:999px;
+    background:var(--panel);color:var(--ink2);cursor:pointer;
+    box-shadow:0 1px 4px color-mix(in srgb,var(--line) 30%,transparent);
+    position:relative;z-index:2;transition:background .12s,border-color .12s,color .12s;
+  }
+  .modapply-btn:not(:disabled):hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .modapply-btn:disabled{opacity:.5;cursor:not-allowed}
+
+  /* ── 制作主线 ── */
+  .flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(232px,1fr));gap:12px}
+  .fstep{
+    background:var(--panel);border:1px solid var(--line);border-radius:12px;
+    padding:14px 15px;text-decoration:none;color:inherit;position:relative;
+    display:flex;align-items:center;gap:12px;
+    transition:transform .14s ease,border-color .14s ease,box-shadow .14s ease;
+  }
+  .fstep:hover{transform:translateY(-3px);border-color:#b8cce2;box-shadow:var(--shadow-lg)}
+  .fstep .n{
+    width:26px;height:26px;border-radius:50%;flex:none;
+    background:var(--accent-soft);color:var(--accent);
+    display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;
+  }
+  .fstep .tx{flex:1;min-width:0}
+  .fstep b{font-size:13.5px;display:block}
+  .fstep s{
+    text-decoration:none;color:var(--ink2);font-size:11.5px;display:block;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+  .fstep .go{color:var(--accent);font-size:16px;flex:none;opacity:.5;transition:transform .14s,opacity .14s}
+  .fstep:hover .go{opacity:1;transform:translateX(3px)}
+  .fstep.done .n{background:var(--ok-soft);color:var(--ok)}
+
+  /* ── 统计条 ── */
+  .stats{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:10px;
+    margin-bottom:30px;
+  }
+  .stat{
+    background:var(--panel);border:1px solid var(--line);border-radius:12px;
+    padding:14px 12px;text-align:center;cursor:pointer;
+    transition:transform .12s,border-color .12s,box-shadow .12s,background .12s;
+  }
+  .stat:hover{transform:translateY(-2px);border-color:#b8cce2;box-shadow:var(--shadow);background:var(--accent-soft)}
+  .stat b{
+    display:block;font-size:21px;font-weight:700;font-variant-numeric:tabular-nums;
+    line-height:1.15;color:var(--ink);
+  }
+  .stat:hover b{color:var(--accent)}
+  .stat span{font-size:11px;color:var(--ink3);display:block;margin-top:2px}
+  .stat u{
+    display:block;text-decoration:none;font-size:10.5px;margin-top:5px;
+    color:var(--accent);opacity:0;transition:opacity .12s;
+  }
+  .stat:hover u{opacity:1}
+
+  /* ── 卡片组 ── */
+  .sect{margin-bottom:28px}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));gap:12px}
+  .card{
+    background:var(--panel);border:1px solid var(--line);border-radius:12px;
+    padding:14px 14px;text-decoration:none;color:inherit;position:relative;
+    display:flex;flex-direction:column;gap:4px;
+    transition:transform .14s ease,border-color .14s ease,box-shadow .14s ease;
+  }
+  .card:hover{transform:translateY(-3px);border-color:#b8cce2;box-shadow:var(--shadow-lg)}
+  .card .top{display:flex;align-items:center;gap:10px}
+  .card .cic{
+    width:34px;height:34px;border-radius:10px;flex:none;
+    background:linear-gradient(180deg,var(--accent-soft),color-mix(in srgb,var(--accent-soft) 55%,transparent));
+    color:var(--accent);display:flex;align-items:center;justify-content:center;
+  }
+  .card .cic svg{width:19px;height:19px}
+  .card h3{margin:0;font-size:13.5px;font-weight:650}
+  .card .desc{
+    color:var(--ink2);font-size:12px;line-height:1.5;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+  .card.new{border-left:3px solid var(--ok)}
+
+  .foot{
+    margin-top:30px;padding-top:14px;border-top:1px solid var(--line2);
+    color:var(--ink3);font-size:11.5px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div id="nav"></div>
+</header>
+<div class="subbar">
+  <h1>工作台</h1>
+  <span class="spacer"></span>
+</div>
+
+<main>
+ <div class="wrap">
+
+
+  <!-- 模组开关:默认只展示基础游戏(vanilla),勾选的模组才进入索引与编辑范围(MOD_TOGGLE_V1) -->
+  <div class="sect" id="modToggleSect">
+    <div class="sect-h"><h2>模组开关</h2><span class="c">默认只展示基础游戏 · 勾选的模组才会进入索引与编辑范围</span><button id="projImport" class="modapply-btn" title="把已有的模组目录挂载进工作台">导入模组</button><button id="modApplyBtn" class="modapply-btn" disabled>确定 · 重新加载</button></div>
+    <div class="modtoggles" id="modToggles"><div class="empty">读取中…</div></div>
+  </div>
+
+
+  <!-- 概览数字:点击直达对应页面;拉取失败就保持 —,不阻塞渲染 -->
+  <div class="stats" id="stats"></div>
+
+  <!-- 内容可视化 -->
+  <div class="sect">
+    <div class="sect-h">
+      <h2>内容可视化</h2><span class="c">读 common/ · 只读</span>
+      <a class="more" href="/docs">上手教程 →</a>
+    </div>
+    <div class="cards" id="grpContent"></div>
+  </div>
+
+  <!-- 界面开发 -->
+  <div class="sect">
+    <div class="sect-h">
+      <h2>界面开发</h2><span class="c">可写回源文件</span>
+    </div>
+    <div class="cards" id="grpUi"></div>
+  </div>
+
+  <!-- 文档与工程 -->
+  <div class="sect">
+    <div class="sect-h">
+      <h2>文档与工程</h2>
+    </div>
+    <div class="cards" id="grpDoc"></div>
+  </div>
+
+  <div class="foot tip" data-tip="所有工具共享同一套 Clausewitz 解析器与 GUI 布局引擎，坐标 / 锚点计算在各界面工具间保持一致。&#10;官方手册与 common 文档实时读取，不做预生成快照 —— 改了文件刷新即可看到。">
+    悬停任意卡片或本页底部可看详细说明
+  </div>
+
+ </div>
+</main>
+
+<div id="toast"></div>
+<script src="/i18n.js"></script>
+<script src="/i18n-dict.js"></script>
+<script src="/progress.js"></script>
+<script type="module">
+  import { mountNav } from '/nav.js'
+  mountNav('#nav')
+</script>
+<script>
+/* ── 卡片表 ──
+ * ⚠ 分组名与 nav.js 的 NAV_GROUPS 对应,加页面时两处一起改。
+ *
+ * ★★ 字段口径(用户反馈"文字量有点大"后定的):
+ *   short → 版面上唯一可见的一行,控制在 14 字内,多了就省略号截断
+ *   tip  → 悬停浮层,写完整说明 + 何时用 + 位置
+ * 两条都要写,别把长句塞进 short —— 那就又回到"字太多"了。*/
+const IC = {
+  focus:'<circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/>',
+  tech:'<circle cx="6" cy="6" r="2.4"/><circle cx="18" cy="9" r="2.4"/><circle cx="9" cy="18" r="2.4"/><path d="M8 7l8 1.5M7.5 8l1 8"/>',
+  doctrines:'<path d="M12 3v5M5 21v-4M19 21v-4"/><rect x="9" y="8" width="6" height="4" rx="1"/><rect x="2" y="17" width="6" height="4" rx="1"/><rect x="16" y="17" width="6" height="4" rx="1"/>',
+  decisions:'<rect x="3" y="4" width="18" height="5" rx="1.5"/><rect x="3" y="13" width="18" height="5" rx="1.5"/><path d="M7 6.5h.01M7 15.5h.01"/>',
+  events:'<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>',
+  aibehave:'<rect x="6" y="6" width="12" height="12" rx="2"/><rect x="10" y="10" width="4" height="4" rx="1"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/>',
+  dlc:'<path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M12 12l9-5M12 12v10M12 12L3 7"/>',
+  designer:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',
+  create:'<path d="M12 5v14M5 12h14"/>',
+  ide:'<path d="M8 6l-5 6 5 6M16 6l5 6-5 6"/>',
+  ref:'<path d="M4 5a2 2 0 012-2h12v18H6a2 2 0 01-2-2z"/><path d="M8 7h7M8 11h7"/>',
+  commondocs:'<path d="M3 6a2 2 0 012-2h4l2 2h8a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>',
+  loc:'<path d="M4 5h16M9 5v14M15 5v14"/><path d="M6 19h6"/>',
+  check:'<path d="M9 11l3 3 8-8"/><path d="M20 12v7H4V5h9"/>',
+  tracker:'<circle cx="6" cy="6" r="2"/><circle cx="6" cy="18" r="2"/><path d="M6 8v8M6 8c4 0 6-2 10-2v4M16 6v4c0 2 0 4-4 4h-6"/>',
+  open:'<path d="M3 7h6l2 2h10v10H3z"/>',
+  docs:'<path d="M4 5a2 2 0 012-2h12v18H6a2 2 0 01-2-2z"/><path d="M8 7h7M8 11h7M8 15h4"/>',
+  settings:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>',
+  defines:'<path d="M4 6h16M4 12h16M4 18h16"/><circle cx="9" cy="6" r="2" fill="currentColor"/><circle cx="15" cy="12" r="2" fill="currentColor"/><circle cx="7" cy="18" r="2" fill="currentColor"/>',
+  worldmap:'<path d="M9 4L3 7v13l6-3 6 3 6-3V4l-6 3z"/><path d="M9 4v13M15 7v13"/>',
+  modrel:'<circle cx="5" cy="6" r="2.4"/><circle cx="19" cy="6" r="2.4"/><circle cx="12" cy="18" r="2.4"/><path d="M7.2 7.3l3.4 8.4M16.8 7.3l-3.4 8.4M7.4 6h9.2"/>',
+  characters:'<circle cx="12" cy="7" r="4"/><path d="M4 21v-3a8 8 0 0116 0v3"/>',
+  units:'<path d="M12 2l7 3v6c0 4.5-3 8-7 10-4-2-7-5.5-7-10V5z"/><path d="M9 12l2.2 2.2L15 10"/>',
+};
+
+const GROUPS = {
+  grpContent: [
+    { href:'/focus',  ic:'focus',  title:'国策树',   path:'/focus',  short:'national_focus 可视化', isNew:0,
+      tip:'可视化 national_focus：来源筛选、拖拽改坐标、结构与坐标体检。\n何时用：调整国策布局、查重叠 / 悬空、看模组改了哪些原版内容。' },
+    { href:'/tech',   ic:'tech',   title:'科技树',   path:'/tech',   short:'585 个科技 · 按页签浏览',
+      tip:'按显示分组与领域浏览全部科技，标注隐藏科技与"由脚本填充"的空分类。\n何时用：梳理科技前置关系、查某科技属于哪个领域。' },
+    { href:'/doctrines', ic:'doctrines', title:'学说系统', path:'/doctrines', short:'95 条次要学说 · 互斥关系', isNew:1,
+      tip:'页签 → 主要学说 → 轨道 → 次要学说，标出互斥关系、熟练度加成与 DLC 门控。\n何时用：查某个 doctrine 的效果、奖励与解锁代价。' },
+    { href:'/decisions', ic:'decisions', title:'决议树', path:'/decisions', short:'按类别组织的卡片墙',
+      tip:'按 decision_category 组织的卡片墙，标出模组新增与原版内容。\n何时用：浏览 / 检索大量决议、按类别找内容。' },
+    { href:'/events', ic:'events', title:'事件',   path:'/events',  short:'触发条件与效果',
+      tip:'事件列表与详情，含触发条件、效果与来源归属。\n何时用：查事件什么时候会触发、触发后做什么。' },
+    { href:'/aibehave', ic:'aibehave', title:'AI 行为', path:'/aibehave', short:'ai_strategy / 计划 / 模板', isNew:1,
+      tip:'按 ai_strategy、ai_strategy_plans、ai_templates、ai_navy 等方面归拢 common/ai_*，逐个文件列出条目与字段画像。\n何时用：排查 AI 为什么这么打、对比模组改了哪些 AI 文件。' },
+    { href:'/dlc?feature=mio', ic:'dlc', title:'DLC-军工机构', path:'/dlc?feature=mio', short:'Arms Against Tyranny', isNew:1,
+      tip:'按 DLC 归拢它往 common/military_industrial_organization 里加的玩法：机构、特质、政策。\n何时用：查 MIO 机构树、特质与装备加成。' },
+    { href:'/dlc?feature=special_projects', ic:'dlc', title:'DLC-特殊工程', path:'/dlc?feature=special_projects', short:'Gotterdammerung', isNew:1,
+      tip:'按 DLC 归拢它往 common/special_projects 里加的特殊工程。\n何时用：查特殊工程分类、可用性与造价。' },
+    { href:'/dlc?feature=factions', ic:'dlc', title:'DLC-阵营', path:'/dlc?feature=factions', short:'No Compromise, No Surrender', isNew:1,
+      tip:'按 DLC 归拢它往 common/factions 里加的阵营系统。\n何时用：查阵营目标、升级与模板。' },
+    { href:'/characters', ic:'characters', title:'人物角色', path:'/characters', short:'common/characters · 肖像 · 职务', isNew:1,
+      tip:'按文件组织 common/characters 全部人物：肖像、职务（国家领袖/顾问/将领/科学家…）、allowed_civil_war 内战条件、DLC 门控实例，多画像可切换，标出模组覆盖。\n何时用：查某个历史人物在原版/模组里的设定与来源。' },
+    { href:'/units', ic:'units', title:'单位和装备', path:'/units', short:'单位类型 · 装备 · 命名', isNew:1,
+      tip:'按文件组织 common/units：单位类型（兵种字段/需求/地形修正）、装备（年份/原型/造价/攻防）、要害部位、单位修正与命名池，多来源覆盖语义与全站一致。\n何时用：查某兵种或装备在原版/模组里的定义与来源。' },
+    { href:'/defines', ic:'defines', title:'平衡参数', path:'/defines', short:'defines.lua · 原版 vs 模组',
+      tip:'common/defines 的全部平衡参数，可按「原版 vs 模组」逐条比较数值增减（-- 注释不参与比较）。\n何时用：调平衡、看模组把哪些全局参数改了。' },
+    { href:'/worldmap', ic:'worldmap', title:'世界地图', path:'/worldmap', short:'多来源合成 · 省份归属', isNew:1,
+      tip:'按文件级/目录级语义合成多来源地图：位图、states 归属、国家配色，支持 DLC 门控与 state 属性展示。\n何时用：查某块地归谁、模组把地图改成了什么样。' },
+    { href:'/modrel', ic:'modrel', title:'模组关系', path:'/modrel', short:'依赖图 · replace_path', isNew:1,
+      tip:'模组 dependencies 依赖图与 replace_path 审计：拓扑载入序、悬空依赖、替换造成的文件缺口。\n何时用：排查模组加载顺序问题、replace_path 是否制造了缺口。' },
+  ],
+  grpUi: [
+    { href:'/designer', ic:'designer', title:'所见即所得', path:'/designer', short:'.gui 元素树 + 画布',
+      tip:'工具箱 + 元素树 + 画布 + 属性网格，可视化增删改元素及其层级。\n何时用：要从零搭界面、改元素结构与属性。' },
+    { href:'/create', ic:'create', title:'内容生成',   path:'/create',  short:'表单化产出规范文件',
+      tip:'表单化生成国策 / 科技 / 决议 / 单位 / 建筑 / 事件等，直接产出规范文件。\n何时用：批量产出内容、避免手写样板。' },
+    { href:'/ide',    ic:'ide',    title:'代码 IDE',   path:'/ide',     short:'文件树 + 语法高亮 + 跳转',
+      tip:'文件树 + Clausewitz 语法高亮 + 大纲 / 跳转，可直接调本地 VS Code 打开。\n何时用：要直接读写源码、做跨文件重构。' },
+  ],
+  grpDoc: [
+    { href:'/ref',        ic:'ref',        title:'官方手册',    path:'/ref',        short:'11 本 · 实时解析',
+      tip:'实时解析游戏 documentation/ 下的 11 本官方手册，按 scope 分类、可搜索。\n何时用：查某个 effect / trigger / modifier 的用法与作用目标。' },
+    { href:'/commondocs', ic:'commondocs', title:'common 文档', path:'/commondocs', short:'按子目录索引',
+      tip:'实时解析 common/ 各子目录里的 md 说明，严格按文件夹索引。\n何时用：确认某个 common 子系统的字段含义与写法。' },
+    { href:'/loc',        ic:'loc',        title:'本地化',      path:'/loc',        short:'键值索引 + 覆盖链',
+      tip:'键值索引与覆盖链，标出缺失条目与被模组覆盖的译文。\n何时用：查本地化缺失、排查某个键最终用哪份译文。' },
+    { href:'/tracker', ic:'tracker', title:'更新跟踪', path:'/tracker', short:'基线快照 · git 式变更', isNew:1,
+      tip:'对基础游戏与各模组建立内容寻址基线，每次更新对比出 新增/修改/删除/移动 四态变更与行级 diff，可按来源筛选、回看历史。\n何时用：游戏或模组更新后，想看清到底改了哪些文件、改了什么。' },
+    { href:'/check',      ic:'check',      title:'体检',        path:'/check',      short:'语法 / 悬空 / 重复',
+      tip:'对挂载的全部来源跑校验：语法、括号、悬空引用、重复定义、缺失本地化。\n何时用：改动后想确认有没有引入问题。' },
+    { href:'/open.html',  ic:'open',       title:'打开工程',    path:'/open.html',  short:'挂载来源与外观',
+      tip:'挂载游戏目录与模组，调整覆盖顺序，设置主题与本地背景图。\n何时用：换工程、增减模组、改外观。' },
+    { href:'/docs',       ic:'docs',       title:'使用教程',    path:'/docs',       short:'概念与判定口径',
+      tip:'快速开始、来源三层语义、GUI 坐标要点、快捷键与常见问题。\n何时用：第一次用，或忘了某个概念怎么判定。' },
+    { href:'/settings',    ic:'settings',    title:'设置',        path:'/settings',    short:'主题 · 壁纸 · 调节条',
+      tip:'挂载来源与目录、主题与强调色、本地壁纸及其半透明调节（面板不透明度 / 壁纸压暗 / 模糊）。\n何时用：换工程、增减模组、调外观。' },
+  ],
+};
+
+/* ── 渲染卡片 ── */
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+for(const [host, list] of Object.entries(GROUPS)){
+  const box = document.getElementById(host);
+  for(const c of list){
+    const a = document.createElement('a');
+    a.className = 'card tip' + (c.isNew ? ' new' : '');
+    a.href = c.href;
+    a.dataset.tip = c.tip;
+    a.innerHTML =
+      `<div class="top">` +
+        `<div class="cic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${IC[c.ic]||''}</svg></div>` +
+        `<div style="flex:1;min-width:0"><h3>${esc(c.title)}</h3><div class="desc">${esc(c.short)}</div></div>` +
+      `</div>`;
+    box.appendChild(a);
+  }
+}
+
+/* ── 工程条(MAKE_MOD_V1)──
+ * "我现在在给谁做内容" —— 制作的第一步不是选工具,是确定写到哪儿。
+ * 没有可写模组时整条主线是断的,这里直接把「新建模组」摆在最显眼处。 */
+async function loadProject() {
+  try {
+    const j = await fetch('/api/sources').then((r) => r.json());
+    const mods = (j.sources || []).filter((s) => !s.base);
+    let want = null;
+    try { want = JSON.parse(localStorage.getItem('gui.targetRoot') || 'null'); } catch (e) {}
+    const cur = (want && mods.find((m) => m.i === want.i)) || mods[mods.length - 1] || null;
+    if (cur) { try { localStorage.setItem('gui.targetRoot', JSON.stringify({ i: cur.i, name: cur.name })); } catch (e) {} }
+  } catch (e) { /* 拉不到就跳过 */ }
+}
+document.getElementById('projImport').onclick = () => { const p = window.parent; if (p && p !== window && p.shellGo) p.shellGo('/open.html'); else if (window.shellGo) window.shellGo('/open.html'); else location.href = '/open.html' };
+loadProject();
+
+/* ── 概览数字 ──
+ * ★ PERF_V2:旧实现并行拉 5 个内容图(决议一个就 3.2MB),只为填 6 个数字,
+ *   打开工作台必卡几秒。现在走 /api/stats —— 后端只回计数,
+ *   图没建好的先显示 —,后台建完再补一次(最多 6 次退避)。 */
+const STATS = [
+  { id: 'sGui', label: '.gui 文件', href: '/designer', key: 'gui' },
+  { id: 'sFocus', label: '国策', href: '/focus', key: 'focus' },
+  { id: 'sTech', label: '科技', href: '/tech', key: 'tech' },
+  { id: 'sDoc', label: '学说', href: '/doctrines', key: 'doctrine' },
+  { id: 'sDlc', label: 'DLC 条目', href: '/dlc', key: 'dlc' },
+  { id: 'sFaction', label: '决议', href: '/decisions', key: 'decision' },
+]
+const sbox = document.getElementById('stats')
+for (const s of STATS) {
+  const d = document.createElement('div')
+  d.className = 'stat'
+  d.onclick = () => { const p = window.parent; if (p && p !== window && p.shellGo) p.shellGo(s.href); else if (window.shellGo) window.shellGo(s.href); else location.href = s.href }
+  d.innerHTML = `<b id="${s.id}">—</b><span>${s.label}${tr("</span><u>打开 →</u>")}`
+  sbox.appendChild(d)
+}
+const fmt = (n) => (typeof n === 'number' ? n.toLocaleString('zh-CN') : '—')
+const set = (id, v) => { const el = document.getElementById(id); if (el && v != null) el.textContent = fmt(v) }
+
+async function loadStats(attempt) {
+  attempt = attempt || 0
+  try {
+    const j = await fetch('/api/stats').then((r) => r.json())
+    for (const s of STATS) set(s.id, j[s.key])
+    // 还有图在后台建 → 退避补一次,别一直刷
+    if (j.pending && attempt < 6) {
+      setTimeout(() => loadStats(attempt + 1), Math.min(600 * Math.pow(1.5, attempt), 5000))
+    }
+  } catch (e) { /* 拉不到就保持 —,不阻塞页面 */ }
+}
+loadStats()
+</script>
+
+<style>
+.modtoggles{display:flex;flex-direction:column;gap:8px}
+.modtg{display:flex;align-items:center;gap:10px;padding:8px 12px;border:1px solid var(--line);border-radius:8px;background:var(--panel)}
+.modtg .mi{flex:1;min-width:0}
+.modtg .mn{font-weight:600;font-size:13px}
+.modtg .mp{font-size:11px;color:var(--ink3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.modtg .sw{position:relative;width:42px;height:22px;flex:none;cursor:pointer}
+.modtg .sw input{opacity:0;width:0;height:0;position:absolute}
+.modtg .sw .tk{position:absolute;inset:0;background:var(--line2);border-radius:20px;transition:.18s}
+.modtg .sw .tk:before{content:"";position:absolute;width:18px;height:18px;left:2px;top:2px;background:#fff;border-radius:50%;transition:.18s}
+.modtg .sw input:checked + .tk{background:var(--accent)}
+.modtg .sw input:checked + .tk:before{transform:translateX(20px)}
+.modtg.off{opacity:.62}
+.modtg .mb{display:flex;gap:5px;flex-wrap:wrap;margin-top:3px}
+.modtg .pill{font-size:10px;padding:0 5px;border-radius:4px;background:var(--line2);color:var(--ink3)}
+.modtg .pill.ok{background:var(--ok-soft);color:var(--ok)}
+.modtg .pill.warn{background:var(--danger-soft);color:var(--danger)}
+</style>
+<script>
+/* 模组开关:默认只展示基础游戏(vanilla),勾选的模组才进入索引与编辑范围。
+ * 直接调 /api/mod/toggle 即时生效(后端会重建 ROOTS + 索引),无需回设置页保存。 */
+(function () {
+  const box = document.getElementById('modToggles')
+  if (!box) return
+  const applyBtn = document.getElementById('modApplyBtn')
+  const pending = new Map() // path → enabled(未应用)
+  function pill(txt, kind) {
+    const s = document.createElement('span'); s.className = 'pill' + (kind ? ' ' + kind : ''); s.textContent = txt
+    return s
+  }
+  function toast(m, err) {
+    const t = document.getElementById('toast')
+    if (!t) return
+    t.textContent = m
+    t.className = 'on' + (err ? ' err' : '')
+    setTimeout(() => (t.className = ''), 2800)
+  }
+  async function load() {
+    try {
+      const j = await fetch('/api/settings').then((r) => r.json())
+      const mods = j.mods || []
+      if (!mods.length) {
+        box.innerHTML = '<div class="empty">尚未挂载任何模组 · 去「导入模组」或设置页添加</div>'
+        return
+      }
+      box.innerHTML = ''
+      mods.forEach((m) => {
+        const row = document.createElement('div')
+        row.className = 'modtg' + (m.enabled ? '' : ' off')
+        const mi = document.createElement('div'); mi.className = 'mi'
+        const nm = document.createElement('div'); nm.className = 'mn'; nm.textContent = m.name || m.path.split('/').pop()
+        const badges = document.createElement('div'); badges.className = 'mb'
+        badges.appendChild(pill(m.hasModFile ? '✔ .mod' : '推断', m.hasModFile ? 'ok' : ''))
+        if (m.replacePathCount > 0) badges.appendChild(pill('replace_path ' + m.replacePathCount, ''))
+        if (m.deps > 0) badges.appendChild(pill('依赖 ' + m.deps, ''))
+        if (m.versionOk === false) badges.appendChild(pill('版本 ⚠', 'warn'))
+        const mp = document.createElement('div'); mp.className = 'mp'; mp.textContent = m.path
+        mi.appendChild(nm); mi.appendChild(badges); mi.appendChild(mp)
+        const sw = document.createElement('label'); sw.className = 'sw'
+        const cb = document.createElement('input'); cb.type = 'checkbox'; cb.checked = !!m.enabled
+        const tk = document.createElement('span'); tk.className = 'tk'
+        sw.appendChild(cb); sw.appendChild(tk)
+        cb.onchange = () => {
+          row.classList.toggle('off', !cb.checked)
+          pending.set(m.path, cb.checked)
+          if (applyBtn) applyBtn.disabled = false
+        }
+        row.appendChild(mi); row.appendChild(sw)
+        box.appendChild(row)
+      })
+    } catch (e) {
+      box.innerHTML = tr('<div class="empty">读取模组列表失败: ') + e + '</div>'
+    }
+  }
+  /* MOD_APPLY_V1:勾选只改本地状态,点「确定」统一写后端并重建索引+重载。 */
+  if (applyBtn) applyBtn.addEventListener('click', apply)
+  async function apply() {
+    if (!pending.size) return
+    if (window.parent && window.parent !== window && window.parent.BootGate) {
+      window.parent.BootGate.show(tr('正在重建索引(应用模组开关)…'))
+    }
+    for (const [path, on] of pending) {
+      try {
+        const r = await fetch('/api/mod/toggle', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ path, enabled: on }),
+        })
+        const d = await r.json()
+        if (!r.ok || d.error) toast(tr('切换失败: ') + (d.error || r.status), true)
+      } catch (e) { toast(tr('切换失败: ') + e, true) }
+    }
+    pending.clear()
+    if (applyBtn) applyBtn.disabled = true
+    toast(tr('模组开关已应用,正在重建索引…'))
+    setTimeout(() => {
+      if (window.parent && window.parent !== window && window.parent.BootGate) { try { window.parent.BootGate.hide() } catch (e) {} }
+      /* MOD_RELOAD_V1:壳内持 iframe 池,只重载主页帧会保留旧 ROOTS 数据 → 模组关闭后仍显示。走壳级 __shellResetPool() 清池+整体重载。 */
+      if (window.parent && window.parent !== window && window.parent.__shellResetPool) {
+        window.parent.__shellResetPool()
+      } else {
+        location.reload()
+      }
+    }, 400)
+  }
+  load()
+})()
+</script>
+<!-- ★ FULLSCREEN_V1:全站全屏。必须在 nav.js 之前?否 —— nav.js 轮询等它,
+     放哪都行;统一放页面脚本区末尾,好维护。 -->
+<script src="/fullscreen.js"></script>
+<script src="/ctx.js"></script>
+</body>
+</html>

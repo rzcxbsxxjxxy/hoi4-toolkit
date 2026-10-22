@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>HOI4 GUI 工作台</title>
+<link rel="stylesheet" href="/theme.css">
+<style>
+  /* 本页特有变量与布局,通用色一律走 theme.css */
+  :root{ --canvas:#e9ebef; --ok:#2f855a }}
+  #fileList{max-height:34%;border-bottom:1px solid var(--line2);overflow:auto;flex:none}
+  .file-item{padding:3px 10px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:12px}
+  .file-item:hover{background:#f2f4f7}
+  .file-item.on{background:var(--accent-soft);color:var(--accent);font-weight:600}
+  .file-item .tag{color:var(--ink3);font-size:11px}
+  .tree-row{
+    display:flex;align-items:center;gap:5px;padding:2px 8px;cursor:pointer;
+    white-space:nowrap;font-size:12px;
+  }
+  .tree-row:hover{background:#f2f4f7}
+  .tree-row.on{background:var(--accent-soft);color:var(--accent);font-weight:600}
+  .tree-row .ty{color:var(--ink3);font-size:11px}
+  .tree-row .dot{width:6px;height:6px;border-radius:50%;flex:none;background:#c3c8d0}
+  .tree-row .dot.bad{background:var(--danger)}
+  #canvasWrap{
+    flex:1;min-width:0;position:relative;overflow:hidden;background:var(--canvas);
+    background-image:linear-gradient(45deg,#e2e5ea 25%,transparent 25%),
+                     linear-gradient(-45deg,#e2e5ea 25%,transparent 25%),
+                     linear-gradient(45deg,transparent 75%,#e2e5ea 75%),
+                     linear-gradient(-45deg,transparent 75%,#e2e5ea 75%);
+    background-size:20px 20px;background-position:0 0,0 10px,10px -10px,-10px 0;
+  }
+  #stage{position:absolute;left:0;top:0;transform-origin:0 0}
+  .screen{position:absolute;left:0;top:0;width:1920px;height:1080px;border:1px dashed #93a4bb;background:rgba(255,255,255,.4);pointer-events:none;z-index:0}
+  .screen-cap{position:absolute;top:2px;left:5px;font-size:10px;color:#8b98a8;white-space:nowrap}
+  .node{position:absolute;cursor:move}
+  .node.sel{outline:2px solid var(--accent);outline-offset:0;z-index:5}
+  .node.hover{outline:1px dashed #7d8794;outline-offset:0}
+  .node .cap{
+    position:absolute;left:0;top:-15px;font-size:10px;line-height:13px;
+    color:#fff;background:rgba(40,44,52,.82);padding:0 4px;border-radius:3px;
+    white-space:nowrap;pointer-events:none;display:none;max-width:260px;overflow:hidden;
+  }
+  body.showNames .node .cap{display:block}
+  .node.sel .cap{display:block;background:var(--accent)}
+  .node.bad{outline:1px dashed var(--danger);outline-offset:0}
+  /* 尺寸推断不出:给最小可点面积,仅为占位,不代表真实渲染 */
+  .node.unknown{min-width:22px !important;min-height:22px !important;outline:1px dashed var(--warn)}
+  .node .h{
+    position:absolute;right:-4px;bottom:-4px;width:9px;height:9px;
+    background:var(--accent);border:1px solid #fff;border-radius:2px;
+    cursor:nwse-resize;display:none;z-index:6;
+  }
+  .node.sel .h{display:block}
+  #insp{padding:8px 10px}
+  .row{display:flex;align-items:center;gap:6px;margin-bottom:5px}
+  .row label{width:64px;color:var(--ink2);font-size:12px;flex:none}
+  .row input[type=number]{width:100%;min-width:0}
+  .kv{display:flex;gap:6px;font-size:12px;margin-bottom:3px}
+  .kv .k{color:var(--ink3);width:64px;flex:none}
+  .kv .v{word-break:break-all;flex:1;min-width:0}
+  .flags{margin:6px 0;padding:6px 8px;background:#fafbfc;border:1px solid var(--line2);border-radius:5px}
+  .flag{font-size:11px;color:var(--warn);display:block}
+  .flag.err{color:var(--danger)}
+  footer{
+    flex:none;border-top:1px solid var(--line);background:var(--panel);
+    max-height:190px;display:flex;flex-direction:column;min-height:0;
+  }
+  #changeHead{
+    display:flex;align-items:center;gap:8px;padding:6px 12px;
+    border-bottom:1px solid var(--line2);font-size:12px;
+  }
+  #changeList{overflow:auto;padding:6px 12px;font-size:12px}
+  #changeList table{border-collapse:collapse;width:100%}
+  #changeList td{padding:1px 6px 1px 0;vertical-align:top}
+  #changeList .idc{color:var(--ink3);font-family:ui-monospace,Consolas,monospace;font-size:11px}
+  #diffBox{
+    margin:6px 12px;padding:8px;background:#1e2228;color:#d6dae0;border-radius:5px;
+    font:11px/1.55 ui-monospace,Consolas,monospace;overflow:auto;max-height:120px;white-space:pre;
+  }
+  #diffBox .add{color:#8fd18f} #diffBox .del{color:#e88b8b}
+  .empty{color:var(--ink3);padding:8px 12px;font-size:12px}
+  /* ── 跨域联动面板 ── */
+  .linksec{margin-top:10px;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+  .linkhead{
+    display:flex;align-items:center;gap:6px;padding:5px 8px;background:#fafbfc;
+    border-bottom:1px solid var(--line2);font-size:12px;font-weight:600;color:var(--ink2);
+  }
+  .linkbody{padding:6px 8px;display:flex;flex-direction:column;gap:5px}
+  .warnbox{background:var(--warn-soft);border:1px solid #f0e0b8;border-radius:5px;padding:5px 7px}
+  .warnbox.warn{background:var(--danger-soft);border-color:#f3cfcf}
+  .warnbox .wt{font-size:11px;font-weight:600;color:var(--warn);margin-bottom:2px}
+  .warnbox.warn .wt{color:var(--danger)}
+  .warnbox .wbody{font-size:11px;color:var(--ink2);word-break:break-all}
+  .refitem{border-left:2px solid var(--line);padding-left:6px}
+  .refitem .rf{font-size:11px;color:var(--ink3);font-family:ui-monospace,Consolas,monospace;word-break:break-all}
+  .refitem .rl{display:flex;gap:5px;font-size:11px;align-items:baseline}
+  .refitem .rk{color:var(--accent);flex:none;min-width:72px}
+  .refitem .rn{color:var(--ink3);flex:none;font-family:ui-monospace,Consolas,monospace}
+  .refitem .rv{color:var(--ink2);word-break:break-all}
+  .rename{display:flex;gap:5px;margin-top:4px}
+  .rename .rname{flex:1;min-width:0;font-family:ui-monospace,Consolas,monospace;font-size:11px}
+  .rout{display:flex;flex-direction:column;gap:2px}
+  .rout .rsum{font-size:11px;color:var(--ink2);font-weight:600}
+  .rout .rfile{display:flex;gap:6px;font-size:11px;margin-top:3px}
+  .rout .rdiff{
+    font:10px/1.5 ui-monospace,Consolas,monospace;color:var(--ink2);white-space:pre-wrap;word-break:break-all;
+  }
+  .rout .rdiff.warn{color:var(--warn)}
+  .rout .rnote{font-size:10px;color:var(--ink3);word-break:break-all}
+  #toast{
+    position:fixed;left:50%;bottom:24px;transform:translateX(-50%);
+    background:#22262c;color:#fff;padding:8px 16px;border-radius:6px;font-size:13px;
+    opacity:0;transition:opacity .18s;pointer-events:none;z-index:99;max-width:70vw;
+  }
+  #toast.on{opacity:1}
+  #toast.err{background:var(--danger)}
+</style>
+</head>
+<body>
+<header>
+  <div id="nav"></div>
+</header>
+<div class="subbar">
+  <h1>HOI4 GUI 工作台<small>预览 · 拖拽 · 无损回写</small></h1>
+  <div class="tgroup">
+    <select id="rootSel" title="模组/游戏根目录"></select>
+    <input type="text" id="fileFilter" placeholder="过滤文件…" style="width:150px">
+  </div>
+  <div class="tgroup">
+    <button id="zoomOut" class="icon">−</button><span id="zoomVal" style="width:44px;text-align:center;font-size:12px">100%</span><button id="zoomIn" class="icon">+</button>
+    <button id="fitBtn">适应</button>
+    <button id="texBtn" class="on">贴图</button>
+    <button id="nameBtn">名称</button>
+  </div>
+  <span class="spacer"></span>
+  <span class="chip" id="statChip">—</span>
+  <button id="saveBtn" class="primary" disabled>保存 0</button>
+</div>
+
+<main>
+  <aside id="left">
+    <div class="pane-title">文件</div>
+    <div id="fileList"></div>
+    <div class="pane-title">元素树</div>
+    <div class="pane-body" id="tree"></div>
+  </aside>
+
+  <section id="canvasWrap">
+    <div id="stage"></div>
+  </section>
+
+  <aside id="right">
+    <div class="pane-title">属性</div>
+    <div class="pane-body" id="insp"><div class="empty">在画布或元素树中选择一个元素</div></div>
+  </aside>
+</main>
+
+<footer>
+  <div id="changeHead">
+    <strong>待保存改动</strong>
+    <span id="changeCount" class="chip">0</span>
+    <div class="spacer"></div>
+    <button id="discardBtn">撤销全部</button>
+    <button id="previewBtn">查看 diff</button>
+  </div>
+  <div id="changeList" style="display:none"></div>
+  <div id="diffBox" style="display:none"></div>
+</footer>
+
+<div id="toast"></div>
+<script src="/i18n.js"></script>
+<script src="/i18n-dict.js"></script>
+<script src="/progress.js"></script>
+<script type="module">
+  import { mountNav } from '/nav.js'
+  mountNav('#nav')
+</script>
+<script src="/app.js"></script>
+<!-- ★ FULLSCREEN_V1:全站全屏。必须在 nav.js 之前?否 —— nav.js 轮询等它,
+     放哪都行;统一放页面脚本区末尾,好维护。 -->
+<script src="/fullscreen.js"></script>
+<script src="/ctx.js"></script>
+</body>
+</html>

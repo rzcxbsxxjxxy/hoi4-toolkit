@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>HOI4 IDE · hoi4kit</title>
+<link rel="stylesheet" href="/theme.css">
+<style>
+  /* 只保留本页特有变量,通用色板由 theme.css 提供 */
+  :root{
+    --canvas:#e9ebef;
+    --mono:ui-monospace,"Cascadia Code",Consolas,"Microsoft YaHei",monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0}
+  body{
+    font:13px/1.5 "Segoe UI","Microsoft YaHei",system-ui,sans-serif;
+    color:var(--ink); background:var(--bg);
+    display:flex; flex-direction:column; overflow:hidden;
+  }
+  header{
+    display:flex; align-items:center; gap:10px; padding:7px 12px;
+    background:var(--panel); border-bottom:1px solid var(--line); flex:none;
+  }
+  header h1{font-size:14px;margin:0;font-weight:600;letter-spacing:.2px}
+  header h1 small{font-weight:400;color:var(--ink3);margin-left:6px;font-size:12px}
+  .spacer{flex:1}
+  select,input[type=text],button{
+    font:inherit; color:var(--ink); background:#fff;
+    border:1px solid var(--line); border-radius:5px; padding:4px 7px;
+  }
+  button{cursor:pointer}
+  button:hover{background:#f2f4f7}
+  button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+  button.primary:hover{background:#25589a}
+  button:disabled{opacity:.45;cursor:not-allowed}
+  a{color:var(--accent);text-decoration:none;font-size:12px}
+  a:hover{text-decoration:underline}
+  .crumb{font-size:12px;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:46vw}
+  .crumb b{color:var(--ink)}
+  main{flex:1;display:flex;min-height:0}
+  aside{background:var(--panel);flex:none;display:flex;flex-direction:column;min-height:0}
+  #left{width:264px;border-right:1px solid var(--line)}
+  #right{width:330px;border-left:1px solid var(--line)}
+  /* Ctrl+B 折叠/展开文件树(与 VS Code 的 Ctrl+B 一致) */
+  body.tree-hidden #left{display:none}
+  .pane-title{
+    padding:7px 10px;font-weight:600;font-size:12px;color:var(--ink2);
+    border-bottom:1px solid var(--line2);background:#fafbfc;flex:none;
+    display:flex;align-items:center;gap:6px;
+  }
+  .pane-body{overflow:auto;flex:1;min-height:0}
+  /* ── 文件树 ── */
+  .tree-row{
+    display:flex;align-items:center;gap:5px;padding:2px 8px;cursor:pointer;
+    white-space:nowrap;font-size:12px;border:1px solid transparent;
+  }
+  .tree-row:hover{background:#f2f4f7}
+  .tree-row.on{background:var(--accent-soft);color:var(--accent);font-weight:600}
+  .tree-row .tw{width:14px;text-align:center;color:var(--ink3);flex:none}
+  .tree-row .nm{flex:1;overflow:hidden;text-overflow:ellipsis}
+  .tree-row .ty{font-size:10px;color:#fff;background:#aab2c0;border-radius:3px;padding:0 4px;flex:none}
+  .tree-row .ty.gui{background:#2b6cb0}
+  .tree-row .ty.gfx{background:#8a3b8a}
+  .tree-row .ty.txt{background:#2f855a}
+  .tree-row .ty.yml{background:#b7791f}
+  .tree-row .sz{font-size:10px;color:var(--ink3);flex:none}
+  /* ── 编辑器 ── */
+  #center{flex:1;min-width:0;display:flex;flex-direction:column;background:#fff;position:relative}
+  #codeWrap{flex:1;overflow:auto;min-height:0;background:#fff}
+  #code{font-family:var(--mono);font-size:12.5px;line-height:18px;white-space:pre;padding:6px 0;min-width:100%}
+  .ln{display:flex;cursor:text}
+  .ln .num{width:52px;flex:none;text-align:right;padding-right:10px;color:#b6bcc6;user-select:none;position:sticky;left:0;background:#fff}
+  .ln .ct{white-space:pre;flex:1;min-width:0}
+  .ln.hl{background:#fff8e1}
+  .ln.hl .num{background:#fff8e1;color:var(--warn)}
+  .ln.active{background:#e8f0fb}
+  .ln.active .num{background:#e8f0fb;color:var(--accent)}
+  .ln.found .ct{background:#fff3bf}
+  /* ── 编辑器标签页(VSCode 风格)── */
+  .tabbar{display:flex;flex:none;background:#f3f4f6;border-bottom:1px solid var(--line2);overflow-x:auto;min-height:30px}
+  .tabbar::-webkit-scrollbar{height:7px}
+  .edtab{display:flex;align-items:center;gap:6px;padding:5px 8px 5px 10px;font-size:12px;color:var(--ink2);
+    border-right:1px solid var(--line2);cursor:pointer;white-space:nowrap;max-width:220px}
+  .edtab .nm{overflow:hidden;text-overflow:ellipsis}
+  .edtab .x{width:16px;height:16px;flex:none;border-radius:3px;display:inline-flex;align-items:center;justify-content:center;color:var(--ink3);font-size:13px}
+  .edtab .x:hover{background:#e3e6ea;color:var(--ink)}
+  .edtab.on{background:#fff;color:var(--ink);font-weight:600;border-bottom:2px solid var(--accent);padding-bottom:3px}
+  .edtab .src{font-size:9px;padding:0 4px;border-radius:6px;background:var(--line2);color:var(--ink3)}
+  .edtab .src.mod{background:var(--accent-soft);color:var(--accent)}
+  /* ── 查找 / 替换条(VSCode 风格,FIND_V2)── */
+  .findbar{display:none;flex-direction:column;padding:3px 10px 4px;background:#f3f4f6;border-bottom:1px solid var(--line2);flex:none}
+  .findbar.on{display:flex}
+  .find-row{display:flex;align-items:center;gap:6px;padding:2px 0}
+  .find-row .fb-ic{width:16px;flex:none;text-align:center;color:var(--ink3);font-size:12px}
+  .findbar input{flex:1;font:inherit;font-size:12px;padding:3px 7px;border:1px solid var(--line);border-radius:4px;background:#fff;min-width:0}
+  .findbar button{font:inherit;font-size:12px;padding:2px 8px;border:1px solid var(--line);border-radius:4px;background:#fff;cursor:pointer;flex:none}
+  .findbar button:hover{background:#e9ebee}
+  .fb-tgl{font-size:11px !important;padding:1px 5px !important}
+  .fb-tgl.on{background:var(--accent) !important;color:#fff !important;border-color:var(--accent) !important}
+  .find-stat{font-size:11px;color:var(--ink3);margin:0 2px;white-space:nowrap}
+  .fb-rpl{background:#fff8e1 !important;border-color:#f0e0b8 !important;color:#7a5a14 !important}
+  .fb-rpl:hover{background:#f6ecd0 !important}
+  /* 大纲行号(右对齐,VSCode 风格) */
+  .ol-ln{flex:none;color:var(--ink3);font-size:10px;font-family:var(--mono);margin-left:8px}
+  /* ── 快速打开(Ctrl+P)── */
+  .qo-mask{position:fixed;inset:0;background:rgba(20,24,30,.35);display:none;align-items:flex-start;justify-content:center;z-index:80;padding-top:10vh}
+  .qo-mask.on{display:flex}
+  .qo{width:560px;max-width:92vw;background:#fff;border-radius:10px;box-shadow:0 12px 40px rgba(0,0,0,.28);overflow:hidden}
+  .qo input{width:100%;font:14px/1.4 inherit;padding:11px 14px;border:0;border-bottom:1px solid var(--line2);outline:none}
+  .qo-list{max-height:50vh;overflow:auto}
+  .qo-row{display:flex;align-items:center;gap:8px;padding:6px 14px;cursor:pointer;font-size:13px}
+  .qo-row .qf{flex:1;overflow:hidden;text-overflow:ellipsis}
+  .qo-row .qr{font-size:11px;color:var(--ink3);white-space:nowrap}
+  .qo-row.on{background:var(--accent-soft);color:var(--accent)}
+  .qo-row .ty{font-size:9px;color:#fff;background:#aab2c0;border-radius:3px;padding:0 4px}
+  .pln{background:#fff3cd !important}
+  .c-com{color:#6e7781;font-style:italic}
+  .c-str{color:#2f855a}
+  .c-br{color:#57606a}
+  .c-op{color:#cf222e}
+  .c-key{color:#1f6feb}
+  .c-val{color:#953800}
+  .c-num{color:#b7791f}
+  .c-bool{color:#8250df}
+  .c-word{cursor:pointer;border-bottom:1px dotted transparent}
+  .c-word:hover{border-bottom-color:var(--accent);background:var(--accent-soft)}
+  /* ── 右侧 tabs ── */
+  .tabs{display:flex;border-bottom:1px solid var(--line2);background:#fafbfc;flex:none}
+  .tab{padding:7px 12px;font-size:12px;color:var(--ink2);cursor:pointer;border-bottom:2px solid transparent}
+  .tab.on{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+  .tabbody{overflow:auto;flex:1;min-height:0;padding:6px 8px}
+  .sym{padding:2px 4px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:12px;border-radius:3px}
+  .sym:hover{background:#f2f4f7}
+  .sym .sk{display:inline-block;min-width:14px;color:var(--ink3);margin-right:6px}
+  .sym .sd{color:var(--ink3);font-size:10px;margin-left:6px}
+  /* ── 大纲折叠树 ── */
+  #tabOutline{flex-direction:column;padding:0}
+  .ol-toolbar{display:flex;gap:4px;padding:5px 8px;border-bottom:1px solid var(--line2);background:#fafbfc;flex:none}
+  .ol-toolbar button{font-size:11px;padding:2px 8px;border:1px solid var(--line);border-radius:4px;background:#fff;cursor:pointer;color:var(--ink2)}
+  .ol-toolbar button:hover{background:#f2f4f7}
+  .mini-tool{font-size:11px;padding:2px 8px;border:1px solid var(--line);border-radius:4px;background:#fff;cursor:pointer;color:var(--ink2)}
+  .mini-tool:hover{background:#f2f4f7;color:var(--ink)}
+  .ol-tree{overflow:auto;flex:1;min-height:0;padding:4px 0}
+  .ol-node{user-select:none}
+  .ol-row{display:flex;align-items:center;gap:3px;padding:1px 8px;cursor:pointer;white-space:nowrap;font-size:12px;border-radius:3px;overflow:hidden}
+  .ol-row:hover{background:#f2f4f7}
+  .ol-row:hover .ol-name{color:var(--accent)}
+  .ol-tw{width:12px;flex:none;text-align:center;color:var(--ink3);font-size:10px;transition:transform .12s}
+  .ol-tw.c{transform:rotate(90deg)}
+  .ol-tw.leaf{visibility:hidden}
+  .ol-ic{width:14px;flex:none;text-align:center;color:var(--ink3);font-size:11px}
+  .ol-name{flex:1;overflow:hidden;text-overflow:ellipsis}
+  .ol-det{color:var(--ink3);font-size:10px;margin-left:6px;overflow:hidden;text-overflow:ellipsis}
+  .ol-children{display:none}
+  .ol-children.open{display:block}
+  .nav-word{font:600 14px var(--mono);padding:4px 6px;background:var(--accent-soft);color:var(--accent);border-radius:4px;display:inline-block}
+  .nav-sec{margin:8px 0 4px;font-size:11px;font-weight:600;color:var(--ink2);text-transform:uppercase;letter-spacing:.4px}
+  .refitem{border-left:2px solid var(--line);padding:3px 7px;margin-bottom:4px;cursor:pointer;border-radius:0 4px 4px 0}
+  .refitem:hover{background:#f2f4f7;border-left-color:var(--accent)}
+  .refitem .rf{font-size:11px;color:var(--ink3);font-family:var(--mono);word-break:break-all}
+  .refitem .rl{font-size:11px;color:var(--ink2)}
+  .refitem .rk{color:var(--accent);font-family:var(--mono)}
+  .empty{color:var(--ink3);padding:10px 6px;font-size:12px}
+  .badge{font-size:10px;background:#eef1f5;color:var(--ink2);border-radius:9px;padding:0 7px}
+  /* ── 预览 ── */
+  #prevWrap{position:relative;width:100%;height:240px;background:var(--canvas);
+    background-image:linear-gradient(45deg,#e2e5ea 25%,transparent 25%),
+                     linear-gradient(-45deg,#e2e5ea 25%,transparent 25%),
+                     linear-gradient(45deg,transparent 75%,#e2e5ea 75%),
+                     linear-gradient(-45deg,transparent 75%,#e2e5ea 75%);
+    background-size:20px 20px;background-position:0 0,0 10px,10px -10px,-10px 0;
+    overflow:hidden;border-radius:5px}
+  #prevStage{position:absolute;left:0;top:0;transform-origin:0 0}
+  .pnode{position:absolute;border:1px solid rgba(43,108,176,.7);background:rgba(43,108,176,.12);overflow:hidden}
+  .pnode.miss{background:rgba(197,48,48,.12);border-color:rgba(197,48,48,.7)}
+  .pnode .pn{position:absolute;left:0;top:-13px;font-size:9px;color:#fff;background:rgba(40,44,52,.82);padding:0 3px;border-radius:2px;white-space:nowrap;display:none}
+  .pnode:hover .pn{display:block}
+  footer{
+    flex:none;border-top:1px solid var(--line);background:var(--panel);
+    padding:4px 12px;font-size:11px;color:var(--ink2);display:flex;gap:14px;align-items:center;
+  }
+  footer .st{font-family:var(--mono)}
+  #toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);
+    background:#22262c;color:#fff;padding:7px 14px;border-radius:6px;font-size:12px;
+    opacity:0;transition:opacity .18s;pointer-events:none;z-index:99;max-width:70vw}
+  #toast.on{opacity:1} #toast.err{background:var(--danger)}
+  .spin{display:inline-block;width:11px;height:11px;border:2px solid var(--accent);border-top-color:transparent;border-radius:50%;animation:s .7s linear infinite;vertical-align:-1px}
+  @keyframes s{to{transform:rotate(360deg)}}
+  /* ── 自动补全弹窗 ── */
+  #acPop{position:absolute;z-index:120;display:none;min-width:240px;max-width:420px;max-height:260px;overflow:auto;
+    background:var(--panel);border:1px solid var(--line2);border-radius:7px;box-shadow:0 10px 30px rgba(0,0,0,.22);
+    font-size:12px;padding:4px 0}
+  #acPop.on{display:block}
+  .ac-item{display:flex;align-items:center;gap:7px;padding:3px 9px;cursor:pointer;white-space:nowrap}
+  .ac-item .ac-lab{flex:1;overflow:hidden;text-overflow:ellipsis;font-family:var(--mono)}
+  .ac-item .ac-kind{font-size:9px;padding:0 4px;border-radius:4px;background:var(--line2);color:var(--ink3);flex:none}
+  .ac-item .ac-src{font-size:10px;color:var(--ink3);flex:none;max-width:170px;overflow:hidden;text-overflow:ellipsis}
+  .ac-item.on{background:var(--accent-soft);color:var(--accent)}
+  .ac-item.on .ac-kind{background:var(--accent);color:#fff}
+  .ac-item .ac-kind.k-official{background:#b7791f;color:#fff}
+  .ac-item .ac-kind.k-scripted_effect{background:#2f855a;color:#fff}
+  .ac-item .ac-kind.k-scripted_trigger{background:#2b6cb0;color:#fff}
+  .ac-item .ac-kind.k-gfx_sprite{background:#8a3b8a;color:#fff}
+  .ac-item .ac-kind.k-loc_key{background:#3182ce;color:#fff}
+  .ac-item .ac-kind.k-gui_element{background:#4a5568;color:#fff}
+  /* ── 右键菜单 ── */
+  #ctxMenu{position:fixed;z-index:130;display:none;min-width:160px;background:var(--panel);
+    border:1px solid var(--line2);border-radius:7px;box-shadow:0 10px 30px rgba(0,0,0,.25);padding:4px 0;font-size:12.5px}
+  #ctxMenu.on{display:block}
+  .ctx-item{display:flex;align-items:center;gap:8px;padding:5px 12px;cursor:pointer;color:var(--ink)}
+  .ctx-item:hover{background:var(--accent-soft);color:var(--accent)}
+  .ctx-item.danger:hover{background:var(--danger-soft,#fde8e8);color:var(--danger)}
+  .ctx-sep{height:1px;background:var(--line2);margin:3px 0}
+  .ctx-item .ck{width:14px;text-align:center;color:var(--ink3)}
+</style>
+</head>
+<body>
+<header>
+  <div id="nav"></div>
+</header>
+<div class="subbar">
+  <h1>HOI4 IDE<small>文件树 · 语法高亮 · 跳转/引用</small></h1>
+  <select id="rootSel" title="模组/游戏根目录"></select>
+  <div class="spacer"></div>
+  <div class="crumb" id="crumb">未打开文件</div>
+  <div class="spacer"></div>
+  <button id="editBtn" disabled title="编辑当前文件 (Ctrl+E)">编辑</button>
+  <!-- COMMENT_V1:快捷键有了,但新用户不知道 —— 工具栏给一个入口(与 Ctrl+/ 等价) -->
+  <button id="cmtBtn" class="mini-tool" disabled title="注释 / 取消注释选中行 (Ctrl+/)">#</button>
+  <button id="saveBtn" class="primary" disabled title="保存 (Ctrl+S)">保存</button>
+  <button id="prevBtn" disabled>预览布局</button>
+  <span class="spacer"></span>
+  <div id="langbar"></div>
+</div>
+
+<main>
+  <aside id="left" data-sizer="left" data-sizer-def="300">
+    <div class="sizer-bar" title="拖动调宽 · 双击复位 · 双击侧栏折叠"></div>
+    <div class="pane-title">资源管理器 <span class="spacer"></span><button id="reloadTree" style="padding:2px 6px;font-size:11px">刷新</button></div>
+    <div class="pane-body" id="tree"></div>
+  </aside>
+
+  <section id="center">
+    <!-- ★ 文件名必须是【独立的 #fileName  span】:
+         以前 JS 直接 $('fileTitle').textContent = file,而 textContent 赋值会
+         清空容器的全部子节点 —— 连里面的 spacer 和「⎘ VS Code」按钮一起抹掉,
+         表现为"一打开文件那个按钮就消失了"。按钮挪到外面 + 只写 #fileName。 -->
+    <div class="pane-title" id="fileTitle"><span id="fileName">编辑器</span><span class="spacer"></span><button id="openVscode" class="mini-tool" title="用本地 VS Code 打开当前文件(定位到当前行)">⎘ VS Code</button></div>
+    <div class="tabbar" id="tabBar"></div>
+    <div class="findbar" id="findBar">
+      <div class="find-row">
+        <span class="fb-ic">🔍</span>
+        <input type="text" id="findInput" placeholder="查找…" spellcheck="false">
+        <button id="fcCase" class="fb-tgl" title="区分大小写">Aa</button>
+        <button id="fcWord" class="fb-tgl" title="全字匹配">◉</button>
+        <button id="fcRegex" class="fb-tgl" title="正则表达式">.*</button>
+        <span id="findStat" class="find-stat"></span>
+        <button id="findPrev" title="上一个 (Shift+Enter)">↑</button>
+        <button id="findNext" title="下一个 (Enter)">↓</button>
+        <button id="findClose" title="关闭 (Esc)">×</button>
+      </div>
+      <div class="find-row" id="replaceRow">
+        <span class="fb-ic">↕</span>
+        <input type="text" id="replaceInput" placeholder="替换为…" spellcheck="false">
+        <span class="spacer"></span>
+        <button id="replaceAllBtn" class="fb-rpl" title="替换所有匹配">全部替换</button>
+        <button id="replaceBtn" class="fb-rpl" title="替换当前匹配 (Enter)">替换</button>
+      </div>
+    </div>
+    <div id="codeWrap"><div id="code"><div class="empty" style="padding:20px">从左侧选择一个文件开始浏览</div></div></div>
+    <!-- IMAGE_ASSET_V1:图像素材预览。
+         ★ 为什么单独一层而不是复用 #code:#code 是高亮 DOM(逐 token span),
+           塞 <img> 进去会被 renderCode 的 innerHTML='' 清掉,
+           而且文本视图的滚动/字号逻辑对图像毫无意义。
+         ★ 棋盘格底:HOI4 贴图大量是**带 alpha 的图标**,纯白底看不见轮廓;
+           棋盘格是行业惯例(Photoshop / 各类图片查看器都这么做)。 -->
+    <div id="imgView" style="display:none;flex:1;min-height:0;overflow:auto;
+         background:
+           repeating-conic-gradient(var(--imgview-chk,#e8e8e8) 0% 25%, var(--imgview-chk2,#f4f4f4) 0% 50%)
+           0 0 / 16px 16px;
+         align-items:center;justify-content:center">
+      <div class="imgview-inner" style="margin:auto;padding:14px;text-align:center">
+        <div class="imgview-tools" style="display:flex;gap:6px;align-items:center;
+             justify-content:center;margin-bottom:10px;font-size:11px;color:var(--ink3)">
+          <button type="button" class="ib" data-img-zoom="-1" title="缩小">−</button>
+          <span id="imgZoomLbl">100%</span>
+          <button type="button" class="ib" data-img-zoom="1" title="放大">＋</button>
+          <button type="button" class="ib" data-img-zoom="fit" title="适应窗口">适应</button>
+          <button type="button" class="ib" data-img-zoom="1x" title="原始尺寸 (100%)">1:1</button>
+        </div>
+        <div class="imgview-stage" style="display:inline-block;line-height:0;
+             box-shadow:0 0 0 1px var(--line2);background:#fff">
+          <img id="imgEl" alt="" style="display:block;image-rendering:auto" />
+        </div>
+        <div id="imgMeta" class="imgview-meta" style="margin-top:10px;font-size:11px;color:var(--ink3)"></div>
+      </div>
+    </div>
+    <!-- MAKE_MOD_V1:IDE 以前是纯只读的 —— 能看不能改,也就做不出模组。
+         这里加一层编辑模式:高亮视图与原始文本视图二选一,保存走 /api/fs/write。 -->
+    <textarea id="rawEdit" spellcheck="false" wrap="off"
+      style="display:none;flex:1;min-height:0;width:100%;border:0;outline:none;resize:none;
+             padding:6px 10px;background:#fff;color:var(--ink);
+             font:12.5px/18px var(--mono);tab-size:4"></textarea>
+    <div id="editBar" style="display:none;flex:none;padding:3px 10px;background:#fff8e1;
+         border-top:1px solid #f0e0b8;font-size:11px;color:#7a5a14">
+      编辑中 · 未保存<span id="editDot" style="color:var(--danger);font-weight:700"> ●</span>
+      <span id="editHint" style="color:var(--ink3);margin-left:8px"></span>
+    </div>
+  </section>
+
+  <aside id="right" data-sizer="right" data-sizer-def="340">
+    <div class="sizer-bar" title="拖动调宽 · 双击复位 · 双击侧栏折叠"></div>
+    <div class="tabs">
+      <div class="tab on" data-tab="outline">大纲</div>
+      <div class="tab" data-tab="nav">导航</div>
+      <div class="tab" data-tab="preview">预览</div>
+      <div class="tab" data-tab="ai" id="tabAIBtn">AI</div>
+    </div>
+    <div class="tabbody" id="tabOutline"><div class="empty">打开文件后显示符号大纲</div></div>
+    <div class="tabbody" id="tabNav" style="display:none"><div class="empty">在编辑器中点击任意标识符(图标名 / 元素名 / id)即可查看定义与引用</div></div>
+    <div class="tabbody" id="tabPreview" style="display:none"><div class="empty">.gui 文件可在此预览布局</div></div>
+    <!-- AIDE_V1:AI 开发面板。内容由 /ai.js 渲染,这里只给骨架容器。 -->
+    <div class="tabbody" id="tabAI" style="display:none">
+      <div id="aiCfg"><div class="empty">正在读取 AI 配置…</div></div>
+      <div class="ai-quick" id="aiQuick"></div>
+      <div id="aiMsgs"><div class="empty">加载中…</div></div>
+      <div id="aiBar">
+        <textarea id="aiInput" placeholder="问点什么,或让 AI 改文件…（Enter 发送 / Shift+Enter 换行）"></textarea>
+      </div>
+    </div>
+  </aside>
+</main>
+
+<footer>
+  <span class="st" id="statPos">行 0,列 0</span>
+  <span id="statFile"></span>
+  <span class="spacer"></span>
+  <span id="statSym"></span>
+  <span id="statIdx"></span>
+</footer>
+
+<div id="toast"></div>
+
+<div id="acPop"></div>
+<div id="ctxMenu"></div>
+
+<div class="qo-mask" id="qoMask">
+  <div class="qo">
+    <input type="text" id="qoInput" placeholder="快速打开文件… 输入以过滤，↑↓ 选择，Enter 打开，Esc 关闭">
+    <div class="qo-list" id="qoList"></div>
+  </div>
+</div>
+
+<!-- ★ i18n 必须最先加载:页面脚本在解析期就调用翻译函数,
+     i18n.js 若排在它们之后,翻译函数会是 undefined → ReferenceError。 -->
+<script src="/i18n.js"></script>
+<script src="/i18n-dict.js"></script>
+<script src="/sizer.js"></script>
+<script src="/target.js"></script>
+<script src="/locclient.js"></script>
+<!-- ctx.js / keys.js:全站右键菜单 + 快捷键速查表(RIGHTCLICK_V1 / KEYS_V1)
+     ⚠ 必须在 ide.js 之前:ide.js 启动时要读 Keys 登记已有快捷键 -->
+<script src="/ctx.js"></script>
+<script src="/keymap.js"></script>
+<script src="/keys.js"></script>
+<script src="/ide.js"></script>
+<!-- AIDE_V1:AI 开发面板。必须在 ide.js 之后:挂载时要用 ide.js 暴露的当前文件。 -->
+<script src="/ai.js"></script>
+
+<script src="/progress.js"></script>
+<script type="module">
+  import { mountNav } from '/nav.js'
+  mountNav('#nav')
+</script>
+<!-- ★ FULLSCREEN_V1:全站全屏。必须在 nav.js 之前?否 —— nav.js 轮询等它,
+     放哪都行;统一放页面脚本区末尾,好维护。 -->
+<script src="/fullscreen.js"></script>
+</body>
+</html>

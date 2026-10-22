@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>HOI4 defines 平衡参数</title>
+<link rel="stylesheet" href="/theme.css">
+<style>
+  :root{ --canvas:#e9ebef }
+  #left{width:250px;border-right:1px solid var(--line)}
+  #right{width:330px;border-left:1px solid var(--line)}
+  #stage{flex:1;position:relative;overflow:auto;background:var(--canvas);min-width:0;padding:14px}
+
+  /* ── 键值表 ── */
+  .grp{margin-bottom:18px}
+  .grp>h3{
+    font-size:12.5px;margin:0 0 7px;padding-bottom:5px;border-bottom:1px solid var(--line);
+    display:flex;align-items:center;gap:8px;color:var(--ink2);
+  }
+  .grp>h3 .c{font-weight:400;color:var(--ink3);font-size:11px}
+  table.kv{width:100%;border-collapse:collapse;background:var(--panel);border-radius:var(--r-card);overflow:hidden}
+  table.kv th{
+    text-align:left;font-size:10.5px;color:var(--ink3);font-weight:600;padding:6px 9px;
+    border-bottom:1px solid var(--line);background:var(--panel2);position:sticky;top:0;
+  }
+  table.kv td{padding:5px 9px;border-bottom:1px solid var(--line2);vertical-align:top;font-size:12px}
+  table.kv tr:last-child td{border-bottom:none}
+  table.kv tr{cursor:pointer}
+  table.kv tr:hover td{background:var(--hover)}
+  table.kv tr.sel td{background:var(--accent-soft)}
+  .k{font-family:var(--mono);font-size:11.5px;color:var(--ink);white-space:nowrap}
+  .k .tg{margin-left:6px;vertical-align:1px}
+  .v{font-family:var(--mono);font-size:11.5px;color:var(--accent-2);white-space:nowrap}
+  .v.arr{color:var(--ink2);white-space:normal;word-break:break-all}
+  .cmt{font-size:11px;color:var(--ink3);line-height:1.45;margin-top:2px}
+  .ln{color:var(--ink3);font-size:10.5px;text-align:right;white-space:nowrap;font-family:var(--mono)}
+
+  /* 值类型徽标 */
+  .tg{
+    display:inline-block;font-size:9.5px;padding:1px 6px;border-radius:8px;
+    background:var(--line2);color:var(--ink3);font-weight:600;white-space:nowrap;
+  }
+  .tg.number{background:var(--ok-soft);color:var(--ok)}
+  .tg.string{background:var(--accent-soft);color:var(--accent-2)}
+  .tg.array{background:var(--warn-soft);color:var(--warn)}
+  .tg.expr{background:var(--line2);color:var(--ink2)}
+  .tg.bool{background:var(--line2);color:var(--ink2)}
+
+  /* 左侧分组列表 */
+  .gi{
+    padding:5px 10px;cursor:pointer;border-radius:var(--r-card);display:flex;
+    align-items:center;gap:7px;font-size:12px;
+  }
+  .gi:hover{background:var(--hover)}
+  .gi.on{background:var(--accent-soft);color:var(--accent-2);font-weight:600}
+  .gi .n{margin-left:auto;font-size:10.5px;color:var(--ink3);font-family:var(--mono)}
+  .gi.ov .n{color:var(--warn);font-weight:700}
+
+  /* 检查器 */
+  #insp .kv2{display:grid;grid-template-columns:78px 1fr;gap:4px 8px;font-size:12px;align-items:start}
+  #insp .kv2 b{color:var(--ink3);font-weight:500;font-size:11px}
+  #insp pre{
+    background:var(--canvas);border:1px solid var(--line);border-radius:var(--r-card);
+    padding:8px;overflow:auto;font-size:11.5px;margin:7px 0;white-space:pre-wrap;word-break:break-all;
+  }
+  /* ── DEFDIFF_V1:原版 vs 模组差异视图 ──
+     核心是「原版 → 模组」两列并排 + 差值徽标。真改动/同值重写/新增
+     三态用左边框色区分,同值重写刻意做灰 —— 它不是改动,只是模组碰过。*/
+  .dtoolbar{display:flex;gap:10px;align-items:center;padding:6px 2px 8px;flex-wrap:wrap}
+  #diffBody .dgrp{margin:8px 0 14px}
+  #diffBody .dgrp h3{margin:0 0 5px;font-size:12px;color:var(--ink2);display:flex;gap:7px;align-items:baseline}
+  #diffBody table{width:100%;border-collapse:collapse;font-size:12px}
+  #diffBody th{text-align:left;font-weight:500;color:var(--ink3);font-size:11px;padding:3px 7px;border-bottom:1px solid var(--line2)}
+  #diffBody td{padding:3px 7px;border-bottom:1px solid var(--line2);vertical-align:top}
+  #diffBody tr.changed td:first-child{border-left:3px solid var(--warn)}
+  #diffBody tr.same td:first-child{border-left:3px solid var(--line2)}
+  #diffBody tr.added td:first-child{border-left:3px solid var(--ok)}
+  #diffBody tr:hover td{background:var(--accent-soft)}
+  #diffBody .dk{font-family:var(--mono);font-size:11.5px}
+  #diffBody .dv{font-family:var(--mono)}
+  #diffBody .old{color:var(--ink3)}
+  #diffBody .new{color:var(--accent);font-weight:600}
+  #diffBody .arrow{color:var(--ink3);padding:0 4px}
+  #diffBody .dl{font-size:11px;padding:0 6px;border-radius:9px;white-space:nowrap}
+  #diffBody .dl.up{background:var(--danger-soft);color:var(--danger)}
+  #diffBody .dl.dn{background:var(--ok-soft);color:var(--ok)}
+  #diffBody .dl.same{background:var(--canvas);color:var(--ink3)}
+  #diffBody .cmt{font-size:10.5px;color:var(--ink3);line-height:1.5;margin-top:2px}
+  #diffBody .empty{padding:20px;text-align:center;color:var(--ink3);font-size:12px}
+  #diffBody .sh{font-size:10px;color:var(--ink3);margin-left:5px}
+  .hint{color:var(--ink3);font-size:11px;line-height:1.6;padding:6px 11px}
+  .ovr{
+    display:flex;justify-content:space-between;gap:8px;padding:5px 8px;border-radius:var(--r-card);
+    background:var(--warn-soft);color:var(--warn);font-size:11px;margin-top:5px;align-items:center;
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>平衡参数 <small id="statChip">—</small></h1>
+  <div class="tgroup">
+    <input type="text" id="q" placeholder="搜索键名 / 注释,如 fuel_cap">
+    <div class="tgroup" data-collapse>
+    <select id="typeSel" title="按值类型筛选"><option value="">全部类型</option></select>
+    <select id="srcSel" title="按来源筛选"><option value="">全部来源</option></select>
+    </div>
+  </div>
+  <div class="tgroup" data-collapse>
+    <label class="chk" title="只显示被模组改过的键(模组写在后面的会覆盖游戏默认)"><input type="checkbox" id="onlyOv"> 仅模组改过</label>
+  </div>
+  <span class="spacer"></span>
+  <button id="diffBtn" title="逐条比较「原版默认值」与「模组生效值」(-- 注释不参与比较)">原版 vs 模组</button>
+  <div id="nav"></div>
+</header>
+<main>
+  <aside id="left" data-sizer="left" data-sizer-def="250">
+    <div class="sizer-bar" title="拖动调宽 · 双击复位 · 双击侧栏折叠"></div>
+    <div class="pane-title">分组 <span class="spacer"></span><span id="grpCount" style="font-weight:400"></span></div>
+    <div class="pane-body" id="grpList"></div>
+  </aside>
+  <div id="stage">
+    <div id="sum"></div>
+    <!-- DEFDIFF_V1:原版 vs 模组差异视图。与 #groups 二选一显示 -->
+    <div id="diffPanel" style="display:none">
+      <div class="dtoolbar">
+        <div class="seg" id="diffKind">
+          <button class="on" data-k="">全部</button>
+          <button data-k="changed">真改动</button>
+          <button data-k="same">同值重写</button>
+          <button data-k="added">模组新增</button>
+        </div>
+        <span class="hint" id="diffHint">—</span>
+      </div>
+      <div id="diffBody"></div>
+    </div>
+    <div id="groups"></div>
+  </div>
+  <aside id="right" data-sizer="right" data-sizer-def="330">
+    <div class="sizer-bar" title="拖动调宽 · 双击复位 · 双击侧栏折叠"></div>
+    <div class="pane-title">检查器</div>
+    <div class="pane-body">
+      <div id="insp"><div class="hint">点选一条参数查看详情。<br>行尾注释来自官方手册,是这些参数<b>唯一的语义说明</b>。</div></div>
+    </div>
+  </aside>
+</main>
+<div id="toast"></div>
+<script src="/i18n.js"></script>
+<script src="/i18n-dict.js"></script>
+<script src="/progress.js"></script>
+<script type="module">
+  import { mountNav } from '/nav.js'
+  mountNav('#nav')
+</script>
+<script src="/sizer.js"></script>
+<script src="/ctx.js"></script>
+<script src="/keymap.js"></script>
+<script src="/keys.js"></script>
+<script src="/ctxwire.js"></script>
+<script type="module" src="/defines.js"></script>
+</body>
+</html>

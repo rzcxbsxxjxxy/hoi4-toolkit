@@ -1,0 +1,1879 @@
+{
+  "layer": "01_static_api",
+  "base": "http://127.0.0.1:5175",
+  "ts": "2026-10-19T06:05:52.156Z",
+  "summary": {
+    "total": 308,
+    "pass": 308,
+    "fail": 0,
+    "exempt": 5
+  },
+  "cases": [
+    {
+      "name": "index.html 引 theme.css",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "index.html 有 #nav 容器",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "index.html 调用 mountNav",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "focus.html 引 theme.css",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "focus.html 有 #nav 容器",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "focus.html 调用 mountNav",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "tech.html 引 theme.css",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "tech.html 有 #nav 容器",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "tech.html 调用 mountNav",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "decisions.html 引 theme.css",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "decisions.html 有 #nav 容器",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "decisions.html 调用 mountNav",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "designer.html 引 theme.css",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "designer.html 有 #nav 容器",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "designer.html 调用 mountNav",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "create.html 引 theme.css",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "create.html 有 #nav 容器",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "create.html 调用 mountNav",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "ide.html 引 theme.css",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "ide.html 有 #nav 容器",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "ide.html 调用 mountNav",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "settings.html 引 theme.css",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "settings.html 有 #nav 容器",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "settings.html 调用 mountNav",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "aibehave.html 引 theme.css",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "aibehave.html 有 #nav 容器",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "aibehave.html 调用 mountNav",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "docs.html 引 theme.css",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "docs.html 有 #nav 容器",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "docs.html 调用 mountNav",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "ref.html 引 theme.css",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "ref.html 有 #nav 容器",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "ref.html 调用 mountNav",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "check.html 引 theme.css",
+      "pass": true,
+      "detail": "深色页不引(预期)",
+      "exempt": false
+    },
+    {
+      "name": "check.html 有 #nav 容器",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "check.html 调用 mountNav",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "units.html 引 theme.css",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "units.html 有 #nav 容器",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "units.html 调用 mountNav",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "characters.html 引 theme.css",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "characters.html 有 #nav 容器",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "characters.html 调用 mountNav",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "defines.html 引 theme.css",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "defines.html 有 #nav 容器",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "defines.html 调用 mountNav",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "events.html 引 theme.css",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "events.html 有 #nav 容器",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "events.html 调用 mountNav",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "dlc.html 引 theme.css",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "dlc.html 有 #nav 容器",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "dlc.html 调用 mountNav",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "doctrines.html 引 theme.css",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "doctrines.html 有 #nav 容器",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "doctrines.html 调用 mountNav",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "loc.html 引 theme.css",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "loc.html 有 #nav 容器",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "loc.html 调用 mountNav",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "open.html 引 theme.css",
+      "pass": true,
+      "detail": "不引为预期",
+      "exempt": true,
+      "exemptReason": "open.html 是单卡片+遮罩布局,有意只引 theme-vars.css(见第7-12行注释),用 #topnav 而非 #nav;仍调用 mountNav(#topnav)"
+    },
+    {
+      "name": "open.html 有 #nav 容器",
+      "pass": true,
+      "detail": "无 #nav 为预期",
+      "exempt": true,
+      "exemptReason": "open.html 是单卡片+遮罩布局,有意只引 theme-vars.css(见第7-12行注释),用 #topnav 而非 #nav;仍调用 mountNav(#topnav)"
+    },
+    {
+      "name": "open.html 调用 mountNav",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "home.html 引 theme.css",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "home.html 有 #nav 容器",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "home.html 调用 mountNav",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "modrel.html 引 theme.css",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "modrel.html 有 #nav 容器",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "modrel.html 调用 mountNav",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "shell.html 引 theme.css",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "shell.html 有 #nav 容器",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "shell.html 调用 mountNav",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "studio.html 引 theme.css",
+      "pass": true,
+      "detail": "不引为预期",
+      "exempt": true,
+      "exemptReason": "studio.html 是纯跳转页(<meta http-equiv=refresh → /designer>),无 UI,不引 theme/nav/mount"
+    },
+    {
+      "name": "studio.html 有 #nav 容器",
+      "pass": true,
+      "detail": "无 #nav 为预期",
+      "exempt": true,
+      "exemptReason": "studio.html 是纯跳转页(<meta http-equiv=refresh → /designer>),无 UI,不引 theme/nav/mount"
+    },
+    {
+      "name": "studio.html 调用 mountNav",
+      "pass": true,
+      "detail": "无 mountNav 为预期",
+      "exempt": true,
+      "exemptReason": "studio.html 是纯跳转页(<meta http-equiv=refresh → /designer>),无 UI,不引 theme/nav/mount"
+    },
+    {
+      "name": "tracker.html 引 theme.css",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "tracker.html 有 #nav 容器",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "tracker.html 调用 mountNav",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "worldmap.html 引 theme.css",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "worldmap.html 有 #nav 容器",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "worldmap.html 调用 mountNav",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "index.html 无内联「⚙设置/←工作台」",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "focus.html 无内联「⚙设置/←工作台」",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "tech.html 无内联「⚙设置/←工作台」",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "decisions.html 无内联「⚙设置/←工作台」",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "designer.html 无内联「⚙设置/←工作台」",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "create.html 无内联「⚙设置/←工作台」",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "ide.html 无内联「⚙设置/←工作台」",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "settings.html 无内联「⚙设置/←工作台」",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "aibehave.html 无内联「⚙设置/←工作台」",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "docs.html 无内联「⚙设置/←工作台」",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "ref.html 无内联「⚙设置/←工作台」",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "check.html 无内联「⚙设置/←工作台」",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "units.html 无内联「⚙设置/←工作台」",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "characters.html 无内联「⚙设置/←工作台」",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "defines.html 无内联「⚙设置/←工作台」",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "events.html 无内联「⚙设置/←工作台」",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "dlc.html 无内联「⚙设置/←工作台」",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "doctrines.html 无内联「⚙设置/←工作台」",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "loc.html 无内联「⚙设置/←工作台」",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "open.html 无内联「⚙设置/←工作台」",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "home.html 无内联「⚙设置/←工作台」",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "modrel.html 无内联「⚙设置/←工作台」",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "shell.html 无内联「⚙设置/←工作台」",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "studio.html 无内联「⚙设置/←工作台」",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "tracker.html 无内联「⚙设置/←工作台」",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "worldmap.html 无内联「⚙设置/←工作台」",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "index.html 内联 #0",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "focus.html 内联 #0",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "tech.html 内联 #0",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "decisions.html 内联 #0",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "designer.html 内联 #0",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "create.html 内联 #0",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "ide.html 内联 #0",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "settings.html 内联 #0",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "aibehave.html 内联 #0",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "docs.html 内联 #0",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "ref.html 内联 #0",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "check.html 内联 #0",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "units.html 内联 #0",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "characters.html 内联 #0",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "defines.html 内联 #0",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "events.html 内联 #0",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "dlc.html 内联 #0",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "doctrines.html 内联 #0",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "loc.html 内联 #0",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "open.html 内联 #0",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "home.html 内联 #0",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "modrel.html 内联 #0",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "shell.html 内联 #0",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "tracker.html 内联 #0",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "worldmap.html 内联 #0",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/app.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/focus.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/tech.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/decisions.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/designer.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/create.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/ide.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/check.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/open.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/settings.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/nav.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/ref.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/aibehave.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/target.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/toolbar.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/incr.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/appearance.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/locclient.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/dlc.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/doctrines.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/tex.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/edgepath.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/sizer.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/ctx.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/keys.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/keymap.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/ctxwire.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/fullscreen.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/ownchip.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/loc.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/events.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/units.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/characters.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/defines.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/modrel.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/tracker.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/worldmap.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/ai.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/bootgate.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/gridwire.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/loadgate.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/music.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/progress.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/resize.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/trig.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/i18n.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "public/i18n-terms.js 语法",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "路由 /",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /focus",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /tech",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /doctrines",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /decisions",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /events",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /dlc",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /designer",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /create",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /ide",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /check",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /open.html",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /settings",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /docs",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /aibehave",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /ref",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /commondocs",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /loc",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /ref.js",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /theme.css",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /theme-vars.css",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /nav.js",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /dlc.js",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /doctrines.js",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /aibehave.js",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /ownchip.js",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /target.js",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /toolbar.js",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /incr.js",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /appearance.js",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /locclient.js",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /units",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /characters",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /defines",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /modrel",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /home",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /shell",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /studio",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /tracker",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /worldmap",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /units.js",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /characters.js",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /defines.js",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /events.js",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /loc.js",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /modrel.js",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /tracker.js",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /worldmap.js",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /ai.js",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /bootgate.js",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /gridwire.js",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /loadgate.js",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /music.js",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /progress.js",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /resize.js",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /trig.js",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "路由 /i18n.js",
+      "pass": true,
+      "detail": "200",
+      "exempt": false
+    },
+    {
+      "name": "API /api/files",
+      "pass": true,
+      "detail": "200 123417B 305ms  期望 files[] 且带 root/file",
+      "exempt": false
+    },
+    {
+      "name": "API /api/sources",
+      "pass": true,
+      "detail": "200 772B 2ms  期望 sources[] 含 base 且带 writable",
+      "exempt": false
+    },
+    {
+      "name": "API /api/stats",
+      "pass": true,
+      "detail": "200 94B 288ms  期望 gui>0 且带 pending",
+      "exempt": false
+    },
+    {
+      "name": "API /api/aibehave/graph",
+      "pass": true,
+      "detail": "200 3442954B 248ms  期望 aspects[] 含文件与条目(id+line)且 entries>0",
+      "exempt": false
+    },
+    {
+      "name": "API /api/tech/graph",
+      "pass": true,
+      "detail": "200 660348B 162064ms  期望 own 生效集恒等(vanilla+override+new=effective)且节点带 own",
+      "exempt": false
+    },
+    {
+      "name": "API /api/decisions/graph",
+      "pass": true,
+      "detail": "200 3813109B 1281ms  期望 own 生效集恒等",
+      "exempt": false
+    },
+    {
+      "name": "API /api/mio/tree",
+      "pass": true,
+      "detail": "200 636323B 679ms  期望 own 生效集恒等",
+      "exempt": false
+    },
+    {
+      "name": "API /api/doctrines/graph",
+      "pass": true,
+      "detail": "200 241363B 337ms  期望 own 生效集恒等",
+      "exempt": false
+    },
+    {
+      "name": "API /api/dlc/content",
+      "pass": true,
+      "detail": "200 936876B 83ms  期望 own 生效集恒等",
+      "exempt": false
+    },
+    {
+      "name": "API /api/focus/graph",
+      "pass": true,
+      "detail": "200 101455B 77ms  期望 trees[]",
+      "exempt": false
+    },
+    {
+      "name": "API /api/workshop",
+      "pass": true,
+      "detail": "200 17558B 350ms  期望 mods[]",
+      "exempt": false
+    },
+    {
+      "name": "API /api/detect",
+      "pass": true,
+      "detail": "200 2744B 6ms  期望 cands[]",
+      "exempt": false
+    },
+    {
+      "name": "API /api/dlc/content",
+      "pass": true,
+      "detail": "200 936876B 90ms  期望 features[].groups[].items",
+      "exempt": false
+    },
+    {
+      "name": "API /api/doctrines/graph",
+      "pass": true,
+      "detail": "200 241363B 19ms  期望 folders+grand+tracks+subs, issues=0",
+      "exempt": false
+    },
+    {
+      "name": "API /api/dlc/content?feature=factions",
+      "pass": true,
+      "detail": "200 161842B 20ms  期望 feature 筛选只回 1 个",
+      "exempt": false
+    },
+    {
+      "name": "API /api/dlc/content?dlc=Gotterdammerung",
+      "pass": true,
+      "detail": "200 125990B 10ms  期望 dlc 筛选收窄",
+      "exempt": false
+    },
+    {
+      "name": "API /api/mio/tree",
+      "pass": true,
+      "detail": "200 636323B 549ms  期望 orgs>0 traits>0,结构性诊断=0,悬空 include≤5%",
+      "exempt": false
+    },
+    {
+      "name": "API /api/loc/text?keys=SMB_army,GER_mio_trait_hoesch_facilities",
+      "pass": true,
+      "detail": "200 447B 5ms  期望 hit>0 语言下拉有 label 值无\": \"残留",
+      "exempt": false
+    },
+    {
+      "name": "API /api/tech/graph",
+      "pass": true,
+      "detail": "200 660348B 42ms  期望 nodes[]+slots[] 且 y 跨度 <60",
+      "exempt": false
+    },
+    {
+      "name": "API /api/texinfo?names=GFX_doctrine_strategic_destruction_medium,GFX_不存在的贴图",
+      "pass": true,
+      "detail": "200 344B 31ms  期望 sprite 名可解析且带天然尺寸;未定义的名字 ok=false",
+      "exempt": false
+    },
+    {
+      "name": "API /api/units",
+      "pass": {
+        "files": 430,
+        "shownFiles": 430,
+        "entries": 4658,
+        "shownEntries": 4707,
+        "ms": 1740
+      },
+      "detail": "200 3302516B 2217ms  期望 units: ready+groups[]+sources+own+stats",
+      "exempt": false
+    },
+    {
+      "name": "API /api/characters/graph",
+      "pass": {
+        "files": 235,
+        "shownFiles": 235,
+        "rawCharacters": 7036,
+        "characters": 7036,
+        "shownCharacters": 7036,
+        "ms": 1319
+      },
+      "detail": "200 7272358B 2107ms  期望 characters: ready+files[].characters[]+own+stats",
+      "exempt": false
+    },
+    {
+      "name": "API /api/defines",
+      "pass": true,
+      "detail": "200 1072098B 118ms  期望 defines: ready+total>0+groups[].name/file/count",
+      "exempt": false
+    },
+    {
+      "name": "API /api/defines/diff",
+      "pass": true,
+      "detail": "200 160693B 53ms  期望 defines/diff: ready+sum+modNames[]+diffs[]",
+      "exempt": false
+    },
+    {
+      "name": "API /api/events/list",
+      "pass": "country_event",
+      "detail": "200 140376B 1601ms  期望 events/list: ready+total>0+rows[].id/type",
+      "exempt": false
+    },
+    {
+      "name": "API /api/loc/stats",
+      "pass": true,
+      "detail": "200 1116B 1380ms  期望 loc/stats: ready+ref+langs[].lang/keys",
+      "exempt": false
+    },
+    {
+      "name": "API /api/loc/files",
+      "pass": true,
+      "detail": "200 382266B 1337ms  期望 loc/files: ready+ref+langs[]",
+      "exempt": false
+    },
+    {
+      "name": "API /api/loc/key?key=SMB_army",
+      "pass": true,
+      "detail": "200 720B 325ms  期望 loc/key: ready+key 回显+langs[]+byLang",
+      "exempt": false
+    },
+    {
+      "name": "API /api/modmeta",
+      "pass": true,
+      "detail": "200 8535B 779ms  期望 modmeta: gameVersion+mods[]",
+      "exempt": false
+    },
+    {
+      "name": "API /api/tracker/status",
+      "pass": "vanilla",
+      "detail": "200 1229B 7202ms  期望 tracker/status: ready+roots[].key/name",
+      "exempt": false
+    },
+    {
+      "name": "API /api/worldmap/meta",
+      "pass": true,
+      "detail": "200 2940295B 8484ms  期望 worldmap/meta: ready+w/h+provinces[].id/x",
+      "exempt": false
+    },
+    {
+      "name": "写只读来源 → 拒绝",
+      "pass": true,
+      "detail": "403 「vanilla」是只读目录,拒绝写入",
+      "exempt": false
+    },
+    {
+      "name": "路径穿越 → 拒绝",
+      "pass": true,
+      "detail": "400 文件路径超出该来源目录范围",
+      "exempt": false
+    },
+    {
+      "name": "无效来源序号 → 拒绝",
+      "pass": true,
+      "detail": "400 无效的来源序号",
+      "exempt": false
+    },
+    {
+      "name": "脚手架写只读 → 拒绝",
+      "pass": true,
+      "detail": "403 「vanilla」是只读目录,拒绝写入",
+      "exempt": false
+    },
+    {
+      "name": "模组名含 .. → 拒绝",
+      "pass": true,
+      "detail": "400 模组名不能包含 \"..\"",
+      "exempt": false
+    },
+    {
+      "name": "AI provider 目录已下发",
+      "pass": true,
+      "detail": "10 个",
+      "exempt": false
+    },
+    {
+      "name": "★ 配置回读不含 apiKey 字段",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "★ 配置回读不含 key 明文",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "hasKey / keySource 字段齐备",
+      "pass": true,
+      "detail": "",
+      "exempt": false
+    },
+    {
+      "name": "apply 不存在的 preview → 404",
+      "pass": true,
+      "detail": "404",
+      "exempt": false
+    },
+    {
+      "name": "apply 空 id → 拒绝",
+      "pass": true,
+      "detail": "404",
+      "exempt": false
+    },
+    {
+      "name": "未知 /api/ai/* → 404",
+      "pass": true,
+      "detail": "404",
+      "exempt": false
+    },
+    {
+      "name": "/ai.js 可访问且挂 window.AI",
+      "pass": true,
+      "detail": "200 23892B",
+      "exempt": false
+    },
+    {
+      "name": "ai.js MIME 正确",
+      "pass": true,
+      "detail": "application/javascript; charset=utf-8",
+      "exempt": false
+    },
+    {
+      "name": "贴图 GFX_doctrine_strategic_destruction_medium",
+      "pass": true,
+      "detail": "64x64 6097B ",
+      "exempt": false
+    },
+    {
+      "name": "贴图 GFX_doctrine_milestone_fighter_air",
+      "pass": true,
+      "detail": "106x83 18541B frames=2 ",
+      "exempt": false
+    },
+    {
+      "name": "贴图 GFX_doctrine_mobile_warfare_medium",
+      "pass": true,
+      "detail": "64x64 4605B ",
+      "exempt": false
+    },
+    {
+      "name": "帧动画裁帧",
+      "pass": true,
+      "detail": "frames=2 w=106(原 212)",
+      "exempt": false
+    },
+    {
+      "name": "/api/docs/list?kind=official",
+      "pass": true,
+      "detail": "200 total=107 groups=2",
+      "exempt": false
+    },
+    {
+      "name": "/api/docs/list?kind=common",
+      "pass": true,
+      "detail": "200 total=72 groups=39",
+      "exempt": false
+    },
+    {
+      "name": "/api/docs/read?kind=official",
+      "pass": true,
+      "detail": "200 Triggers cats=14",
+      "exempt": false
+    },
+    {
+      "name": "/api/docs/read?kind=common",
+      "pass": true,
+      "detail": "200 Country Decisions sections=1",
+      "exempt": false
+    },
+    {
+      "name": "越权拒绝 0:../../hoi4.exe",
+      "pass": true,
+      "detail": "404 文档不在允许范围内",
+      "exempt": false
+    },
+    {
+      "name": "越权拒绝 0:common/../hoi4.exe",
+      "pass": true,
+      "detail": "404 文档不在允许范围内",
+      "exempt": false
+    },
+    {
+      "name": "越权拒绝 0:hoi4.exe",
+      "pass": true,
+      "detail": "404 文档不在允许范围内",
+      "exempt": false
+    },
+    {
+      "name": "/api/settings 结构",
+      "pass": true,
+      "detail": "200 base=✓ mods=4 display=-",
+      "exempt": false
+    },
+    {
+      "name": "/api/settings 含 KR 模组条目",
+      "pass": true,
+      "detail": "Kaiserreich enabled=true",
+      "exempt": false
+    },
+    {
+      "name": "/api/completion?scopes=official",
+      "pass": true,
+      "detail": "200 120 项 · 首条=add_accepted_culture 出处=官方文档",
+      "exempt": false
+    },
+    {
+      "name": "/api/completion?scopes=common 出处标注",
+      "pass": true,
+      "detail": "120 项 · 样例来源=vanilla:common/achievements.txt:500",
+      "exempt": false
+    },
+    {
+      "name": "mkdir 只读来源 → 拒绝",
+      "pass": true,
+      "detail": "403 「vanilla」是只读目录,拒绝写入",
+      "exempt": false
+    },
+    {
+      "name": "mkdir 越权路径(只读来源)→ 拒绝",
+      "pass": true,
+      "detail": "403 「vanilla」是只读目录,拒绝写入",
+      "exempt": false
+    },
+    {
+      "name": "mkdir 无效来源序号 → 拒绝",
+      "pass": true,
+      "detail": "400 无效的来源序号",
+      "exempt": false
+    },
+    {
+      "name": "找到可写模组来源",
+      "pass": true,
+      "detail": "idx=1",
+      "exempt": false
+    },
+    {
+      "name": "mkdir 成功",
+      "pass": true,
+      "detail": "200 zz_smoke_1792389949401",
+      "exempt": false
+    },
+    {
+      "name": "rename 成功",
+      "pass": true,
+      "detail": "200 zz_smoke_1792389949401_renamed",
+      "exempt": false
+    },
+    {
+      "name": "delete 成功",
+      "pass": true,
+      "detail": "200 zz_smoke_1792389949401_renamed",
+      "exempt": false
+    },
+    {
+      "name": "delete 根目录 → 拒绝",
+      "pass": true,
+      "detail": "400 不能删除来源根目录",
+      "exempt": false
+    },
+    {
+      "name": "mkdir 路径穿越(可写来源)→ 拒绝",
+      "pass": true,
+      "detail": "400 文件路径超出该来源目录范围",
+      "exempt": false
+    },
+    {
+      "name": "/api/focus/tree?id=ACC_focus",
+      "pass": true,
+      "detail": "nodes=136  (错参 tree= → 404)",
+      "exempt": false
+    },
+    {
+      "name": "共享子树 Anqing_Clique",
+      "pass": true,
+      "detail": "引用 4 个根 → 展开 33 个(必须更多)",
+      "exempt": false
+    },
+    {
+      "name": "shortcut 明细 danish_focus",
+      "pass": true,
+      "detail": "2 条 · 本树内 2 / 越界 0",
+      "exempt": false
+    },
+    {
+      "name": "/api/layout  interface/AST_cabinet_trust_scripted_gui.gui",
+      "pass": true,
+      "detail": "nodes=1 canvas=1920x158",
+      "exempt": false
+    },
+    {
+      "name": "/api/mio/tree?org=generic_tank_organization",
+      "pass": true,
+      "detail": "nodes=13/13 generic=12 NaN=0 issues=0 cols=2",
+      "exempt": false
+    },
+    {
+      "name": "/api/tech/graph slots 对账",
+      "pass": true,
+      "detail": "slots=2(自报 2) 覆盖 4(自报 4) 最深一格 2 条 y跨度=35 自动补位=117",
+      "exempt": false
+    }
+  ]
+}

@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>HOI4 科技树</title>
+<link rel="stylesheet" href="/theme.css">
+<style>
+  :root{ --canvas:#e9ebef }
+  #left{width:250px;border-right:1px solid var(--line)}
+  #right{width:300px;border-left:1px solid var(--line)}
+  #stage{flex:1;position:relative;overflow:hidden;background:var(--canvas);min-width:0}
+  #canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+
+  .overlay{
+    position:absolute;background:rgba(255,255,255,.93);
+    border:1px solid var(--line);border-radius:var(--r-card);
+    padding:4px 9px;font-size:11px;color:var(--ink2);
+  }
+  #hud{left:10px;bottom:10px;font-size:12px;pointer-events:none;max-width:62%}
+  #zoombox{right:10px;top:10px;display:flex;gap:4px;align-items:center;padding:3px}
+  #zoombox button{padding:2px 8px}
+  #zl{font-size:12px;color:var(--ink2);min-width:38px;text-align:center}
+
+  .node{cursor:pointer}
+  .node rect.box{fill:#fff;stroke:#c3c8d0;stroke-width:1}
+  /* 隐藏科技(无 categories):米色虚线框,与常规科技区分 */
+  .node.c-hidden rect.box{fill:#f7f4ec;stroke:#b9a887;stroke-dasharray:3 2}
+  /* 自动补位坐标(文件未写 folder.position):细边框,提示"位置是推算的" */
+  .node.c-auto rect.box{stroke:#9aa3ae}
+  /* ★ 同格多条(坑 A):一格塞了 N 条互斥/DLC 替代科技 → 竖向堆叠成一个"卡带" */
+  .node.c-sock rect.box{fill:#fbfaf7;stroke:var(--warn);stroke-width:1.5}
+  .node.c-sock text{font-size:8px;fill:#8a6d3b}
+  .node.sel rect.box{stroke:var(--accent);stroke-width:2.5}
+  .node text{font-size:9px;fill:var(--ink3);pointer-events:none}
+  .node.sel text{fill:var(--accent)}
+  .node.tiny text{display:none}
+  /* 科技图标(单条节点左上角)与图标右侧的标签 */
+  .node image.nodeicon{pointer-events:none}
+  .node text.nlabel{font-size:9px;fill:var(--ink2);pointer-events:none}
+  /* 同格堆叠的分隔线 */
+  .node line.sockline{stroke:#e2d9c4;stroke-width:1}
+  /* ★ OWNERSHIP_V1:内容归属描边 —— 模组新增(绿) / 被模组改写(橙) */
+  .node.own-new rect.box{stroke:var(--ok);stroke-width:2}
+  .node.own-ovr rect.box{stroke:var(--warn);stroke-width:2;stroke-dasharray:5 2}
+
+  /* 检查器「显示详情」按钮 */
+  .dbtn{margin:2px 0 8px;padding:4px 10px;font-size:12px;border:1px solid var(--line2);border-radius:7px;background:var(--card);color:var(--ink);cursor:pointer}
+  .dbtn:hover{border-color:var(--accent);color:var(--accent)}
+  .sec-t{font-size:11px;color:var(--ink3);font-weight:600;margin:10px 0 4px;letter-spacing:.03em}
+  /* 分组标题带:在画布上标出每个 folder 的位置 */
+  .fband rect{fill:#5c6470;opacity:.85}
+  .fband text{font-size:11px;fill:#fff;font-weight:600}
+  .fband.hidden rect{fill:#8a7a5c}
+  .fband.empty{opacity:.4}
+  /* ★★★ EDGE_PICK_V1(2026-10-06 修「科技树右键弹不出菜单」):
+     连线是**纯装饰**,却会抢走节点的命中。
+     SVG 的 `pointer-events` 默认是 `visiblePainted` —— 「可见且被画到的地方可命中」。
+     于是横穿节点中心的那 1.4px 描边正好压在 rect 上,右键落在节点正中
+     时 event.target 是 `<path class="edge">` 而不是节点,
+     `Ctx.attach` 里的 `closest('g.node')` 匹配不到 → 菜单静默不弹。
+     实测 13 个可见节点里 10 个是同格堆叠(sock),几乎每个都中招。
+     装饰性图形一律 `pointer-events:none` —— 要看连线走向,靠 hover 高亮
+     (.edge.hot 由选中态驱动),不需要它自己接收鼠标。 */
+  .edge{stroke:#9aa3ae;stroke-width:1.4;fill:none;pointer-events:none}
+  .edge.enable{stroke:#5b8c86;stroke-dasharray:2 3}
+  .edge.hot{stroke:var(--accent);stroke-width:2.4}
+  /* 同理:分组标题带与分隔线也是装饰 */
+  .fband{pointer-events:none}
+  .node line.sockline{pointer-events:none}
+
+  /* ── ★ 分类切换胶囊栏(2026-10 新增,2026-10-05 加可拉伸)──
+     585 个科技不能一次铺开(用户要求默认先看步兵)。
+     两行胶囊:第 1 行页签(= 游戏的一页一页翻),第 2 行领域。
+
+     ⚠ 2026-10-05 用户报"领域部分占据过长":
+       原来两行都是 `flex-wrap:wrap` 铺满宽度,领域一多(vanilla 有 100+ 个
+       technology_categories)在窄屏下会堆成十几行,把画布纵向压掉一大半。
+     改法三件事:
+       ① 每行**单行不换行 + 横向滚动**(flex-wrap:nowrap)—— 高度恒为一行;
+       ② 整条**可拖动改高**(用户明确要"可以拉伸"),底部留一条 grabby;
+       ③ **可折叠**(双击标题条),折叠后只留一条 ~22px 的标签,画布全高。
+     高度存 localStorage(gui.tech.catH),与 sizer 的 gui.sizes 分开 ——
+     这里管的是纵向,那边管的是横向。 */
+  #catbar{
+    padding:0 10px;border-bottom:1px solid var(--line);
+    background:var(--panel);position:relative;z-index:2;flex:none;
+    /* 高由 JS 按内容算好后写 --cat-h,双击折叠时置 0 */
+    height:var(--cat-h,auto);overflow:hidden;
+  }
+  #catbar.collapsed{--cat-h:22px !important}
+  #catbar .catwrap{padding:5px 0 6px}
+  /* ★ 拖动把手:贴在胶囊条下沿,hover 变高亮。已折叠时不显示 */
+  #catbar .cat-grip{
+    position:absolute;left:0;right:0;bottom:0;height:5px;cursor:ns-resize;
+    background:transparent;transition:background .12s;
+  }
+  #catbar .cat-grip:hover{background:var(--accent-soft)}
+  #catbar.collapsed .cat-grip{display:none}
+  #catbar .cat-fold{
+    position:absolute;right:8px;top:0;height:22px;line-height:22px;
+    font-size:10px;color:var(--ink3);cursor:pointer;z-index:2;
+    padding:0 6px;border-radius:0 0 4px 4px;user-select:none;
+  }
+  #catbar .cat-fold:hover{color:var(--accent);background:var(--inset)}
+  /* ★ 单行不换行 + 横向滚动:这是"不再堆成十几行"的关键 */
+  #catbar .catrow{
+    display:flex;align-items:center;gap:4px;flex-wrap:nowrap;
+    overflow-x:auto;overflow-y:hidden;scrollbar-width:thin;
+    padding-bottom:1px;
+  }
+  #catbar .catrow + .catrow{margin-top:4px}
+  #catbar .catrow::-webkit-scrollbar{height:5px}
+  #catbar .catrow::-webkit-scrollbar-thumb{background:var(--line2);border-radius:3px}
+  #catbar .barlab{
+    font-size:10px;color:var(--ink3);font-weight:700;
+    padding:0 6px 0 2px;letter-spacing:.06em;flex:none;
+    position:sticky;left:0;background:var(--panel);z-index:1;
+  }
+  /* ★ 选择器修正(2026-10-06):原来写 `#catbar .cpill`,
+   *   但 #catbar 里只有 .cat-fold 与 .cat-grip 两个子元素(见本文件 158 行),
+   *   122 个 .cpill 实际挂在 **#left 侧栏**(tech.js 的 L1/L2 → #left)。
+   *   于是 `#catbar .cpill` 从来没匹配上 —— 这批筛选按钮一直是**无样式**的,
+   *   壁纸模式下 background:var(--line2) 也因此原样落地成不透明色块。
+   *   改成裸类选择器,让它对两个挂载位置都生效。 */
+  .cpill{
+    font-size:11px;padding:2px 9px;border-radius:11px;cursor:pointer;
+    background:var(--line2);color:var(--ink2);border:1px solid transparent;
+    white-space:nowrap;transition:background .12s,color .12s;flex:none;
+  }
+  .cpill:hover{background:var(--line2);filter:brightness(.97)}
+  .cpill.on{background:var(--accent);color:#fff;font-weight:600}
+  /* 壁纸模式:选中态也要半透明,否则 122 个筛选按钮在壁纸上是一排不透明色块。
+     ★ 必须用 `background` 简写,不能用 `background-color`:
+       上面 .cpill.on 写的是 `background:var(--accent)`(简写),
+       若这里只写 background-color,两者都设置 background-color,
+       由**声明顺序**决定 —— 页内 <style> 在变量层之后,`.cpill.on` 反而赢,
+       实测算出 oklab(0.52 ...) alpha=1。同属性用简写一视同仁。
+     ★ 用 --accent-glass(rgba 带 alpha),不要 color-mix:
+       color-mix(蓝 72%, var(--glass-ctrl)) 会算出 0.865 超出 75% 上限。 */
+  :root[data-bg="image"] .cpill.on{
+    background:var(--accent-glass);
+    color:#fff;
+  }
+
+  .iss{padding:5px 10px;border-bottom:1px solid var(--line2);font-size:12px;cursor:pointer}
+  .iss:hover{background:#f2f4f7}
+  .iss .r{font-weight:600}
+  .iss.error .r{color:var(--danger)}
+  .iss .m{color:var(--ink2)}
+  .iss .f{color:var(--ink3);font-size:11px}
+</style>
+</head>
+<body>
+<header>
+  <h1>科技树 <small id="statChip">—</small></h1>
+  <div class="tgroup">
+    <input type="text" id="q" placeholder="搜索科技 / 领域">
+    <!-- UI_SLIM_V1:下拉类折叠,搜索框常驻 -->
+    <div class="tgroup" data-collapse>
+    <select id="folderSel" title="按显示分组筛选(来自 common/technology_tags 的 technology_folders)"><option value="">全部分组</option></select>
+    <select id="areaSel" title="按领域筛选(technology_categories 顺序表)"><option value="">全部领域</option></select>
+    <!-- OWNERSHIP_V1:内容归属筛选(同名科技由模组整份替换,不是多一份) -->
+    <select id="ownSel" title="按内容归属筛选:原版 / 被模组改写 / 模组新增"></select>
+    </div>
+  </div>
+  <div class="tgroup" data-collapse>
+    <label class="chk" title="无 categories 的科技:游戏里没有标题栏,单独归组显示"><input type="checkbox" id="showHidden"> 隐藏科技</label>
+    <label class="chk"><input type="checkbox" id="onlyDangling"> 仅悬空边</label>
+  </div>
+  <span class="spacer"></span>
+  <div id="langbar"></div>
+  <div id="nav"></div>
+</header>
+<!-- ★ 2026-10-05:可拉伸 + 可折叠(用户报"领域部分占据过长")。
+     grip = 下沿拖动把手;fold = 右上角折叠按钮。结构由 buildCatBar() 填。 -->
+<div id="catbar">
+  <span class="cat-fold" id="catFold" title="折叠 / 展开分类栏(双击标题条也可以)">▾ 折叠</span>
+  <div class="cat-grip" id="catGrip" title="拖动改高度 · 双击复位"></div>
+</div>
+<main>
+  <aside id="left" data-sizer="left" data-sizer-def="280">
+    <div class="sizer-bar" title="拖动调宽 · 双击复位 · 双击侧栏折叠"></div>
+    <div class="pane-title">科技 <span class="spacer"></span><span id="nodeCount" style="font-weight:400"></span></div>
+    <div class="pane-body" id="nodeList"></div>
+  </aside>
+  <div id="stage">
+    <svg id="canvas"></svg>
+    <div id="zoombox" class="overlay">
+      <button id="zo">−</button><span id="zl">100%</span><button id="zi">+</button>
+      <button id="fit">适应</button>
+      <button id="togName">名</button>
+    </div>
+    <div id="hud" class="overlay">—</div>
+  </div>
+  <aside id="right" data-no-i18n data-sizer="right" data-sizer-def="320">
+    <div class="sizer-bar" title="拖动调宽 · 双击复位 · 双击侧栏折叠"></div>
+    <div class="pane-title">检查器</div>
+    <div class="pane-body">
+      <div id="insp"><div style="color:var(--ink3);padding:6px 11px">点选一个科技</div></div>
+    </div>
+    <div class="pane-title" style="border-top:1px solid var(--line)">悬空边 <span class="spacer"></span><span id="dangCount" style="font-weight:400"></span></div>
+    <div class="pane-body" id="dangList" style="max-height:30%"><div style="color:var(--ink3);padding:6px 11px">—</div></div>
+  </aside>
+</main>
+<div id="toast"></div>
+<script src="/i18n.js"></script>
+<script src="/i18n-dict.js"></script>
+<script src="/progress.js"></script>
+<script type="module">
+  import { mountNav } from '/nav.js'
+  mountNav('#nav')
+</script>
+<script src="/sizer.js"></script>
+<script src="/toolbar.js"></script>
+<script src="/edgepath.js"></script>
+<script src="/locclient.js"></script>
+<!-- ctx.js / keys.js:右键菜单(定位源码/复制 id)+ F1 速查表,须在 tech.js 之前 -->
+<script src="/ctx.js"></script>
+<script src="/keymap.js"></script>
+<script src="/keys.js"></script>
+<!-- OWNERSHIP_V1:统一归属徽标 -->
+<script src="/ownchip.js"></script>
+<script src="/tech.js"></script>
+<!-- ★ FULLSCREEN_V1:全站全屏。必须在 nav.js 之前?否 —— nav.js 轮询等它,
+     放哪都行;统一放页面脚本区末尾,好维护。 -->
+<script src="/fullscreen.js"></script>
+</body>
+</html>

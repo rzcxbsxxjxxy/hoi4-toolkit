@@ -1,0 +1,10 @@
+{
+  "name": "@hoi4/parser",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Clausewitz 脚本无损解析器。契约:token 流按序拼接 === 原文",
+  "main": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  }
+}

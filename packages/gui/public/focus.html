@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>HOI4 国策树</title>
+<link rel="stylesheet" href="/theme.css">
+<style>
+  :root{ --canvas:#e9ebef }
+  #left{width:250px;border-right:1px solid var(--line)}
+  #right{width:300px;border-left:1px solid var(--line)}
+  #stage{flex:1;position:relative;overflow:hidden;background:var(--canvas);min-width:0}
+  #canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+
+  /* 浮层统一:白底 + 细边 + 圆角,不再各写一套 */
+  .overlay{
+    position:absolute;background:rgba(255,255,255,.93);
+    border:1px solid var(--line);border-radius:var(--r-card);
+    padding:4px 9px;font-size:11px;color:var(--ink2);
+  }
+  #hud{left:10px;bottom:10px;font-size:12px;pointer-events:none;max-width:62%}
+  #legend{left:10px;top:10px;display:flex;gap:11px;pointer-events:none}
+  #legend span{display:inline-flex;align-items:center;gap:4px}
+  #legend i.mk{width:0;height:0;border-style:solid;border-width:0 8px 8px 0;display:inline-block}
+  #legend i.mk.base{border-color:transparent #c3c8d0 transparent transparent}
+  #legend i.mk.ovr{border-color:transparent var(--ok) transparent transparent}
+  #legend i.mk.new{border-color:transparent var(--accent) transparent transparent}
+  #zoombox{right:10px;top:10px;display:flex;gap:4px;align-items:center;padding:3px}
+  #zoombox button{padding:2px 8px}
+  #zl{font-size:12px;color:var(--ink2);min-width:38px;text-align:center}
+
+  .node{cursor:move}
+  .node rect.box{fill:#fff;stroke:#c3c8d0;stroke-width:1}
+  .node.sel rect.box{stroke:var(--accent);stroke-width:2.5}
+  .node.pend rect.box{stroke:var(--warn);stroke-width:2.5;stroke-dasharray:4 2}
+  .node.joint rect.box{stroke:#7c5cbf}
+  .node.shared rect.box{stroke-dasharray:3 2;stroke:#5b8c86}
+  /* 来源角标:左上角小三角。绿=被模组改写,蓝=模组新增,原版不画 */
+  .node .modmark{fill:var(--ok);stroke:none}
+  .node .modmark.new{fill:var(--accent)}
+  .node .modmark.ovr{fill:var(--ok)}
+  .node text{font-size:9px;fill:var(--ink3);pointer-events:none}
+  .node.sel text{fill:var(--accent)}
+  /* ★ EDGE_PICK_V1(2026-10-06,同 tech.html):连线是纯装饰,不能抢节点的命中。
+     SVG `pointer-events` 默认 `visiblePainted` —— 横穿节点中心的描边会
+     吃掉右键,event.target 变成 path,`closest('g.node')` 匹配不到,
+     菜单静默不弹。装饰性图形一律 none,要看向导靠 .edge.hot 选中高亮。 */
+  .edge{stroke:#9aa3ae;stroke-width:1.4;fill:none;pointer-events:none}
+  .edge.mutex{stroke:#c53030;stroke-dasharray:5 4;stroke-width:1.2;opacity:.75}
+  .edge.branch{stroke:#5b8c86;stroke-dasharray:2 3}
+  /* ★ OR_V1:OR = { focus = X } 是"任选其一"。旧版把它和 focus 一起塞进
+     prereq 画实线,读图的人会当成"全都要"。点线区分,且检查器里分组显示。 */
+  .edge.or{stroke:#b07d2b;stroke-dasharray:1.5 3;stroke-width:1.2;opacity:.9}
+  .edge.hot{stroke:var(--accent);stroke-width:2.4}
+  /* allow_branch:被隐藏分支强显时灰掉;其连线也淡 */
+  .node.branch-hidden rect.box{opacity:.38;stroke-dasharray:3 3}
+  .node.branch-hidden image{opacity:.38}
+  .edge.ghost{opacity:.32}
+  /* ★ OR_V1:且/或分组 */
+  .kv.grp{align-items:flex-start}
+  .kv.grp>b{color:var(--ink3);font-weight:600;min-width:22px}
+  code.or-id{background:var(--panel2);border:1px solid var(--line);border-radius:3px;
+    padding:0 4px;font-size:10px;color:var(--ink)}
+  .bx{display:flex;gap:5px;align-items:center;font-size:11px;cursor:pointer;user-select:none}
+  #branchbox{right:10px;top:54px;padding:6px 9px;flex-direction:column;align-items:flex-start;gap:5px}
+  /* ── TRIGGERS_V1 条件面板 ──
+     放在 branchbox 下方。列表按 key 分组(国策完成 / 旗标 / 游戏规则 / 国家 tag),
+     每项一行复选框 + 出现次数。项数上限 200(再多的树条件面板就成主屏了)。 */
+  #trigbox{right:10px;top:104px;padding:0;max-width:290px;max-height:60vh;overflow-y:auto;
+    flex-direction:column;align-items:stretch;gap:0}
+  #trigToggle{border:none;background:none;color:var(--ink2);font-size:11px;cursor:pointer;
+    padding:5px 9px;text-align:left}
+  #trigToggle:hover{color:var(--ink)}
+  #trigPanel{border-top:1px solid var(--line);display:flex;flex-direction:column;min-height:0;flex:1 1 auto;overflow:hidden}
+  #trigList{flex:1 1 auto;min-height:0;overflow-y:auto;padding:4px 9px;display:flex;flex-direction:column;gap:3px}
+  #trigList .tgrp{font-size:10px;color:var(--ink3);margin-top:5px;letter-spacing:.4px}
+  #trigList .trow{display:flex;gap:5px;align-items:center;font-size:11px;cursor:pointer}
+  #trigList .trow span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  #trigList .trow em{color:var(--ink3);font-style:normal;margin-left:auto;font-size:10px}
+  #trigList .tsec{font-size:11px;color:var(--accent);font-weight:600;margin-top:7px;padding-top:4px;border-top:1px solid var(--line);letter-spacing:.5px}
+  .trigfoot{display:flex;gap:8px;align-items:center;padding:4px 9px;border-top:1px solid var(--line)}
+  .trigfoot button{font-size:10px;padding:2px 7px}
+
+  /* ── shortcut 快捷跳转行(树检查器)──
+     游戏里 shortcut 是左栏的快捷标签,点一下镜头飞到 target。
+     这里做成可点行,点完选中并居中到目标国策。
+     .bad = target 不在本树可见集合(mod 数据错),标红且点了会提示。 */
+  #insp .scrow{cursor:pointer;border-radius:4px;padding:1px 3px}
+  #insp .scrow:hover{background:var(--line2)}
+  #insp .scrow b{font-weight:600;font-size:11px}
+  #insp .scrow span{font-size:11px;word-break:break-all}
+  #insp .scrow.bad{color:var(--danger)}
+  #insp .scrow.bad em{font-style:normal;font-size:10px;opacity:.85}
+
+  .iss{padding:5px 10px;border-bottom:1px solid var(--line2);font-size:12px;cursor:pointer}
+  .iss:hover{background:#f2f4f7}
+  .iss .r{font-weight:600}
+  .iss.error .r{color:var(--danger)}
+  .iss.warn .r{color:var(--warn)}
+  .iss.info .r{color:var(--ink3)}
+  .iss .m{color:var(--ink2)}
+  .iss .f{color:var(--ink3);font-size:11px}
+  pre.diff{
+    background:#fafbfc;border:1px solid var(--line);border-radius:var(--r);
+    padding:6px;font:11px/1.45 ui-monospace,Consolas,monospace;
+    white-space:pre-wrap;max-height:190px;overflow:auto;margin:6px 0 0;
+  }
+  pre.diff .add{color:var(--ok)} pre.diff .del{color:var(--danger)}
+  /* 检查器「显示详情」按钮 */
+  .dbtn{margin:2px 0 8px;padding:4px 10px;font-size:12px;border:1px solid var(--line2);border-radius:7px;background:var(--card);color:var(--ink);cursor:pointer}
+  .dbtn:hover{border-color:var(--accent);color:var(--accent)}
+  .sec-t{font-size:11px;color:var(--ink3);font-weight:600;margin:10px 0 4px;letter-spacing:.03em}
+  /* 检查器:条件/奖励类块文本(available / ai_will_do / completion_reward / search_filters / bypass / offset),原样展示游戏脚本 */
+  #insp .kv.blk{flex-direction:column;align-items:stretch;gap:3px;margin:4px 0}
+  #insp .kv.blk > b{width:auto;color:var(--ink3);font-size:11px;font-weight:600}
+  #insp pre.raw{
+    margin:0;padding:6px 8px;font:11px/1.5 ui-monospace,Consolas,monospace;
+    white-space:pre-wrap;word-break:break-word;color:var(--ink);
+    background:var(--line2);border:1px solid var(--line);border-radius:7px;
+    max-height:150px;overflow:auto;
+  }
+  /* 带条件偏移(offset)的国策:虚线描边,提示"此节点在满足条件时会跳到偏移位" */
+  .node.has-offset .box{stroke-dasharray:4 3;stroke:var(--accent)}
+  /* ★ MU 对齐:每节点"已完成"复选框(checkedFocuses)—— 覆盖在 SVG 节点左上角,
+     勾选写入 has_completed_focus = id,驱动依赖它的分支显形。层 pointer-events:none,
+     只有复选框自身可点,其余穿透到画布(拖拽/平移不受影响)。 */
+  #checkLayer{position:absolute;inset:0;pointer-events:none}
+  #checkLayer .fcheck{position:absolute;width:14px;height:14px;margin:2px;cursor:pointer;
+    pointer-events:auto;transform-origin:0 0;accent-color:var(--accent);z-index:2}
+  #checkLayer .fcheck:hover{outline:1px solid var(--accent)}
+</style>
+</head>
+<body>
+<header>
+  <div id="nav"></div>
+</header>
+<div class="subbar">
+  <h1>国策树 <small id="statChip">—</small></h1>
+  <div class="tgroup">
+    <input type="text" id="q" placeholder="搜索树 / TAG">
+    <select id="srcSel" title="按来源筛选树与画布节点"></select>
+    <select id="treeSel" style="max-width:230px"></select>
+  </div>
+  <div class="tgroup">
+    <button id="btnLint">体检</button>
+    <button id="btnUndo" disabled>撤销</button>
+    <button id="btnSave" class="primary" disabled>保存移动</button>
+  </div>
+  <span class="spacer"></span>
+  <span id="srcSum" style="font-weight:400;color:var(--ink3);font-size:11px"></span>
+  <span class="chip" id="pendChip" style="display:none"></span>
+  <div id="langbar"></div>
+</div>
+<main>
+  <aside id="left" data-sizer="left" data-sizer-def="300">
+    <div class="sizer-bar" title="拖动调宽 · 双击复位 · 双击侧栏折叠"></div>
+    <div class="pane-title">国策树 <span class="spacer"></span><span id="treeCount" style="font-weight:400"></span></div>
+    <div class="pane-body" id="treeList" data-no-i18n></div>
+  </aside>
+  <div id="stage">
+    <svg id="canvas"></svg>
+    <div id="zoombox" class="overlay">
+      <button id="zo">−</button><span id="zl">100%</span><button id="zi">+</button>
+      <button id="fit">适应</button>
+      <button id="togName">名</button>
+    </div>
+    <div id="hud" class="overlay">—</div>
+    <div id="branchbox" class="overlay">
+      <label class="bx"><input type="checkbox" id="bxShowHidden"> 显示隐藏分支</label>
+      <label class="bx"><input type="checkbox" id="bxOffset"> 应用 offset 偏移</label>
+      <span id="bxStat" style="color:var(--ink3)"></span>
+    </div>
+    <!-- ★ TRIGGERS_V1:条件面板。对齐 HOI4 Mod Utilities 的 #allowbranch-container ——
+         把本树出现过的条件叶子列成一排可勾选项,勾哪些就按那组 scope 重算显隐与偏移。
+         容器默认收起(条件多的树能有上百项),点标题展开。 -->
+    <div id="trigbox" class="overlay">
+      <button id="trigToggle" class="linkbtn" type="button">条件 ▸</button>
+      <div id="trigPanel" hidden>
+        <div id="trigList"></div>
+        <div class="trigfoot">
+          <button id="trigClear" type="button">全部清空</button>
+          <span id="trigStat" style="color:var(--ink3)"></span>
+        </div>
+      </div>
+    </div>
+    <div id="legend" class="overlay">
+      <span><i class="mk base"></i>基础游戏</span>
+      <span><i class="mk ovr"></i>模组改写</span>
+      <span><i class="mk new"></i>模组新增</span>
+    </div>
+  </div>
+  <aside id="right" data-no-i18n data-sizer="right" data-sizer-def="320">
+    <div class="sizer-bar" title="拖动调宽 · 双击复位 · 双击侧栏折叠"></div>
+    <div class="pane-title">属性</div>
+    <div class="pane-body">
+      <div id="insp"><div style="color:var(--ink3);padding:6px 11px">点选一个国策</div></div>
+      <div id="diffBox"></div>
+    </div>
+    <div class="pane-title" style="border-top:1px solid var(--line)">体检 <span class="spacer"></span><span id="lintCount" style="font-weight:400"></span></div>
+    <div class="pane-body" id="lintList" style="max-height:38%"><div style="color:var(--ink3);padding:6px 11px">未体检</div></div>
+  </aside>
+</main>
+<div id="toast"></div>
+<script src="/bundles/focus.bundle.js?v=mvjll3h6"></script>
+<script src="/i18n-dict.js"></script>
+
+
+<script type="module">
+  import { mountNav } from '/nav.js'
+  mountNav('#nav')
+</script>
+
+
+<!-- ★ GRIDWIRE_V1:照抄 HOI4 MU 的格间正交布线(整数网格轨道 + 占用表避让)。
+     缺它时 focus.js 会退回 edgePathD 的中心曲线 —— 视觉与游戏内不一致。 -->
+
+<!-- ★ TRIGGERS_V1:国策条件求值。allow_branch 显隐与 offset 条件偏移
+     都靠 Trig.evalTrig(条件树, scope) 出 true/false/未知 三态。 -->
+
+
+<!-- ctx.js / keys.js:右键菜单(定位源码/复制 id)+ F1 速查表,须在 focus.js 之前 -->
+
+
+
+<!-- OWNERSHIP_V1:统一归属徽标 -->
+
+
+<!-- ★ FULLSCREEN_V1:全站全屏。必须在 nav.js 之前?否 —— nav.js 轮询等它,
+     放哪都行;统一放页面脚本区末尾,好维护。 -->
+
+</body>
+</html>

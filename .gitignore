@@ -1,0 +1,52 @@
+# ── 用户私有配置（含本机绝对路径，切勿提交；每个人用自己的 gui-settings.json）──
+gui-settings.json
+
+# ── 运行期生成物 / 日志 / 临时文件 ──
+temp/
+_*.json
+_*.log
+_*.png
+_poll.sh
+left
+right
+server
+22.22.2-5
+.gui-sandbox/
+
+# ── 误放到仓库根的模组样例内容 ──
+common/
+
+# ── 依赖 ──
+node_modules/
+
+# ── 文档截图（由 tools/shot-map.cjs 重新生成的产物，不入库）──
+docs/assets/*.png
+
+# ── 用户本地数据 / 私有配置 ──
+gui-settings.json
+common/
+_edgeprof/
+tracker/
+
+# ── Electron 构建产物(项目已提升为根目录,以下均为根级路径)──
+server.mjs
+dist/
+build/
+# stage.mjs 打包前暂存进根目录的只读资源(打完包由 clean.mjs 清掉)
+public/
+# 「免安装直接双击运行」的成品程序 = 安装后内容(npm run pack → app/)
+app/
+# NSIS 安装包输出目录(在项目外的 ../toolkit-installer/,不入库)
+
+# ── 前端打包生成物(bundles 由 build-frontend 从 public/*.js 重建;public/*.html 由 orig_html 重建)──
+packages/gui/public/bundles/
+# ── 后端 esbuild 打包生成物 ──
+worker-entry.mjs
+# ── 临时调试 / 截图 / 备份(本机私有,不入库)──
+_edge*
+_smoke*
+_shot_*.cjs
+_val*.mjs
+*.png
+*.bak-*
+main.cjs.bak-*

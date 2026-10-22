@@ -1,0 +1,95 @@
+types = {
+	type[supply_area] = {
+		path = "game/map/supplyareas"
+		name_field = "id"
+		### ★ D4 修复:缺这一行 → 顶层键 `supply_area = {` 派不出结构定义,
+		###   整棵子树不做结构级校验(块内每个键都被报成「不在此结构的定义里」)。
+		###   依据:144 个 type 都有 skipRootKey(unit=sub_units / technology=technologies
+		###   / focus=focus_tree …),唯独这两个 map 相关的 type 没有。
+		###   判据:cwt-noise.test.ts 的 D4 断言。
+		###   实测顶层键是单数 `supply_area = {`(已 grep 磁盘核对)。
+		skip_root_key = supply_area
+	}
+	type[strategic_region] = {
+		path = "game/map/strategicregions"
+		name_field = "id"
+		### ★ D4 修复:同上。vanilla 的 map/strategicregions/*.txt 共 304 个文件,
+		###   顶层键是单数 `strategic_region = {`。缺 skip_root_key 时
+		###   weather 块的 8 个天气键(no_phenomenon/rain_light/…/sandstorm)
+		###   每个文件报 12 次 → 实测 29,174 条噪音,占全场 30.7%。
+		skip_root_key = strategic_region
+	}
+}
+
+supply_area = {
+	id = int
+	name = localisation
+	value = int
+	states = {
+		## cardinality = 1..inf
+		<state>
+	}
+}
+
+strategic_region = {
+	id = int
+	name = localisation
+	provinces = {
+		## cardinality = ~1..inf
+		enum[provinces]
+	}
+	## cardinality = 0..1
+	naval_terrain = <terrain.naval_terrain>
+	## cardinality = 0..1
+	static_modifiers = {
+		## cardinality = 1..inf
+		<static_modifier> = always
+	}
+	### Black magic.
+	weather = {
+		## cardinality = 0..inf
+		### Periods of weather, months in vanilla.
+		period = {
+			between = {
+				### Day.month (both start at 0)
+				# float hacks as dates ftw
+				## cardinality = 2..2
+				float[0.0..30.9]
+			}
+			temperature = {
+				## cardinality = 2..2
+				float
+			}
+			## cardinality = 0..1
+			temperature_day_night = {
+				## cardinality = 2..2
+				float
+			}
+			#hacks
+			## cardinality = 7..8
+			enum[region_weather] = float[0..inf]
+			min_snow_level = float
+		}
+	}
+}
+
+enums = {
+	enum[region_weather] = {
+		no_phenomenon
+		rain_light
+		rain_heavy
+		snow
+		blizzard
+		arctic_water
+		mud
+		sandstorm
+	}
+	complex_enum[provinces] = {
+		path = "game/map/strategicregions"
+		name = {
+			provinces = {
+				enum_name
+			}
+		}
+	}
+}

@@ -1,0 +1,6 @@
+@echo off
+chcp 65001 >nul
+cd /d "%~dp0"
+echo Launching packaged HOI4 Toolkit (app\win-unpacked) ...
+node start_packaged.cjs
+pause

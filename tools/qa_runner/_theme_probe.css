@@ -1,0 +1,617 @@
+﻿/* ══════════════════════════════════════════════════════════════════
+ * HOI4 工作台 · 统一主题(骨架层)
+ *
+ * ⚠ 变量已抽到 theme-vars.css —— 本文件只管**布局骨架与组件外观**。
+ *   check.html / open.html 有自己的布局(体检是 header+main 滚动流,
+ *   打开工程是居中卡片),引本文件的 body/header 会被顶掉,所以它们
+ *   只引 theme-vars.css 拿变量。两边靠 :root 变量对齐,不会各走各的。
+ *
+ * 用法:<link rel="stylesheet" href="/theme-vars.css">
+ *      <link rel="stylesheet" href="/theme.css">   ← 需要本文件的骨架时
+ * 页面自己的 :root 只写本页特有的变量(如 --canvas),不要重复定义通用色。
+ * ══════════════════════════════════════════════════════════════════ */
+@import url('/theme-vars.css');
+
+* { box-sizing: border-box }
+html, body { height: 100%; margin: 0 }
+
+body {
+  font: 13px/1.5 "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  display: flex; flex-direction: column; overflow: hidden;
+}
+
+/* ── 顶栏 ──
+ * 三段式:标题区 / (spacer) / 导航区。筛选项全部归到标题区右侧,
+ * 不再散落在整条栏里 —— 之前 focus 页塞了 7 个控件,窄屏会挤成两行。 */
+/* ══════════════════════════════════════════════════════════════════
+ * ★ 2026-10-05 修:顶栏下拉必须【始终置顶】(用户报 bug:点"内容""界面"弹出的
+ *   条目被页面内容盖住)。
+ *
+ *   根因不是 navpop 自己的 z-index 太小,而是**它所在的那个层叠上下文太小**:
+ *   header 原来 z-index:auto → 不生成层叠上下文,navpop 的 z-index:60 只在
+ *   根上下文里跟"没设 z-index 的兄弟元素"比,一旦页面自己有更高层
+ *   (ide 的 80/120/130、check 的 80、designer 的 50…)就压过去了。
+ *
+ *   修法两步,缺一不可:
+ *   ① header 建立层叠上下文并抬到 Z_HEADER(200)—— 让下拉整体在正文之上;
+ *   ② navpop 用 Z_POP(210)—— 在 header 内部也高于任何定位元素。
+ *
+ *   ⚠ 层级预算(改之前先看这里,勿随手加):
+ *      0-9    页面自身小装饰(徽标/角标)
+ *      10-49  面板/侧栏/分隔条(sizer 30/31)
+ *      50-99  页面内浮层(卡片菜单/提示)·#toast 99
+ *      200    header  ← 只有顶栏能占
+ *      210    navpop 下拉
+ *      300+   模态层(遮罩/对话框:ctx 菜单 600、速查表 600、designer 弹窗)
+ *   超过 300 的必须确认是全屏级模态,否则会盖住导航。
+ *
+ *   ⚠ 变量定义放在 theme-vars.css(纯变量层)不在这里 —— check.html /
+ *     open.html 是"自带布局"页,只引变量层,它们各有一份 navpop 副本
+ *     要靠同一份预算;定义在骨架层则这两页拿不到,会继续被压住。
+ * ══════════════════════════════════════════════════════════════════ */
+header {
+  display: flex; align-items: center; gap: var(--gap);
+  padding: 6px var(--pad-h);
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+  flex: none;
+  min-height: var(--hdr-min);
+  /* ★ 关键:position + z-index 一起写。只有 z-index 不写 position 不生效
+   *   (z-index 只对定位元素/弹性/网格项生效),只写 position 不建上下文。 */
+  position: relative;
+  z-index: var(--z-header);
+}
+header h1 {
+  font-size: 14px; margin: 0; font-weight: 600;
+  white-space: nowrap;
+}
+header h1 small { font-weight: 400; color: var(--ink3); margin-left: 6px }
+.spacer { flex: 1 }
+
+/* ── 次级工具条(UI_REFLOW_V1,2026-10-07)──
+ * 顶栏(header)现在只放导航(logo + 4 分组 + 语言/全屏),保持全站一致;
+ * 各页的搜索/筛选/保存等工具统一落到这条紧贴顶栏下方的次级工具条,
+ * 不再与导航挤在同一行。控件沿用 header 的通用样式(select/input/button 是全局的)。 */
+.subbar {
+  display: flex; align-items: center; gap: var(--gap);
+  padding: 5px var(--pad-h);
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+  flex: none; min-height: 34px;
+}
+.subbar h1 { font-size: 14px; margin: 0; font-weight: 600; white-space: nowrap }
+.subbar h1 small { font-weight: 400; color: var(--ink3); margin-left: 6px }
+/* 工具条内的 spacer 同样撑开,把右侧工具推到最右 */
+.subbar .spacer { flex: 1 }
+
+/* 控件组:同一组功能靠得更近,组间留更大空隙 */
+.tgroup { display: flex; align-items: center; gap: 4px }
+.tgroup + .tgroup { margin-left: 4px }
+
+/* UI_SLIM_V1:顶栏筛选器折叠。标记 data-collapse 的组由 toolbar.js 的
+ * 「筛选」按钮统一收起 —— 下拉类控件多是"繁琐"的主要来源,
+ * 但它们不能删(特定场景要用),所以给一个开关而不是硬砍。 */
+body[data-filters="off"] .subbar [data-collapse] { display: none !important }
+
+/* UI_SLIM_V1:尺寸全部走 --ctl-* 变量,不再各写一份。
+ * 17 个页面里 button/select 的 padding 有 4px 7px / 5px 9px / 8px 12px 三种,
+ * 字号 12/13/14 都有 —— 单独看都不算错,放在一起就是"繁琐"。 */
+select, input[type=text], input[type=number], button {
+  font: inherit; font-size: var(--ctl-font); color: var(--ink); background: #fff;
+  border: 1px solid var(--line); border-radius: var(--r); padding: var(--ctl-pad);
+  max-width: 100%;
+}
+input[type=text] { width: 150px }
+select { max-width: 220px }
+button { cursor: pointer; white-space: nowrap }
+button:hover { background: #f2f4f7 }
+button:active { background: #e9ecf1 }
+button.primary { background: var(--accent); border-color: var(--accent); color: #fff }
+button.primary:hover { background: #25589a }
+button:disabled { opacity: .45; cursor: not-allowed }
+button.on { background: var(--accent-soft); border-color: var(--accent); color: var(--accent) }
+
+/* 图标按钮(缩放 +/- 之类),方一点更好点 */
+button.icon { padding: var(--ctl-pad); font-weight: 600 }
+
+.chk { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; color: var(--ink2); white-space: nowrap }
+.chk input { margin: 0 }
+
+.chip {
+  display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px;
+  border-radius: 11px; background: var(--line2); color: var(--ink2); font-size: 12px;
+  white-space: nowrap;
+}
+.chip.hot { background: var(--warn-soft); color: var(--warn) }
+.chip.bad { background: var(--danger-soft); color: var(--danger) }
+.chip.good { background: var(--ok-soft); color: var(--ok) }
+
+/* ── 来源徽标(focus / decisions 共用)──
+ * 两种读法:内容归属(原版/改写/新增) + 生效来源(具体哪个 mod)。
+ * 颜色语义全局一致,改这里等于改所有页面。 */
+.src {
+  display: inline-block; padding: 0 5px; border-radius: 8px;
+  font-size: 10px; line-height: 15px; vertical-align: 1px;
+  background: var(--line2); color: var(--ink3); white-space: nowrap;
+}
+.src.base { background: #eceff3; color: #8a929e }
+.src.ovr  { background: var(--warn-soft); color: var(--warn); font-weight: 600 }
+.src.new  { background: #eaf1fb; color: var(--accent); font-weight: 600 }
+.src.mod  { background: var(--ok-soft); color: var(--ok); font-weight: 600 }
+
+/* ⚠ 2026-10-05 移除左侧导航栏(#siderail)样式。
+ * 用户要求「子页面不该存在子导航栏,应该只有总导航栏」——
+ * 左侧竖轨与顶栏是同一组链接的重复入口,还挤压正文宽度。
+ * nav.js 的 mountSide() 仍保留导出(未再被 mountNav 调用),
+ * 若将来要恢复,需把这一段样式与 check.html / open.html 的页内样式一起加回。 */
+
+/* ── 右上角导航(nav.js 注入)──
+ * ★ 2026-10-05 改为分组下拉(见 nav.js NAV_GROUPS):
+ *   原来 13 个链接平铺,1280px 下会换行,加模块后更挤。
+ *   现在是 logo + 4 个 <details> 下拉,任何宽度都是一行。
+ *   下拉用原生 <details>,免 JS:键盘可达、点外自动收起由 nav.js 兜底。 */
+.navlinks { display: flex; align-items: center; gap: 2px }
+.navlinks a {
+  font-size: 12px; color: var(--ink2); text-decoration: none;
+  padding: 3px 7px; border-radius: var(--r); white-space: nowrap;
+}
+.navlinks a:hover { background: var(--line2); color: var(--ink) }
+.navlinks a.cur { background: var(--accent-soft); color: var(--accent); font-weight: 600 }
+
+/* 工作台入口(带应用图标) */
+.navhome {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-weight: 600; color: var(--ink) !important; padding-right: 9px !important;
+  margin-right: 3px; border-right: 1px solid var(--line2);
+  border-radius: 0 !important;
+  position: relative; z-index: 240;
+}
+.navhome:hover { background: var(--line2) }
+
+/* 分组下拉 */
+.navgrp { position: relative }
+.navgrp > .navsum {
+  list-style: none; cursor: pointer; user-select: none;
+  font: inherit; font-size: 12px; color: var(--ink2);
+  background: transparent; border: 0; padding: 3px 8px; border-radius: var(--r);
+  white-space: nowrap; display: inline-flex; align-items: center; gap: 4px;
+}
+.navgrp > .navsum::after {
+  content: ""; width: 0; height: 0; margin-left: 1px;
+  border-left: 3.5px solid transparent; border-right: 3.5px solid transparent;
+  border-top: 4px solid currentColor; opacity: .55;
+}
+.navgrp > .navsum:hover { background: var(--line2); color: var(--ink) }
+.navgrp.on > .navsum { color: var(--accent); font-weight: 600 }
+/* ★ 2026-10-09:下拉 hover 与点击(.open)都可展开。
+ *   hover 覆盖整个 .navgrp(含弹层),移到弹层上不闪退;
+ *   不再用 :focus-within —— 它会让点击展开后即使鼠标离开也保持,违背「脱离即隐」。
+ *   点击由 nav.js 在 .navgrp 上切换 .open,鼠标离开分组时移除。 */
+.navpop { display: none }
+.navgrp:hover .navpop,
+.navgrp.open .navpop { display: block }
+.navgrp:hover > .navsum { background: var(--accent-soft); color: var(--accent) }
+/* 当前页所在组的小圆点,不用整块高亮也能看出位置 */
+.navgrp .curdot {
+  width: 5px; height: 5px; border-radius: 50%; background: var(--accent);
+  display: inline-block;
+}
+.navpop {
+  position: absolute; right: 0; top: 100%; z-index: var(--z-pop, 210);
+  background: var(--panel); border: 1px solid var(--line);
+  border-radius: var(--r-card); box-shadow: var(--shadow);
+  padding: 4px; min-width: 208px;
+  /* 下拉比顶栏高,必须允许溢出 header 的盒子;header 自身没有 overflow:hidden,
+     但某些页面给 header 加过,这里显式兜住,免得又被裁掉。 */
+  overflow: visible;
+}
+.navpop a {
+  display: flex; flex-direction: column; gap: 1px;
+  padding: 5px 9px; border-radius: var(--r); line-height: 1.3;
+}
+.navpop a b { font-size: 12.5px; font-weight: 600; color: var(--ink) }
+.navpop a span { font-size: 10.5px; color: var(--ink3) }
+.navpop a:hover { background: var(--accent-soft) }
+.navpop a:hover span { color: var(--ink2) }
+.navpop a.cur { background: var(--accent-soft); box-shadow: inset 2px 0 0 var(--accent) }
+.navpop a.cur b { color: var(--accent) }
+
+/* ⚠ 2026-10-05 删除 .navlinks.on-dark 整段。
+ *   原来体检页 / 打开工程页各自复制了一份深色下拉样式,靠 nav.js 加的
+ *   .on-dark 类生效。变量层抽到 theme-vars.css 后,这两页引变量就能
+ *   跟随设置中的主题(浅色/深色/暖砂都行),不再需要固定深色 → on-dark
+ *   与它那十几行硬编码一起删掉。nav.js 的 opts.dark 仍保留(传了无害,
+ *   只是不再产生视觉差异),避免改 nav.js 牵连其他页面。 */
+
+/* ── 布局骨架 ── */
+main { flex: 1; display: flex; min-height: 0 }
+aside { background: var(--panel); flex: none; display: flex; flex-direction: column; min-height: 0 }
+
+/* 语言下拉容器(locclient.js 自动挂载)。默认英文,可切中文 */
+#langbar { display: flex; align-items: center; gap: 4px }
+#langbar select {
+  font-size: 11px; padding: 2px 4px; border-radius: 4px;
+  border: 1px solid var(--line); background: #fff; color: var(--ink2);
+}
+
+/* ── 面板宽度可调(sizer.js,2026-10 新增)──
+ * 用户要求:除顶栏外每个控件(显示窗 / 检查器)宽窄都要能调,不能写死。
+ * 这里只放【样式】;拖拽逻辑在 sizer.js,宽度存 --sideL / --sideR + localStorage。
+ *
+ * 用法:侧栏加 data-sizer="left|right"(可选 data-sizer-def="默认px"),
+ *      再调 Sizer.mountAll()。分隔条由 JS 插在侧栏与画布之间。 */
+:root { --sideL: 300px; --sideR: 320px; --sizer-w: 5px }
+
+aside[data-sizer] { position: relative }
+aside[data-sizer="left"] { width: var(--sideL) }
+aside[data-sizer="right"] { width: var(--sideR) }
+
+/* 分隔条:贴在侧栏【靠画布那一侧】的绝对定位竖条 */
+.sizer-bar {
+  position: absolute; top: 0; bottom: 0; width: var(--sizer-w);
+  cursor: col-resize; z-index: 30;
+  background: transparent; transition: background .12s;
+}
+aside[data-sizer="left"] > .sizer-bar { right: calc(-1 * var(--sizer-w)) }
+aside[data-sizer="right"] > .sizer-bar { left: calc(-1 * var(--sizer-w)) }
+.sizer-bar:hover, .sizer-bar:active { background: var(--accent) }
+
+/* 拖拽中:禁掉选中与 iframe/画布的指针事件,否则会连带选中一片文本 */
+body.sizer-dragging { user-select: none; -webkit-user-select: none; cursor: col-resize }
+body.sizer-dragging * { pointer-events: none !important }
+body.sizer-dragging .sizer-bar { pointer-events: auto !important }
+
+/* 折叠态:宽度归零,留一个竖条抓手(否则双击展开没地方点) */
+aside.sizer-collapsed { width: 0 !important; overflow: visible; border: 0 }
+aside.sizer-collapsed > *:not(.sizer-grip) { display: none }
+.sizer-grip {
+  position: absolute; top: 0; bottom: 0; width: 12px; display: none;
+  cursor: pointer; z-index: 31;
+}
+aside[data-sizer="left"].sizer-collapsed .sizer-grip { left: 0; display: block }
+aside[data-sizer="right"].sizer-collapsed .sizer-grip { right: 0; display: block }
+.sizer-grip:hover { background: var(--accent-soft) }
+aside.sizer-collapsed::after {
+  content: '»'; position: absolute; top: 50%; font-size: 13px; color: var(--ink3);
+  line-height: 1;
+}
+aside[data-sizer="left"].sizer-collapsed::after { left: 2px }
+aside[data-sizer="right"].sizer-collapsed::after { right: 2px; content: '«' }
+/* UI_SLIM_V1:pane-title 的浅灰底 + 下边框在深色下是两条线,在浅色下也是
+ * 两条线 —— 17 个页面 × 每页 2~3 个面板 = 满屏横线。
+ * 改成"更淡的底 + 更细的边",密度变量一起走。 */
+.pane-title {
+  padding: 5px 10px; font-weight: 600; font-size: 11.5px; color: var(--ink2);
+  border-bottom: 1px solid var(--line2); background: var(--inset); flex: none;
+  display: flex; align-items: center; gap: 6px;
+}
+.pane-body { overflow: auto; flex: 1; min-height: 0 }
+.item {
+  padding: var(--row-pad); cursor: pointer; font-size: 12px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.item:hover { background: #f2f4f7 }
+.item.on { background: var(--accent-soft); color: var(--accent); font-weight: 600 }
+.item .tag { color: var(--ink3); font-size: 11px }
+
+/* ── 检查器 ── */
+#insp { padding: 9px 11px; font-size: 12px }
+#insp .kv { display: flex; gap: 6px; padding: 1px 0 }
+#insp .kv b { flex: none; width: 66px; font-weight: 600; color: var(--ink2) }
+#insp .kv span { word-break: break-all }
+#insp h4 {
+  margin: 9px 0 4px; font-size: 12px; color: var(--ink2);
+  border-bottom: 1px solid var(--line2); padding-bottom: 3px;
+}
+
+/* ── 提示条 ── */
+#toast {
+  position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%);
+  background: #1d2129; color: #fff; padding: 7px 15px; border-radius: 6px;
+  font-size: 13px; opacity: 0; transition: opacity .18s;
+  pointer-events: none; z-index: 99; max-width: 70vw;
+}
+#toast.on { opacity: 1 }
+#toast.bad { background: var(--danger) }
+
+.empty { color: var(--ink3); text-align: center; padding: 40px 10px }
+
+/* 应用图标:--app-icon 由 appearance.js 注入,页面用 background-image 取用 */
+.app-icon {
+  width: 20px; height: 20px; flex: none; border-radius: 4px;
+  background-image: var(--app-icon, none);
+  background-size: contain; background-repeat: no-repeat; background-position: center;
+}
+
+/* ── 深色下的"硬编码白底"补丁 ──
+ * 有些页面(设置页的模组卡片、面板、空态)在引 theme.css 之前就把背景写死成 #fff,
+ * 主题一切深色它们就成了刺眼的白块。这里统一拉回变量,省得逐页改。 */
+:root[data-theme="dark"] .mod,
+:root[data-theme="dark"] .panel,
+:root[data-theme="dark"] .thm,
+:root[data-theme="dark"] .empty,
+:root[data-theme="midnight"] .mod,
+:root[data-theme="midnight"] .panel,
+:root[data-theme="midnight"] .thm,
+:root[data-theme="midnight"] .empty {
+  background: var(--panel);
+}
+:root[data-theme="dark"] .mod.bad,
+:root[data-theme="midnight"] .mod.bad { background: var(--danger-soft) }
+:root[data-theme="dark"] .wrow:hover,
+:root[data-theme="midnight"] .wrow:hover { background: var(--accent-soft) }
+
+/* ══════════════════════════════════════════════════════
+ * 本地背景图 + 毛玻璃面板(设置页选定本地图片后生效)
+ * appearance.js 给 <html> 打 data-bg="image" 并注入 --bg-image。
+ * 铺图规则与 --glass / --glass-raise 变量都在 theme-vars.css,
+ * 这里只列「哪些面板要变玻璃」——深浅色由 --glass 自己区分,
+ * 所以不必再写两遍 selector(之前漏改一处主题就会有一处不跟随)。
+ *
+ * ★ GLASS_RANGE(2026-10-04):用户口径 —— 壁纸模式下不允许出现
+ *   完全透明或完全不透明的控件,透明度一律落在 30%~75%:
+ *   面板/卡片 → --glass(62%~70%),浮层 → --glass-raise(≤75%),
+ *   输入框/按钮 → --glass-ctrl(55%),画布 → --glass-canvas(30%~35%)。
+ *   #stage 与 select/input/button 是页面各自写死的实底,故 !important 压过。
+ * ══════════════════════════════════════════════════════ */
+:root[data-bg="image"] header,
+:root[data-bg="image"] footer,
+:root[data-bg="image"] aside,
+:root[data-bg="image"] .card,
+:root[data-bg="image"] .panel,
+:root[data-bg="image"] .mod,
+:root[data-bg="image"] .mod.bad,
+:root[data-bg="image"] .mod.off,
+:root[data-bg="image"] .preview,
+:root[data-bg="image"] .thm,
+:root[data-bg="image"] .empty,
+:root[data-bg="image"] .card > .hd,
+:root[data-bg="image"] .navpop,
+:root[data-bg="image"] .pane-title {
+  background: var(--glass) !important;
+  backdrop-filter: blur(10px) saturate(1.1);
+  -webkit-backdrop-filter: blur(10px) saturate(1.1);
+}
+
+/* 输入框 / 下拉 / 按钮:55% 玻璃,悬停浓一档(≤75%),不再纯白实底 */
+:root[data-bg="image"] select,
+:root[data-bg="image"] input[type=text],
+:root[data-bg="image"] input[type=number],
+:root[data-bg="image"] button {
+  background: var(--glass-ctrl) !important;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+:root[data-bg="image"] button:hover,
+:root[data-bg="image"] .item:hover {
+  background: var(--glass-raise) !important;
+}
+:root[data-bg="image"] button:active {
+  background: var(--glass) !important;
+}
+:root[data-bg="image"] button.primary {
+  /* 主按钮:强调色也要透,叠在 --glass-ctrl 上凑出 55%~70% */
+  background: color-mix(in srgb, var(--accent) 70%, transparent) !important;
+}
+:root[data-bg="image"] button.on {
+  background: color-mix(in srgb, var(--accent) 18%, var(--glass-ctrl)) !important;
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* 画布/舞台:最透的一层(30%~35%),壁纸在节点后面隐约可见 */
+:root[data-bg="image"] #stage {
+  background: var(--glass-canvas) !important;
+}
+
+/* 顶部提示条(原来纯黑实底)→ 75% 上限 */
+:root[data-bg="image"] #toast {
+  background: rgba(29, 33, 41, .75) !important;
+}
+
+/* ★ body 自身必须让位(2026-10-06 加)。
+ *   theme.css:21 写的是 `body{background:var(--bg)}`,而 --bg 是**不透明**的
+ *   (#f6f7f9 / #14181f / #0f1420 / #f4f1ea)。theme-vars.css 只给 body 铺了
+ *   background-image,**没把底色本身变透明** —— 于是 --bg 那层不透明底
+ *   整个盖在 background-image 上面,壁纸在 body 区域根本看不见。
+ *   实测 /loc 页 598 个文字元素压的是 body 实底,是最严重的一处。
+ *   这里把 --bg 在壁纸模式下指向透明,让 body 只剩 background-image。 */
+:root[data-bg="image"] { --bg: transparent }
+:root[data-bg="image"] body {
+  background-color: transparent !important;
+}
+
+
+/* ══════════════════════════════════════════════════════════════════
+ * 贴图加载失败占位(公共件 tex.js 打上的 .tex-fail)
+ *
+ * 为什么需要:图标是异步懒加载的,加载失败时浏览器会显示那个
+ * "破图"小图标 —— 在密集卡片墙上就是一排碎玻璃,比留空还难看。
+ * 这里改成一块淡色底,视觉上就是"这块没图标",不刺眼。
+ * ══════════════════════════════════════════════════════════════════ */
+img.tex-fail{
+  background:var(--line2);
+  border:1px dashed var(--line);
+  opacity:.5;
+}
+img.tex-fail::after{ content:none }
+
+/* ══════════════════════════════════════════════════════════════════
+ * 悬停浮层(零 JS 版)
+ *
+ * 用法:<div class="tip" data-tip="第一行&#10;第二行">…</div>
+ * 属性里的换行写 &#10; 或在 JS 里用 \n(data-tip 属性会保留换行符,
+ * 配合 white-space:pre-line 才有换行效果)。
+ *
+ * 220ms 延迟是刻意留的:鼠标划过一排卡片时不该闪出一片浮层。
+ *
+ * ★★ z-index 要写在**两处**,缺一不可(2026-10-06 修「首页任务卡悬浮窗被盖住」):
+ *   ① `.tip::after` 的 z-index —— 浮层自身在 `.tip` 内部的层级;
+ *   ② **`.tip:hover` 自己的 z-index** —— 这才是真正的修复。
+ *   原因:首页 `.card:hover{transform:translateY(-2px)}` 里的 **transform
+ *   会生成层叠上下文**,把 ① 的 60 关进卡片内部,于是后出现的兄弟卡片
+ *   (position:relative,z-index auto)按文档顺序就盖住了它 —— 悬浮窗只露半截。
+ *   ② 让卡片本身在 hover 时升到 60,浮层才真正浮到全页面前面。
+ * ══════════════════════════════════════════════════════════════════ */
+.tip{ position:relative }
+.tip:hover{ z-index:var(--z-tip, 60) }
+.tip::after{
+  content:attr(data-tip);
+  position:absolute;z-index:var(--z-tip, 60);left:0;top:calc(100% + 7px);
+  width:max-content;max-width:320px;white-space:pre-line;
+  background:var(--ink);color:var(--panel);
+  font-size:11.5px;line-height:1.6;font-weight:400;text-align:left;
+  padding:8px 10px;border-radius:7px;
+  opacity:0;visibility:hidden;pointer-events:none;
+  transition:opacity .14s ease .22s, visibility .14s ease .22s;
+  box-shadow:0 8px 24px rgba(0,0,0,.28);
+}
+.tip:hover::after{ opacity:1;visibility:visible;transition-delay:0s,0s }
+
+/* ══════════════════════════════════════════════════════════════════
+ * 全站加载进度条(PROGRESS_V1,2026-10-07,progress.js 动态插入 body 首位)
+ *
+ * 为什么必须全局统一:国策/科技/决议这些图要构建几十秒,原来只在
+ * 页面某个角落写「构建中…」—— 页面一滚动就看不见,用户以为卡死。
+ *
+ * ⚠ z-index 必须高于顶栏与所有浮层,否则会被盖住(白条看不见 =
+ *   功能像是没做)。主题色跟随 accent,深浅色下都可见。
+ * ⚠ height 只有 3px:够表达"在动",不抢内容的注意力。
+ * ══════════════════════════════════════════════════════════════════ */
+.loadbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  z-index: 2147483000; /* 高于任何浮层,但低于浏览器原生层 */
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .2s;
+  background: transparent;
+}
+.loadbar.on { opacity: 1 }
+/* 不确定态:一段来回扫的高亮。后端多数图没有 done/total,
+   假装能算出百分比是不诚实的,不如如实表达"在干但不知道到哪"。*/
+.loadbar .lbfill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 34%;
+  border-radius: 0 2px 2px 0;
+  background: linear-gradient(90deg, transparent, var(--accent) 40%, var(--accent) 60%, transparent);
+  animation: lbsweep 1.15s ease-in-out infinite;
+}
+@keyframes lbsweep {
+  0%   { left: -34% }
+  100% { left: 100% }
+}
+/* 确定态:后端真报了 done/total(如体检)才用 */
+.loadbar.det .lbfill {
+  animation: none;
+  width: 0;
+  transition: width .25s ease-out;
+  background: var(--accent);
+  border-radius: 0 2px 2px 0;
+}
+.loadbar.err .lbfill { background: var(--bad, #d9534f); animation: none; width: 100% }
+/* 阶段文字:贴在条右侧,小字低对比,不与正文争 */
+.loadbar .lbtext {
+  position: absolute;
+  top: 5px; right: 10px;
+  font-size: 11px;
+  line-height: 1.5;
+  padding: 1px 6px;
+  border-radius: 8px;
+  color: var(--ink2);
+  background: var(--panel);
+  border: 1px solid var(--line2);
+  white-space: nowrap;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+ * 语言切换按钮(I18N_V1,2026-10-07,nav.js 注入到 .navlinks 最右)
+ *
+ * 放最右 = 与全屏按钮同一端的"视图级"操作,不与页面跳转混在一起。
+ * 显示"文 / A"双字样:纯 "文" 在英文界面下没人认得,
+ * 加个 A 至少知道这是 alphabet 相关的开关。
+ * ══════════════════════════════════════════════════════════════════ */
+.langbtn {
+  font: inherit; font-size: 12px; cursor: pointer;
+  color: var(--ink2); background: var(--panel);
+  border: 1px solid var(--line2); border-radius: var(--r);
+  padding: 3px 8px; margin-left: 4px; white-space: nowrap;
+  display: inline-flex; align-items: center; gap: 4px;
+  transition: background .12s, color .12s, border-color .12s;
+}
+.langbtn:hover { background: var(--line2); color: var(--ink); border-color: var(--accent) }
+.langbtn .langico {
+  font-size: 11px; opacity: .6; border-right: 1px solid var(--line2);
+  padding-right: 4px; line-height: 1;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+ * 全屏按钮(FULLSCREEN_V1,fullscreen.js 注入到 .navlinks 最前)
+ *
+ * 放在导航区最前 = 视图级操作,与"跳到哪个页面"分开。
+ * 样式刻意做得比 .navlinks a 稍重(有边框),因为它是这一排里
+ * 唯一"改变当前视图"而不是"离开当前页面"的按钮。
+ * ══════════════════════════════════════════════════════════════════ */
+.fsbtn {
+  font: inherit; font-size: 12px; cursor: pointer;
+  color: var(--ink2); background: var(--panel);
+  border: 1px solid var(--line2); border-radius: var(--r);
+  padding: 3px 8px; margin-right: 3px; white-space: nowrap;
+  transition: background .12s, color .12s, border-color .12s;
+}
+.fsbtn:hover { background: var(--line2); color: var(--ink); border-color: var(--accent) }
+/* 全屏态:按钮本身要显眼,提示"现在可以按 Esc 或点我退出" */
+body.in-fullscreen .fsbtn { color: var(--accent); border-color: var(--accent); background: var(--accent-soft) }
+/* 全屏时顶栏固定在顶层(本就在 z-index 200),这里加一点投影与底色,
+   免得画布滚到顶栏下方时文字与节点叠字 */
+body.in-fullscreen header { box-shadow: 0 2px 10px rgba(0, 0, 0, .12) }
+:root[data-bg="image"] .fsbtn { background: var(--glass-raise); backdrop-filter: blur(10px) }
+:root[data-bg="image"] body.in-fullscreen .fsbtn { background: var(--glass-raise) }
+
+/* ══════════════════════════════════════════════════════════════════
+ * 全屏恢复提示条(FULLSCREEN_V2)
+ *
+ * ★ 为什么要有这个条:全屏是文档级状态,导航必然退出它;而恢复请求
+ *   需要用户手势才被批准,不能在新页面加载时偷偷发。
+ *   所以改成「点一下就恢复」—— 但静默恢复会剥夺用户选择权
+ *   (他可能只是想去别的页看看),因此给一条可见提示 + 明确关闭入口。
+ *
+ * ⚠ 必须 pointer-events 处理:条本身挡不住点击,否则用户点条下面的空白
+ *   就点不到,提示形同虚设。只有按钮自己接收事件。
+ * ══════════════════════════════════════════════════════════════════ */
+.fs-hint {
+  position: fixed; z-index: 400;
+  left: 50%; bottom: 18px; transform: translateX(-50%);
+  display: flex; align-items: center; gap: 10px;
+  padding: 7px 12px;
+  font: inherit; font-size: 12px; line-height: 1.4;
+  color: var(--ink);
+  background: var(--panel);
+  border: 1px solid var(--accent);
+  border-radius: var(--r);
+  box-shadow: 0 3px 14px rgba(0, 0, 0, .16);
+  /* ★ 整条不吃事件:首次点击应落到页面任意处 → 触发全屏恢复 */
+  pointer-events: none;
+  animation: fshint-in .18s ease-out;
+}
+.fs-hint-tx { white-space: nowrap }
+/* 唯一需要点得到的东西:"本次不再提示" */
+.fs-hint-no {
+  pointer-events: auto;
+  font: inherit; font-size: 11px; cursor: pointer;
+  color: var(--ink2); background: var(--line2);
+  border: 1px solid var(--line2); border-radius: var(--r);
+  padding: 2px 7px; white-space: nowrap;
+}
+.fs-hint-no:hover { color: var(--ink); border-color: var(--accent) }
+@keyframes fshint-in {
+  from { opacity: 0; transform: translate(-50%, 6px) }
+  to   { opacity: 1; transform: translate(-50%, 0) }
+}
+/* 全屏提示条与全屏按钮互斥:已经在全屏里就不该再挂着 */
+body.in-fullscreen .fs-hint { display: none }
+

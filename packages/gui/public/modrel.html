@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>HOI4 模组关系</title>
+<link rel="stylesheet" href="/theme.css">
+<style>
+  main{display:flex;flex-direction:column;gap:10px;padding:12px;overflow:auto}
+  .cards{display:flex;gap:8px;flex-wrap:wrap}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r-card);padding:8px 11px;min-width:150px}
+  .card .k{font-size:11px;color:var(--ink3)}
+  .card .v{font-size:19px;font-weight:600;color:var(--ink)}
+  .card.bad .v{color:#e07070}
+  .card.warn .v{color:#d8a94a}
+  h2{font-size:13px;color:var(--ink2);margin:6px 0 2px}
+  .hint{font-size:11px;color:var(--ink3);line-height:1.7}
+  table{width:100%;border-collapse:collapse;font-size:12px}
+  th,td{text-align:left;padding:5px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--ink3);font-weight:600;font-size:11px}
+  td.mono,code{font-family:ui-monospace,Consolas,monospace;font-size:11px}
+  .pill{display:inline-block;font-size:10px;padding:1px 6px;border-radius:9px;border:1px solid var(--line);color:var(--ink3);margin-right:3px}
+  .pill.bad{border-color:#e07070;color:#e07070}
+  .pill.warn{border-color:#d8a94a;color:#d8a94a}
+  .pill.ok{border-color:#5aa870;color:#5aa870}
+  .rp{color:var(--ink3);font-size:10px;line-height:1.6;max-height:4.7em;overflow:auto}
+  .node{border:1px solid var(--line);border-radius:var(--r-card);padding:6px 9px;margin-bottom:6px;background:var(--panel)}
+  .node.err{border-color:#e07070}
+  .node.warn{border-color:#d8a94a}
+  .deps{margin:4px 0 0 14px;padding-left:10px;border-left:2px solid var(--line);font-size:11px;line-height:1.8}
+  .ok{color:#5aa870}
+  .note{font-size:11px;color:var(--ink3);line-height:1.7;border-left:2px solid var(--line);padding:2px 0 2px 9px;margin-top:6px}
+  .note b{color:var(--ink2)}
+</style>
+</head>
+<body>
+<header>
+  <div id="nav"></div>
+</header>
+<div class="subbar">
+  <h1>模组关系 <small id="chip">—</small></h1>
+  <span class="spacer"></span>
+</div>
+<main>
+  <div class="hint" id="intro">读取 <code>/api/modmeta</code>…</div>
+  <div class="cards" id="cards"></div>
+
+  <h2>载入顺序</h2>
+  <div class="hint" style="margin-bottom:4px">
+    <b>① 工作台挂载序</b> = 当前 <code>mods</code> 数组顺序（近似展示）；
+    <b>② 依赖修正后的游戏内加载序</b> = <code>dependencies</code> 拓扑序（被依赖的在前）。
+    两行不一致，即代表 <code>dependencies</code> 改写了默认按用户 <code>.mod</code> 文件名排序的结果。
+  </div>
+  <div id="orderMount" class="hint" style="margin-bottom:8px"></div>
+  <div id="orderTopo" class="hint"></div>
+  <div class="note">
+    <b>求值序 ≠ 载入序</b>：加载序在「求值」阶段不起决定作用——游戏通常按文件 ASCII 字符 ID 顺序求值。
+    各域口径不同：<code>states</code> 类先创建者胜（原版 <code>123-ABC.txt</code> 胜模组 <code>123-XYZ.txt</code>）；
+    <code>sprite</code> 类后求值者胜；国策（focus）重复会破坏前置行生成，应避免。本工具按载入序近似判定，仅作参考。
+  </div>
+
+  <h2>依赖关系</h2>
+  <div id="graph"></div>
+
+  <h2>replace_path 缺口</h2>
+  <div class="hint">模组声明 <code>replace_path</code> 相当于<strong>替换该文件夹内【直接】文件</strong>（子文件夹不受影响）；声明了却没提供的直接文件，在游戏里就是不存在。</div>
+  <div id="audit"></div>
+  <div class="note">
+    <b>双 descriptor 注意</b>：每个模组同时有 <code>descriptor.mod</code>（模组目录内，共享信息）与用户目录下的 <code>.mod</code>（含 <code>path=</code>）。
+    <code>replace_path</code> 必须两处都写——launcher 只删不抄，不会把 <code>descriptor.mod</code> 里的 <code>replace_path</code> 复制到用户 <code>.mod</code>。
+  </div>
+
+  <h2>各模组的 replace_path / dependencies</h2>
+  <div id="table"></div>
+</main>
+<div id="toast"></div>
+<script src="/bundles/modrel.bundle.js?v=mvjll3h6"></script>
+<script src="/i18n-dict.js"></script>
+
+<script type="module">
+  import { mountNav } from '/nav.js'
+  mountNav('#nav')
+</script>
+<!-- ★ 同 worldmap.html:appearance.js 是 ESM,只能被 nav.js import,不能用经典脚本标签加载。 -->
+
+
+
+</body>
+</html>

@@ -1,0 +1,62 @@
+{
+  "layer": "04_loc",
+  "base": "http://127.0.0.1:5175",
+  "ts": "2026-10-19T06:06:21.750Z",
+  "summary": {
+    "total": 7,
+    "pass": 7,
+    "fail": 0,
+    "exempt": 0
+  },
+  "cases": [
+    {
+      "name": "loc_index_built",
+      "pass": true,
+      "detail": "langs=l_english,l_simp_chinese entries=777125 files=3252",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "dollar_ref_defined_resolves_to_fixedpoint",
+      "pass": true,
+      "detail": "definedRefs=99052 nestedChains=2649 undefined(游戏变量/缺译,单列不判错)=l_english:547变量 l_simp_chinese:541变量",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "dollar_literal_$$_not_corrupted",
+      "pass": true,
+      "detail": "含$$源串=858(分词式展开不碰非引用 $$,无占位符泄漏)",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "name_attribute_preferred_then_fallback_to_id",
+      "pass": true,
+      "detail": "样本key=BRA_political_military_balance  有name→用name译文OK  无name→用本名译文OK  out=\"Civilian vs Military Governmen\"",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "no_raw_loc_key_hardcoded_in_ui",
+      "pass": true,
+      "detail": "交集 token=0(0=无硬编码原始键)",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "no_key_value_fallback_residue_in_our_code",
+      "pass": true,
+      "detail": "数据侧 value==key 共 49 条(月份/星期/阵营/专名,合法);其中被前端源码引用=0",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "streamed_loc_equals_serial_fingerprint",
+      "pass": true,
+      "detail": "workers=5 chains=5 batches=55 fallback=false  逐字段指纹一致",
+      "exempt": false,
+      "exemptReason": null
+    }
+  ]
+}

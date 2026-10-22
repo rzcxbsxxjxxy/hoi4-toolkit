@@ -1,0 +1,489 @@
+types = {
+	type[oob] = {
+		path = "game/history/units"
+		type_per_file = yes
+		### ★ D3 修复:缺这一行 → 顶层键 `units = {` 派不出 struct.oob,
+		###   整棵子树没有字段表。规则本身是齐的(struct.oob 已声明
+		###   units/air_wings/division_template,`:100-103` 也已声明
+		###   division_name.is_name_ordered/name_order,`:186-197` 已声明
+		###   ship.equipment.<equipment.naval_equip>)—— 缺的只是**关联**。
+		###   实测影响:history/units 目录 15,565 条 unknown-key 噪音,
+		###   其中 is_name_ordered 3,773 / name_order 3,694 / destroyer_1 1,370。
+		###   已 grep 磁盘核对顶层键:history/units/*.txt 的顶层键实测有
+		###   `units = {`(4+1 个文件,含 `units= {` 无空格写法)、
+		###   `division_template = {`(8)、`air_wings = {`(7),
+		###   后两个已在 struct.oob 里声明,靠同名 struct 命中即可。
+		###   判据:cwt-noise.test.ts 的 D3 断言。
+		skip_root_key = units
+	}
+}
+
+single_alias[division_template_clause] = {
+	name = value_set[division_template_name]
+	
+	## cardinality = 0..1
+    localization_key = localisation_inline
+	## cardinality = 0..1
+	division_names_group = <division_name>
+	## cardinality = 0..1
+	role = value[ai_template_roles]
+	### Customize which type of front template gets assigned to
+	## cardinality = 0..1
+	front_role_override = enum[template_front_role]
+	## cardinality = 0..1
+	override_model = <entity>
+	## cardinality = 0..1
+	template_counter = int
+	## cardinality = 0..1
+	is_army_hq = bool
+	## cardinality = 0..1
+	is_locked = bool
+	## cardinality = 0..1
+	force_allow_recruiting = bool
+	## cardinality = 0..1
+	obsolete = bool
+	## cardinality = 0..1
+	division_cap = int
+	regiments = {
+		## cardinality = 0..25
+		<unit.line_unit> = { x = int[0..4] y = int[0..4] }
+	}
+	## cardinality = 0..1
+	support = {
+		## cardinality = ~1..5
+		<unit.support_unit> = {
+			## severity = warning
+			x = 0
+			## severity = warning
+			y = int[0..4]
+		}
+	}
+	## cardinality = 0..1
+	regimental_support = {
+		## cardinality = ~1..inf
+		<unit.support_unit> = {
+			x = int[0..4]
+			y = int[0..4]
+		}
+	}
+	## cardinality = 0..1
+	template_counter = int
+	## cardinality = 0..1
+	priority = int
+	## cardinality = 0..1
+	is_fake_intel_division = bool
+	## cardinality = 0..1
+	foreign_template_tag = scope[country] # Country tag
+	## cardinality = 0..1
+	origin_type = subject
+}
+
+oob = {
+	## cardinality = 0..1
+	start_equipment_factor = float
+
+	## cardinality = 0..1
+	focus = {
+		current = <focus>
+		current = <shared_focus>
+		progress = float[0..inf]
+	}
+
+	## cardinality = 0..inf
+	division_template = single_alias_right[division_template_clause]
+
+	## cardinality = 0..inf
+	create_colonial_division_template = {
+		subject = scope[country] # Country tag
+		division_template = single_alias_right[division_template_clause]
+	}
+
+	## cardinality = 0..inf
+	instant_effect = {
+		alias_name[effect] = alias_match_left[effect]
+	}
+
+	## cardinality = 0..1
+	units = {
+		## cardinality = 0..inf
+		division = {
+			## cardinality = 0..1
+			name = scalar
+			## cardinality = 0..1
+			division_name = {
+				is_name_ordered = bool
+				## cardinality = 0..1
+				name_order = int
+			}
+			location = enum[provinces]
+			division_template = value[division_template_name]
+			### Defines a unique name for this unit's division commander
+			## cardinality = 0..1
+			unique = {
+				## cardinality = ~1..inf
+				scalar
+			}
+			## cardinality = 0..1
+			start_experience_factor = float[0..1]
+			## cardinality = 0..1
+			start_equipment_factor = float[0..1]
+			## cardinality = 0..1
+			start_manpower_factor = float[0..1]
+			## cardinality = 0..inf
+			force_equipment_variants = {
+				## cardinality = ~1..inf
+				<equipment.regular_equip> = {
+					owner = enum[country_tags]
+					## cardinality = 0..1
+					creator = enum[country_tags]
+					## cardinality = 0..1
+					version_name = scalar
+					## cardinality = 0..1
+					amount = int
+				}
+			}
+			## cardinality = 0..inf
+			### Defines a unique name for the division's commander
+			officer = {
+				name = scalar
+				### Defines a unique portraits for this unit'ss division commander
+				## cardinality = 0..1
+				portraits = {
+					### Portrait(s), army and/or civilian
+					## cardinality = ~1..2
+					army = {
+						### Portrait(s), large (leader) and/or small (advisor)
+						## cardinality = ~1..2
+						enum[character_portrait_sizes] = scalar
+					}
+				}
+			}
+			## cardinality = 0..1
+			acclimatization = {
+				## cardinality = ~1..inf
+				enum[acclimatization_values] = variable_field
+			}
+			## cardinality = 0..1
+			army_manpower = {
+				## cardinality = 0..1
+				army_manpower_value = {
+					## cardinality = ~1..inf
+					value = {
+						tag = scope[country]
+						value = int_variable_field
+					}
+				}
+				## cardinality = 0..1
+				army_manpower_need = {
+					## cardinality = ~1..inf
+					value = {
+						tag = scope[country]
+						value = int_variable_field
+					}
+				}
+			}
+		}
+
+		## cardinality = 0..inf
+		fleet = {
+			name = scalar
+			naval_base = enum[provinces]
+			## cardinality = ~1..inf
+			task_force = {
+				## cardinality = 0..1
+				name = scalar
+				location = enum[provinces]
+				## cardinality = 0..1
+				base = enum[provinces]
+				## cardinality = 1..inf
+				ship = {
+					## cardinality = 0..1
+					name = scalar
+					## cardinality = 0..1
+					ordered_name = scalar
+					## cardinality = 0..1
+					pride_of_the_fleet = yes
+					definition = <unit.ship_unit>
+					## cardinality = 0..1
+					start_experience_factor = float[0..1]
+					equipment = {
+						<equipment.naval_equip> = {
+							amount = int
+							owner = enum[country_tags]
+							## cardinality = 0..1
+							version_name = scalar
+							## cardinality = 0..1
+							creator = enum[country_tags]
+							### Defaults to 'no'
+							## cardinality = 0..1
+							create_if_missing = bool
+						}
+					}
+					## cardinality = 0..1
+					air_wings = {
+						# should have something to force ace to be directly after <equipment.air_equip>
+
+						## cardinality = 0..inf
+						<equipment.air_equip> = {
+							owner = enum[country_tags]
+							## cardinality = 0..1
+							creator = enum[country_tags]
+							## cardinality = 0..1
+							create_if_missing = bool
+							amount = int
+						}
+						## cardinality = 0..inf
+						value[bba_air_variants] = {
+							owner = enum[country_tags]
+							## cardinality = 0..1
+							creator = enum[country_tags]
+							## cardinality = 0..1
+							create_if_missing = bool
+							amount = int
+						}
+						## cardinality = 0..inf
+						### Order is important. Ace will be assigned to the wing above.
+						ace = {
+							modifier = <ace>
+							name = localisation_inline
+							surname = localisation_inline
+							## cardinality = 0..1
+							callsign = localisation_inline
+							## cardinality = 0..1
+							portrait = int
+							## cardinality = 0..1
+							is_female = yes
+						}
+						## cardinality = 0..inf
+						### Order is important. start_experience_factor will be assigned to the ace above.
+						start_experience_factor = float[0..1]
+						## cardinality = 0..inf
+						name = localisation_inline
+					}
+				}
+			}
+		}
+	}
+
+	## cardinality = 0..1
+	air_wings = {
+		## cardinality = 0..inf
+		<state> = {
+			# should have something to force ace to be directly after <equipment.air_equip>
+
+			## cardinality = 0..inf
+			<equipment.air_equip> = {
+				owner = enum[country_tags]
+				## cardinality = 0..1
+				creator = enum[country_tags]
+				## cardinality = 0..1
+				create_if_missing = bool
+				amount = int
+				## cardinality = 0..1
+				version_name = value[variant_name]
+			}
+			## cardinality = 0..inf
+			value[bba_air_variants] = {
+				owner = enum[country_tags]
+				## cardinality = 0..1
+				creator = enum[country_tags]
+				## cardinality = 0..1
+				create_if_missing = bool
+				amount = int
+				## cardinality = 0..1
+				version_name = value[variant_name]
+			}
+			## cardinality = 0..inf
+			### Order is important. Ace will be assigned to the wing above.
+			ace = {
+				modifier = <ace>
+				name = localisation_inline
+				surname = localisation_inline
+				## cardinality = 0..1
+				callsign = localisation_inline
+				## cardinality = 0..1
+				portrait = int
+				## cardinality = 0..1
+				is_female = yes
+			}
+			## cardinality = 0..inf
+			### Order is important. start_experience_factor will be assigned to the ace above.
+			start_experience_factor = float[0..1]
+			## cardinality = 0..inf
+			name = localisation_inline
+		}
+		## cardinality = 0..inf
+		scalar = {
+			# should have something to force ace to be directly after <equipment.air_equip>
+
+			## cardinality = 0..inf
+			<equipment.air_equip> = {
+				owner = enum[country_tags]
+				## cardinality = 0..1
+				creator = enum[country_tags]
+				## cardinality = 0..1
+				create_if_missing = bool
+				amount = int
+				## cardinality = 0..1
+				version_name = value[variant_name]
+			}
+			## cardinality = 0..inf
+			value[bba_air_variants] = {
+				owner = enum[country_tags]
+				## cardinality = 0..1
+				creator = enum[country_tags]
+				## cardinality = 0..1
+				create_if_missing = bool
+				amount = int
+				## cardinality = 0..1
+				version_name = value[variant_name]
+			}
+			## cardinality = 0..inf
+			### Order is important. Ace will be assigned to the wing above.
+			ace = {
+				modifier = <ace>
+				name = localisation_inline
+				surname = localisation_inline
+				## cardinality = 0..1
+				callsign = localisation_inline
+				## cardinality = 0..1
+				portrait = int
+				## cardinality = 0..1
+				is_female = yes
+			}
+			## cardinality = 0..inf
+			### Order is important. start_experience_factor will be assigned to the ace above.
+			start_experience_factor = float[0..1]
+			## cardinality = 0..inf
+			name = localisation_inline
+		}
+	}
+
+	## cardinality = 0..inf
+	navy_leader = {
+		name = scalar
+		## cardinality = 0..1
+		desc = localisation
+		## cardinality = 0..1
+		picture = scalar
+		## cardinality = 0..1
+		portrait_path = scalar
+		## cardinality = 0..1
+		flags = {
+			## cardinality = ~1..inf
+			value_set[leader_flag] = {
+				value = 1
+			}
+		}
+		## cardinality = 0..1
+		gfx = scalar
+		### Sets starting traits for this leader. If empty, sets no traits. If missing, assigns a random trait.
+		traits = {
+			## cardinality = 0..inf
+			<unit_leader_trait>
+		}
+		## cardinality = ~1..1
+		skill = int
+		## cardinality = ~1..1
+		attack_skill = int
+		## cardinality = ~1..1
+		defense_skill = int
+		## cardinality = ~1..1
+		maneuvering_skill = int
+		## cardinality = ~1..1
+		coordination_skill = int
+		## cardinality = 0..1
+		id = value_set[unit_leader_ids]
+		## cardinality = 0..1
+		female = bool
+	}
+
+	## cardinality = 0..inf
+	field_marshal = {
+		name = scalar
+		## cardinality = 0..1
+		desc = localisation
+		## cardinality = 0..1
+		picture = scalar
+		## cardinality = 0..1
+		portrait_path = scalar
+		## cardinality = 0..1
+		flags = {
+			## cardinality = ~1..inf
+			value_set[leader_flag] = {
+				value = 1
+			}
+		}
+		## cardinality = 0..1
+		gfx = scalar
+		### Sets starting traits for this leader. If empty, sets no traits. If missing, assigns a random trait.
+		traits = {
+			## cardinality = 0..inf
+			<unit_leader_trait>
+		}
+		## cardinality = ~1..1
+		skill = int
+		## cardinality = ~1..1
+		attack_skill = int
+		## cardinality = ~1..1
+		defense_skill = int
+		## cardinality = ~1..1
+		planning_skill = int
+		## cardinality = ~1..1
+		logistics_skill = int
+		## cardinality = 0..1
+		id = value_set[unit_leader_ids]
+		## cardinality = 0..1
+		female = bool
+	}
+
+	## cardinality = 0..inf
+	corps_commander = {
+		## cardinality = 0..1
+		name = scalar
+		## cardinality = 0..1
+		desc = localisation
+		## cardinality = 0..1
+		picture = scalar
+		## cardinality = 0..1
+		portrait_path = scalar
+
+		## cardinality = 0..1
+		flags = {
+			## cardinality = ~1..inf
+			value_set[leader_flag] = {
+				value = 1
+			}
+		}
+
+		## cardinality = 0..1
+		gfx = scalar
+		### Sets starting traits for this leader. If empty, sets no traits. If missing, assigns a random trait.
+		traits = {
+			## cardinality = 0..inf
+			<unit_leader_trait>
+		}
+		## cardinality = ~1..1
+		skill = int
+		## cardinality = ~1..1
+		attack_skill = int
+		## cardinality = ~1..1
+		defense_skill = int
+		## cardinality = ~1..1
+		planning_skill = int
+		## cardinality = ~1..1
+		logistics_skill = int
+		## cardinality = 0..1
+		id = value_set[unit_leader_ids]
+		## cardinality = 0..1
+		female = bool
+	}
+}
+
+enums = {
+	enum[acclimatization_values] = {
+		cold_climate
+		hot_climate
+		max_acclimatization
+	}
+}

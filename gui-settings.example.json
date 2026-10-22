@@ -1,0 +1,11 @@
+{
+  "base": "",
+  "mods": [],
+  "display": {
+    "showTex": true,
+    "showNames": false,
+    "snap": false,
+    "grid": 5,
+    "defaultZoom": 1
+  }
+}

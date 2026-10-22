@@ -1,0 +1,76 @@
+{
+  "layer": "05_electron",
+  "base": "http://127.0.0.1:5175",
+  "ts": "2026-10-19T06:06:51.841Z",
+  "summary": {
+    "total": 9,
+    "pass": 9,
+    "fail": 0,
+    "exempt": 0
+  },
+  "cases": [
+    {
+      "name": "boot_splash_shown",
+      "pass": true,
+      "detail": "[boot] splash shown (+795ms)",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "boot_backend_loaded",
+      "pass": true,
+      "detail": "[boot] backend loaded (+2784ms 构建索引)",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "boot_main_window_created",
+      "pass": true,
+      "detail": "[boot] main window created (+17ms)",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "front_ready_received",
+      "pass": true,
+      "detail": "front-ready 信号已收到",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "main_window_shown",
+      "pass": true,
+      "detail": "[win:show] 主窗显示(壳就绪;自 loadURL 起 4712ms)",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "boot_timing_sane",
+      "pass": true,
+      "detail": "+splash=795ms +backend=2784ms +created=17ms(各自基准 bootT0/T1/T2 不同); 行序splash<backend<created=true; front-ready->show=110ms",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "no_errors_or_crash",
+      "pass": true,
+      "detail": "日志中无 uncaughtException/重启失败/exited code/渲染崩溃特征",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "stable_after_show_5s",
+      "pass": true,
+      "detail": "[win:show] 后连续运行 >=5000ms 进程未退出",
+      "exempt": false,
+      "exemptReason": null
+    },
+    {
+      "name": "clean_exit_no_residue",
+      "pass": true,
+      "detail": "PID 2896 已退出,任务列表无残留",
+      "exempt": false,
+      "exemptReason": null
+    }
+  ]
+}
