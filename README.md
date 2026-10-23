@@ -1,82 +1,185 @@
-# HOI4 模组工具链 (hoi4-toolkit) · Electron 桌面版
+# HOI4 模组工具链 (HOI4 Toolkit) · 使用说明
 
-HOI4 模组工程化工具链：无损解析、索引、重构、可视化工作台。**完整的 Electron 桌面程序**。
+一个**本机运行**的《钢铁雄心4》(HOI4) 模组工作台：查看、检查、编辑你的模组内容，
+用「所见即所得」设计器直接改游戏界面，全程**离线**、**不需要账号**、不上传任何文件。
 
-本目录是**自包含的完整工程**：源码 + Electron 壳 + 打包配置都在这里，是导出安装包所使用的文件夹。
-**不含任何浏览器模式内容**（无 `run-gui.*` / `boot.cjs`）。
+第一次使用请先看图文版 **`新手指南.md`**；本文档是完整的使用说明。
 
-## 环境要求
-- **运行桌面程序**：无额外要求，程序自带运行环境（Electron 内置 Node）。
-- **开发 / 打包**：需要 **Node.js ≥ 22.6** 与 npm。
+---
 
-## 快速开始
+## 一、安装（三种方式，任选其一）
 
-👉 **`新手指南.md`** 是写给第一次用的人的图文说明。
+| 方式 | 产物 | 适合谁 | 在线更新 |
+|---|---|---|---|
+| **A · 安装版（推荐）** | `HOI4-Toolkit-Installer-<版本>.exe` | 日常使用 | ✅ 启动即后台检测 |
+| **B · 便携版（压缩包）** | `HOI4-Toolkit-Portable-<版本>.zip` | 不想安装 / 拷到 U 盘 | ⚠️ 可检测，更新会装成安装版 |
+| **C · 免安装目录** | `app\` 文件夹（`HOI4 Toolkit.exe`） | 开发者 / 调试 | ⚠️ 同便携版 |
 
-### 日常使用（开发）
+- **方式 A**：双击安装器 → 选择安装目录 → 完成。用户级安装，**不需要管理员权限**；
+  安装目录里会带一个独立卸载器 `Uninstall HOI4 Toolkit.exe`，卸载不留注册表垃圾。
+- **方式 B**：解压 zip 到任意目录（路径带中文/空格都没问题），双击 `HOI4 Toolkit.exe` 即用；
+  换位置/换电脑直接拷走整个文件夹。
+- **方式 C**：`更新成品.bat` 产出的 `app\win-unpacked`，双击里面的 `HOI4 Toolkit.exe`。
+
+> 运行**不需要装 Node.js**，程序自带运行环境。开发/打包才需要 Node ≥ 22.6。
+
+---
+
+## 二、首次使用：打开工程
+
+工具启动后本身是空的，需要先告诉它你的**游戏目录**和**模组**在哪：
+
+1. 顶栏「工具 → 打开工程」（或主页的导入卡片）。
+2. **游戏目录**：填 HOI4 安装目录（含 `common/`、`interface/` 的那一层）。
+3. **模组**：填模组目录，或从下拉里勾选已识别到的模组（可多选，按加载顺序排列）。
+4. 保存后会自动**全量扫描建索引**——第一次要等**十几秒到几十秒**
+   （取决于模组大小），进度条走完再操作，之后切页都是秒开。
+
+配置保存在 `%APPDATA%\hoi4-toolkit\gui-settings.json`（每台机器独立，换机不丢——
+重新打开工程填一次即可）。改主题、背景、来源也在「设置」页。
+
+---
+
+## 三、功能速览（按顶栏分组）
+
+### 📦 内容
+| 页面 | 能做什么 |
+|---|---|
+| 国策树 | 看国策树全貌：来源文件、坐标、前置关系；条件门控/显形规则体检 |
+| 科技树 | 两级分类视图、隐藏科技、科技间关联 |
+| 学说系统 | 陆军/海军/空军学说：页签 · 轨道 · 分支三层结构 |
+| 平衡参数 | `00_defines.lua` 全部参数 + 官方注释对照 |
+| 决议树 | 按类别卡片墙浏览决议、触发条件与效果 |
+| 事件 | 事件的触发条件 / 效果 / 选项逐条查看 |
+| AI 行为 | `common/ai_*` 逐文件归纳 AI 策略权重 |
+| DLC 三页 | 军工机构(MiO) / 特殊工程 / 阵营：DLC 内容专项视图 |
+| 世界地图 | 多来源合成地图、省份归属、颜色→ID 校验 |
+| 模组关系 | 模组依赖图、`replace_path` 覆盖关系 |
+| 人物角色 | `common/characters`：肖像、职务、属性 |
+| 单位和装备 | 单位类型 / 装备数据 / 命名，陆海空分类 |
+
+### 🎨 界面
+| 页面 | 能做什么 |
+|---|---|
+| **所见即所得** | 界面设计器：载入任意 `.gui` 文件，按游戏真实布局渲染，拖元素、改属性、**回写文件** |
+| 内容生成 | 表单化产出规范文件（国策/决议/装备/理念…），自带语法校验 |
+| 代码 IDE | 高亮 · 大纲 · 跳转的脚本编辑器 |
+
+### 📖 文档
+| 页面 | 能做什么 |
+|---|---|
+| 官方手册 | effects / triggers 等官方脚本手册速查 |
+| common 文档 | 按文件夹索引的 common 结构说明 |
+| 本地化 | 本地化 key 的缺失检查、base/origin/overridden 覆盖链 |
+
+### 🔧 工具
+| 页面 | 能做什么 |
+|---|---|
+| 更新跟踪 | 基线快照 + 变更 diff：改了什么、影响哪些文件一目了然 |
+| 体检 | 全量语法检查 + 悬空引用（指向不存在的 key/文件/贴图） |
+| 打开工程 | 挂游戏目录 / 模组（见上文） |
+| 使用教程 | 内置上手教程 · 概念 · 常见问题 |
+| 设置 | 主题 · 来源 · 背景 · 构建并发度 · 软件更新 |
+
+---
+
+## 四、日常使用：典型工作流
+
+```
+打开工程 → 体检(先看有没有硬伤) → 用可视化页找到要改的内容
+   → 改(设计器回写 / IDE 编辑 / 内容生成) → 更新跟踪(核对改动)
+   → 再体检一次 → 进游戏验证
+```
+
+几个提高效率的点：
+
+- **先体检再动手**：悬空引用和语法错误会在体检页集中列出，改完再跑一次确认归零。
+- **改动必留痕**：改一批内容后去「更新跟踪」刷新快照，diff 按文件归类，
+  防止顺手改坏了别处。
+- **大模组第一次慢是正常的**：索引有磁盘缓存，第二次启动起就是秒开。
+- **界面改动用所见即所得**：它按游戏真实坐标系渲染（不是 1920×1080 想定），
+  改完直接回写 `.gui`，不用手算坐标。
+
+---
+
+## 五、软件更新
+
+- **安装版**：启动时即在后台检测 GitHub Releases 上的新版本，有更新会在
+  「设置 → 软件更新」卡片提示；也可以随时点「检查更新」手动触发，
+  下载完点「重启并安装」。
+- **便携版 / 免安装目录**：也能检测到新版本；点「下载更新 → 重启并安装」
+  会自动装成安装版（想继续用便携版，就下载新版 zip 解压替换整个文件夹）。
+- 卡片里的**项目主页**一键打开 GitHub 仓库，更新日志见仓库 Releases 页。
+- 更新只认 **HTTPS** 的 GitHub Releases；自建更新源可用环境变量
+  `HOI4TK_UPDATE_URL` 覆盖（仅调试用途）。
+
+---
+
+## 六、常见问题（FAQ）
+
+**Q：启动后白屏/没有数据？**
+A：还没打开工程。见「二、首次使用」，保存后等首次扫描完成。
+
+**Q：第一次扫描特别久？**
+A：正常，大模组要建全量索引（之后有缓存）。进度条走完再操作。
+
+**Q：检查更新提示失败？**
+A：依次确认——① 用的是安装版（便携版/开发模式能力受限）；
+② 网络能访问 github.com；③ 用的是不是太老的安装包
+（早期版本未注入更新源，重新装最新版即可）。
+
+**Q：配置保存在哪？换电脑会丢吗？**
+A：`%APPDATA%\hoi4-toolkit\gui-settings.json`。换电脑重新填一次打开工程即可，
+工具本身不依赖任何机器专属路径。
+
+**Q：能同时看多个模组吗？**
+A：能，打开工程里模组可多选，按加载顺序生效，覆盖关系见「模组关系」页。
+
+**Q：便携版想更新但不想装？**
+A：下载新版的 `HOI4-Toolkit-Portable-<版本>.zip`，解压覆盖旧文件夹即可。
+
+---
+
+## 七、给维护者：开发与出包
+
+> 普通使用者看到这里就够了。以下内容面向要改代码/出发布包的人。
+
 ```bash
 cd toolkit-electron
-npm install       # 首次
-npm start         # 启动 Electron 桌面程序（开发模式，直接跑 packages/gui 源码）
+npm install        # 首次
+npm start          # 开发模式启动(直接跑源码,带 DevTools)
+npm run pack       # 出免安装成品 app\win-unpacked(= 更新成品.bat)
+node ..\installer\tools\build.mjs   # 出安装器 + 卸载器 + 便携 zip(= deploy-installer.bat)
 ```
 
-### 出安装包（两步：先成品，再安装器）
-1. **`更新成品.bat`**（在本目录）：编译后端 + 暂存前端 + `electron-builder --dir` 出免安装程序
-   `app\win-unpacked`，并注入 `resources/app-update.yml`（GitHub 更新源）。
-2. **`..\installer\deploy-installer.bat`**：把上一步的 `app\win-unpacked` 打包成自解压安装器，
-   产物输出到 **`..\installer\dist\`**：
-   - `HOI4-Toolkit-Installer-<版本>.exe` —— 自解压安装器（双击安装到自选目录）
-   - `HOI4-Toolkit-Uninstaller-<版本>.exe` —— 随安装目录附带的独立卸载器
-   - `HOI4-Toolkit-Portable-<版本>.zip` —— 免安装压缩包（解压即用的便携版）
-- `latest.yml` —— 自动更新元数据（随安装器一起发布到 GitHub Releases）
+出包两步走（发布用）：
 
-> npm 等价命令：`npm run pack`（= 第 1 步）、`node ..\installer\tools\build.mjs`（= 第 2 步）。
+1. **`更新成品.bat`**（本目录）：编译后端 + 重建前端 + `electron-builder --dir`
+   → `app\win-unpacked`，并注入 `resources/app-update.yml`（GitHub 更新源）。
+2. **`..\installer\deploy-installer.bat`**：把上一步成品打包成自解压安装器，
+   产物在 `..\installer\dist\`：
+   - `HOI4-Toolkit-Installer-<版本>.exe` —— 安装器（Release 必传）
+   - `HOI4-Toolkit-Uninstaller-<版本>.exe` —— 独立卸载器
+   - `HOI4-Toolkit-Portable-<版本>.zip` —— 便携版
+   - `latest.yml` —— 自动更新元数据（Release 必传，与安装器同版本）
 
-## 目录结构
+发布到 GitHub Releases 时，**至少上传安装器 + `latest.yml`**（两个缺一不可，
+否则在线更新失效）。
+
+版本号统一源：`VERSION` + `version.json` + `CHANGELOG.md`，改动先写 CHANGELOG。
+更详细的维护文档见 `docs/MAINTAIN.md`。
+
+### 目录结构
+
 ```
-toolkit-electron/                ← 本目录：项目本体
-├─ README.md · 新手指南.md        ← 用户文档
-├─ 更新成品.bat · build-pack.ps1   ← 出免安装成品（app\win-unpacked）+ 注入更新源
-├─ main.cjs · preload.cjs · splash.html  ← Electron 主进程 / 预加载 / 启动闪屏
-├─ server.mjs · worker-entry.mjs   ← 编译后的后端（esbuild 打包，Electron 自带 Node 托管）
-├─ package.json · .gitignore · VERSION · CHANGELOG.md · version.json
-├─ stage.mjs · clean.mjs          ← 打包辅助（暂存 / 清理 public）
-├─ tools/write-update-config.cjs  ← 把更新源(github)写入打包产物
-├─ build/                         ← 打包资源（build/icon.ico 等）
-├─ gui-settings.example.json      ← 配置模板
-├─ packages/                      ← 程序本体（parser / engine / gui / cli / spec）
-├─ docs/                          ← 工程文档（deploy.md / MAINTAIN.md / COMPARE-TOOLS.md / …）
-├─ tools/                         ← 开发 / QA 脚本（verify_* / compare_* / audit_* / smoke_e2e …）
-└─ （同级）installer/             ← 安装器构建：deploy-installer.bat → HOI4-Toolkit-Installer-*.exe
+toolkit-electron/                ← 本目录：程序本体(自包含工程)
+├─ 新手指南.md · README.md        ← 用户文档(本文档)
+├─ 更新成品.bat · build-pack.ps1  ← 出免安装成品 + 注入更新源
+├─ main.cjs · preload.cjs · splash.html  ← Electron 主进程/预加载/闪屏
+├─ server.mjs · worker-entry.mjs  ← 编译后的后端(esbuild,Electron 自带 Node 托管)
+├─ stage.mjs · clean.mjs          ← 打包辅助(暂存/清理 public)
+├─ tools/                         ← 构建与 QA 脚本(write-update-config / verify_* …)
+├─ packages/                      ← parser / engine / gui / cli / spec
+├─ docs/                          ← 工程文档(deploy / MAINTAIN / COMPARE-TOOLS …)
+└─ （同级）installer/             ← 安装器构建链:deploy-installer.bat → 安装器+卸载器+便携zip
 ```
-
-## 常用命令（package.json scripts）
-```bash
-npm start           # 启动 Electron 桌面程序（开发模式）
-npm run build:server# 仅编译后端 server.ts → server.mjs
-npm run pack        # 出免安装成品 app\win-unpacked（= 更新成品.bat 的命令行版）
-npm run installer   # 生成安装器（委派 ../installer/tools/build.mjs → HOI4-Toolkit-Installer-*.exe）
-npm run dist        # 同 installer（保留的惯用别名）
-npm run stats       # 统计
-npm run roundtrip   # 无损往返校验
-npm run links       # 跨域链接检查
-```
-
-## 配置路径（重要：全部用户私有）
-本工程**不含任何机器专属绝对路径**。游戏目录、模组路径、AI key 都来自你自己的
-`gui-settings.json`（已被 git 忽略）：
-- **位置**：**`%APPDATA%\hoi4-toolkit\gui-settings.json`**（固定路径，开发态/打包态一致）
-- 复制 `gui-settings.example.json` 改名得到，把 `base` 改成你的 HOI4 安装目录，`mods` 填模组路径。
-
-> 想参与维护 / 打发布包？见 `docs/MAINTAIN.md`。
-
-## 更新（长期维护）
-本工具通过统一的版本源（`VERSION` + `version.json` + `CHANGELOG.md`）管理版本。
-每次变化都会写进 `CHANGELOG.md`，建议先看它再决定是否更新。
-
-- **更新源 = GitHub Releases**（`rzcxbsxxjxjxxy/hoi4-toolkit`）：安装版**启动即在后台检查**新版本，
-  无需手动触发；也可在「设置 → 软件更新」卡片点「检查更新」手动检查 / 下载 / 安装。
-- 发布时把 `HOI4-Toolkit-Installer-<版本>.exe` 与 `latest.yml` 一并上传到 GitHub Releases 即可；
-  想要免安装版的用户可下载随发布附带的 `HOI4-Toolkit-Portable-<版本>.zip`。
-- 「设置 → 软件更新」卡片内的**项目主页**一键打开 GitHub 仓库；想用自建更新源时，可用
-  环境变量 `HOI4TK_UPDATE_URL`（仅 `https` 或调试期 `HOI4TK_ALLOW_HTTP_UPDATE=1`）覆盖。
